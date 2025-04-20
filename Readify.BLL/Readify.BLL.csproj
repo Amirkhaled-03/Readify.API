@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Account\Login\" />
-    <Folder Include="DTOs\Account\Register\" />
-    <Folder Include="Services\Account\" />
-    <Folder Include="Validators\" />
     <Folder Include="Specifications\" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Readify.API.Extensions
 {
@@ -9,9 +10,10 @@ namespace Readify.API.Extensions
             services.AddSwaggerGen(c =>
             {
                 // Define the Swagger document
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AttendanceSystemApi", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Library Management System API", Version = "v1" });
 
                 c.EnableAnnotations();
+                c.ExampleFilters();
 
                 // Define the security scheme for JWT
                 var securityScheme = new OpenApiSecurityScheme
@@ -59,6 +61,8 @@ namespace Readify.API.Extensions
                 c.AddSecurityRequirement(securityRequirement);
             });
 
+            // ✅ THIS LINE IS MISSING
+            //  services.AddSwaggerExamplesFromAssemblyOf<LoginSuccessResponseExample>();
             return services;
         }
 

@@ -10,7 +10,7 @@ namespace Readify.DAL.Configuration
         {
             builder
                 .Ignore(u => u.NormalizedUserName)
-                .Ignore(u => u.UserName)
+                .Ignore(u => u.Email)
                 .Ignore(u => u.NormalizedEmail)
                 .Ignore(u => u.EmailConfirmed)
                 .Ignore(u => u.PhoneNumberConfirmed)

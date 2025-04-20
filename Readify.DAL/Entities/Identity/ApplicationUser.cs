@@ -4,9 +4,11 @@ namespace Readify.DAL.Entities.Identity
 {
     public class ApplicationUser : IdentityUser
     {
-        public string Role { get; set; }
-        public bool IsApproved { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public UserStatus UserStatus { get; set; } = UserStatus.Pending;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public required string Fullname { get; set; }
+
+        public required UserType UserType { get; set; }
 
         // Navigation
         public ICollection<BorrowRequest> BorrowRequests { get; set; }

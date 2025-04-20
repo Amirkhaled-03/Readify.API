@@ -34,7 +34,7 @@ namespace ExamSupervisionPortal.API
             app.UseHttpsRedirection();
 
             app.UseMiddleware<ExceptionHandlingMiddleware>();
-            app.UseMiddleware<JwtTokenValidationMiddleware>();
+            //   app.UseMiddleware<JwtTokenValidationMiddleware>();
 
             app.UseAuthentication();
 

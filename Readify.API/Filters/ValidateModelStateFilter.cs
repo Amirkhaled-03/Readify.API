@@ -18,7 +18,7 @@ namespace Readify.API.Filters
 
 
                 // Return custom BadRequest response with errors
-                context.Result = new BadRequestObjectResult(new ApiResponse<object>(400, "Validation Errors", errors: errors));
+                context.Result = new BadRequestObjectResult(new ApiResponse<object>(400, "bad request", errors: errors));
             }
         }
 

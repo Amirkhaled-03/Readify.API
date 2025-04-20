@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Readify.BLL.FileManagement;
-using Readify.BLL.ServiceContracts;
 
-namespace Readify.BLL.Services
+namespace Readify.BLL.FileManagement
 {
     public class ImageService : IImageService
     {

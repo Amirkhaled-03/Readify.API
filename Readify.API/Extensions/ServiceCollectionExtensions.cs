@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ExamSupervisionPortal.API;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Readify.API.Filters;
 using Readify.BLL;
@@ -6,6 +7,7 @@ using Readify.DAL;
 using Readify.DAL.Configuration;
 using Readify.DAL.DBContext;
 using Readify.DAL.Entities.Identity;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Readify.API.Extensions
 {
@@ -94,6 +96,13 @@ namespace Readify.API.Extensions
         {
             services.AddEndpointsApiExplorer();
             services.AddSwaggerDocumentation();
+
+            // Register Swagger example providers
+            services.AddSwaggerExamplesFromAssemblyOf<Program>();
+
+          
+
+
             return services;
         }
     }

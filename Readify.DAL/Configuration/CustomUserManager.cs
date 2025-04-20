@@ -59,7 +59,7 @@ namespace Readify.DAL.Configuration
         public override Task<ApplicationUser> FindByEmailAsync(string email)
         {
             // Use Email directly without relying on NormalizedEmail
-            return Users.FirstOrDefaultAsync(u => u.UserName == email);
+            return Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
         // AddToRoleAsync - Skip normalization in role assignment
