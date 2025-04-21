@@ -17,6 +17,9 @@ namespace Readify.DAL.Entities
         public ApplicationUser CreatedBy { get; set; }
         public ICollection<BorrowRequest> BorrowRequests { get; set; }
         public ICollection<BorrowedBook> BorrowedBooks { get; set; }
+
+        // Many-to-Many with Category
+        public ICollection<BookCategory> BookCategories { get; set; }
     }
 
 }

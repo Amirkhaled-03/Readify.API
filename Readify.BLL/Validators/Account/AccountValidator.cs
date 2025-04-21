@@ -25,5 +25,18 @@ namespace Readify.BLL.Validators.Account
 
             return errors;
         }
+
+        public async Task<List<string>> CheckExistingPhoneForAddAsync(string phone)
+        {
+            var errors = new List<string>();
+
+            bool userExists = await _userManager.Users.AnyAsync(u => u.PhoneNumber == phone);
+            if (userExists)
+            {
+                errors.Add($"A user with the phone '{phone}' already exists enter other phone.");
+            }
+
+            return errors;
+        }
     }
 }

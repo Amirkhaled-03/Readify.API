@@ -24,12 +24,14 @@ namespace Readify.BLL.Features.Account.Services
             List<string> errors = new List<string>();
 
             errors.AddRange(await _accountValidator.CheckExistingEmailForAddAsync(registerDto.Email));
+            errors.AddRange(await _accountValidator.CheckExistingPhoneForAddAsync(registerDto.PhoneNumber));
 
             if (errors.Any())
                 return errors;
 
             var user = new ApplicationUser
             {
+                PhoneNumber = registerDto.PhoneNumber,
                 Fullname = registerDto.Fullname,
                 UserName = registerDto.Email,
                 UserType = UserType.Admin,
@@ -48,12 +50,14 @@ namespace Readify.BLL.Features.Account.Services
             List<string> errors = new List<string>();
 
             errors.AddRange(await _accountValidator.CheckExistingEmailForAddAsync(registerDto.Email));
+            errors.AddRange(await _accountValidator.CheckExistingPhoneForAddAsync(registerDto.PhoneNumber));
 
             if (errors.Any())
                 return errors;
 
             var user = new ApplicationUser
             {
+                PhoneNumber = registerDto.PhoneNumber,
                 Fullname = registerDto.Fullname,
                 UserName = registerDto.Email,
                 UserType = UserType.Librarian,
@@ -72,12 +76,14 @@ namespace Readify.BLL.Features.Account.Services
             List<string> errors = new List<string>();
 
             errors.AddRange(await _accountValidator.CheckExistingEmailForAddAsync(registerDto.Email));
+            errors.AddRange(await _accountValidator.CheckExistingPhoneForAddAsync(registerDto.PhoneNumber));
 
             if (errors.Any())
                 return errors;
 
             var user = new ApplicationUser
             {
+                PhoneNumber = registerDto.PhoneNumber,
                 Fullname = registerDto.Fullname,
                 UserName = registerDto.Email,
                 UserType = UserType.User,

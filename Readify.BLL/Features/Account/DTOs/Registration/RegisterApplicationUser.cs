@@ -7,6 +7,8 @@ namespace Readify.BLL.Features.Account.DTOs.Registration
         [Required(ErrorMessage = "Full name is required.")]
         public required string Fullname { get; set; }
 
+        public required string PhoneNumber { get; set; }
+
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email format.")]
         public required string Email { get; set; }

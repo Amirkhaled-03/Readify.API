@@ -15,7 +15,6 @@ namespace Readify.DAL.Configuration
                 .Ignore(u => u.EmailConfirmed)
                 .Ignore(u => u.PhoneNumberConfirmed)
                 .Ignore(u => u.TwoFactorEnabled)
-                .Ignore(u => u.PhoneNumber)
                 .Ignore(u => u.LockoutEnabled)
                 .Ignore(u => u.LockoutEnd)
                 .Ignore(u => u.AccessFailedCount);

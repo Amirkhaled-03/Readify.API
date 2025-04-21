@@ -14,5 +14,4 @@ namespace Readify.DAL.Entities.Identity
         public ICollection<BorrowRequest> BorrowRequests { get; set; }
         public ICollection<BorrowedBook> BorrowedBooks { get; set; }
     }
-
 }
