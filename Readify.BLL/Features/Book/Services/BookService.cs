@@ -1,5 +1,4 @@
-﻿using Readify.BLL.Constants;
-using Readify.BLL.Features.Book.DTOs;
+﻿using Readify.BLL.Features.Book.DTOs;
 using Readify.BLL.Features.JWTToken;
 using Readify.BLL.Helpers;
 using Readify.BLL.Specifications.BookSpec;
@@ -32,11 +31,11 @@ namespace Readify.BLL.Features.Book.Services
 
             var specs = new BookSpecificationsWithCategoryFilter(specification);
 
-            if (matchedFilterationCount <= AppConstants.DefaultPageSize)
-            {
-                specification.PageIndex = 1;
-                specs = new BookSpecificationsWithCategoryFilter(specification);
-            }
+            //if (matchedFilterationCount <= AppConstants.DefaultPageSize)
+            //{
+            //    specification.PageIndex = 1;
+            //    specs = new BookSpecificationsWithCategoryFilter(specification);
+            //}
 
             var books = await _unitOfWork.BookRepository.GetWithSpecificationsAsync(specs)
                ?? Enumerable.Empty<DAL.Entities.Book>();
