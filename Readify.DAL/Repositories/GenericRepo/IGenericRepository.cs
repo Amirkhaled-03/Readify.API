@@ -2,7 +2,7 @@
 using Readify.DAL.SpecificationPattern;
 using System.Linq.Expressions;
 
-namespace Readify.DAL.RepositoriesContracts
+namespace Readify.DAL.Repositories.GenericRepo
 {
     public interface IGenericRepository<TEntity> where TEntity : BaseEntity
     {

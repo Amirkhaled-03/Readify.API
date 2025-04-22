@@ -9,7 +9,7 @@ namespace Readify.DAL.Entities
         public string UserId { get; set; }
         public int BookId { get; set; }
 
-        public string Status { get; set; } // You might want to convert this into an enum
+        public BorrowRequestStatus Status { get; set; }
         public DateTime RequestedAt { get; set; }
 
         public string? ApprovedById { get; set; }
@@ -19,5 +19,4 @@ namespace Readify.DAL.Entities
         public Book Book { get; set; }
         public ApplicationUser? ApprovedBy { get; set; }
     }
-
 }

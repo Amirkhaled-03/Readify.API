@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Readify.DAL.DBContext;
 using Readify.DAL.Entities;
-using Readify.DAL.RepositoriesContracts;
 using Readify.DAL.SpecificationPattern;
 using System.Linq.Expressions;
 
-namespace Readify.DAL.Repositories
+namespace Readify.DAL.Repositories.GenericRepo
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {

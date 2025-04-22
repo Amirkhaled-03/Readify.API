@@ -1,5 +1,4 @@
-﻿using ExamSupervisionPortal.API;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Readify.API.Filters;
 using Readify.BLL;
@@ -100,7 +99,7 @@ namespace Readify.API.Extensions
             // Register Swagger example providers
             services.AddSwaggerExamplesFromAssemblyOf<Program>();
 
-          
+
 
 
             return services;

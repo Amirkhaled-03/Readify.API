@@ -1,5 +1,4 @@
-﻿using ExamSupervisionPortal.API;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Readify.DAL.Configuration;

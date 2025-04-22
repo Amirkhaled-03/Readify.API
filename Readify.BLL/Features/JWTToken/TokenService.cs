@@ -50,7 +50,6 @@ namespace Readify.BLL.Features.JWTToken
             return tokenHandler.WriteToken(token);
         }
 
-
         public string GetUserIdFromToken()
         {
             var authHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].FirstOrDefault();
@@ -70,6 +69,29 @@ namespace Readify.BLL.Features.JWTToken
             var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
 
             return userId;
+        }
+
+        public async Task<ApplicationUser> GetUserFromTokenAsync()
+        {
+            var authHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].FirstOrDefault();
+
+            if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+            {
+                return null; // No token provided
+            }
+
+            // Extract token
+            var token = authHeader.Substring("Bearer ".Length).Trim();
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            // Retrieve the user ID from the token
+            var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            return user;
         }
     }
 }

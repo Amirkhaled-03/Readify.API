@@ -1,6 +1,6 @@
 ﻿namespace Readify.DAL.Entities
 {
-    public class BookCategory
+    public class BookCategory : BaseEntity
     {
         public int BookId { get; set; }
         public Book Book { get; set; }

@@ -1,7 +1,7 @@
 using Readify.API.Extensions;
 using Readify.API.Middlewares;
 
-namespace ExamSupervisionPortal.API
+namespace Readify.API
 {
     public class Program
     {
@@ -34,7 +34,7 @@ namespace ExamSupervisionPortal.API
             app.UseHttpsRedirection();
 
             app.UseMiddleware<ExceptionHandlingMiddleware>();
-            //   app.UseMiddleware<JwtTokenValidationMiddleware>();
+            app.UseMiddleware<JwtTokenValidationMiddleware>();
 
             app.UseAuthentication();
 

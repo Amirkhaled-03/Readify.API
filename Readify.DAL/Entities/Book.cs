@@ -11,7 +11,7 @@ namespace Readify.DAL.Entities
         public string ImageUrl { get; set; }
         public int AvailableCount { get; set; }
         public string CreatedById { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation
         public ApplicationUser CreatedBy { get; set; }
@@ -21,5 +21,4 @@ namespace Readify.DAL.Entities
         // Many-to-Many with Category
         public ICollection<BookCategory> BookCategories { get; set; }
     }
-
 }

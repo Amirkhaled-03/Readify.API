@@ -1,0 +1,139 @@
+﻿using Readify.API.HandleResponses;
+using Readify.BLL.Features.Book.DTOs;
+using Readify.BLL.Helpers;
+using Swashbuckle.AspNetCore.Filters;
+
+namespace Readify.API.ResponseExample.Book
+{
+    public class ManageBooksPageExample : IExamplesProvider<ApiResponse<ManageBooksPageDto>>
+    {
+        public ApiResponse<ManageBooksPageDto> GetExamples()
+        {
+            return new ApiResponse<ManageBooksPageDto>(200, "success", data: new ManageBooksPageDto
+            {
+                Books = new List<BookDto>
+                {
+                    new BookDto
+                    {
+                        Id = 1,
+                        Title = "Clean Code",
+                        Author = "Robert C. Martin",
+                        ISBN = "9780132350884",
+                        AvailableCount = 5,
+                        CreatedAt = DateTime.UtcNow.AddDays(-10)
+                    },
+                    new BookDto
+                    {
+                        Id = 2,
+                        Title = "The Pragmatic Programmer",
+                        Author = "Andrew Hunt",
+                        ISBN = "9780201616224",
+                        AvailableCount = 3,
+                        CreatedAt = DateTime.UtcNow.AddDays(-20)
+                    }
+                },
+                Metadata = new Metadata
+                {
+                    Pagination = new Pagination
+                    {
+                        PageIndex = 1,
+                        PageSize = 10,
+                        TotalRecords = 2,
+                        TotalPages = 1
+                    }
+                }
+            });
+        }
+    }
+
+    public class GetBookDetailsSuccessExample : IExamplesProvider<ApiResponse<BookDetailsDto>>
+    {
+        public ApiResponse<BookDetailsDto> GetExamples()
+        {
+            return new ApiResponse<BookDetailsDto>(200, "success", new BookDetailsDto
+            {
+                Id = 1,
+                Title = "Clean Code",
+                Author = "Robert C. Martin",
+                ISBN = "9780132350884",
+                AvailableCount = 5,
+                CreatedBy = "Admin User",
+                CreatedAt = DateTime.UtcNow.AddDays(-30),
+                Image = null, // base64 string can go here if available
+                Categories = new List<string> { "Programming", "Software Engineering" }
+            });
+        }
+    }
+
+    public class GetBookDetailsNotFoundExample : IExamplesProvider<ApiResponse<object>>
+    {
+        public ApiResponse<object> GetExamples()
+        {
+            return new ApiResponse<object>(404, "Book not found");
+        }
+    }
+
+    public class AddBookSuccessExample : IExamplesProvider<ApiResponse<List<string>>>
+    {
+        public ApiResponse<List<string>> GetExamples()
+        {
+            return new ApiResponse<List<string>>(201, "Book created successfully", data: new List<string>());
+        }
+    }
+
+    public class AddBookFailedExample : IExamplesProvider<ApiResponse<List<string>>>
+    {
+        public ApiResponse<List<string>> GetExamples()
+        {
+            return new ApiResponse<List<string>>(400, "bad request", errors: new List<string>
+            {
+                "ISBN already exists.",
+                "A book with the same title and author already exists."
+            });
+        }
+    }
+
+    public class UpdateBookSuccessExample : IExamplesProvider<ApiResponse<List<string>>>
+    {
+        public ApiResponse<List<string>> GetExamples()
+        {
+            return new ApiResponse<List<string>>(200, "Book updated successfully", data: new List<string>());
+        }
+    }
+
+    public class UpdateBookFailedExample : IExamplesProvider<ApiResponse<List<string>>>
+    {
+        public ApiResponse<List<string>> GetExamples()
+        {
+            return new ApiResponse<List<string>>(400, "bad request", errors: new List<string>
+            {
+                "This book not exists",
+                "ISBN already in use by another book.",
+                "An error occurred while updating the Book."
+            });
+        }
+    }
+
+    public class DeleteBookSuccessExample : IExamplesProvider<ApiResponse<List<string>>>
+    {
+        public ApiResponse<List<string>> GetExamples()
+        {
+            return new ApiResponse<List<string>>(200, "Book deleted successfully", data: new List<string>());
+        }
+    }
+
+    public class DeleteBookFailedExample : IExamplesProvider<ApiResponse<List<string>>>
+    {
+        public ApiResponse<List<string>> GetExamples()
+        {
+            return new ApiResponse<List<string>>(400, "Failed to delete book", errors: new List<string>
+            {
+                "The book is currently borrowed and cannot be deleted.",
+                "There are active borrow requests for this book. Deletion is not allowed.",
+                "This book not exists, cannot delete it."
+            });
+        }
+    }
+
+
+}
