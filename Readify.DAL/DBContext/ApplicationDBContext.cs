@@ -16,7 +16,6 @@ namespace Readify.DAL.DBContext
         {
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); // Important: Call the base method first!

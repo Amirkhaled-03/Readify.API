@@ -135,5 +135,45 @@ namespace Readify.API.ResponseExample.Book
         }
     }
 
+    public class ChangeBookImageSuccessExample : IExamplesProvider<ApiResponse<List<string>>>
+    {
+        public ApiResponse<List<string>> GetExamples()
+        {
+            return new ApiResponse<List<string>>(200, "Book image updated successfully.", data: new List<string>());
+        }
+    }
 
+    public class ChangeBookImageErrorsExample : IExamplesProvider<ApiResponse<List<string>>>
+    {
+        public ApiResponse<List<string>> GetExamples()
+        {
+            return new ApiResponse<List<string>>(400, "Failed to update book image", data: new List<string>
+        {
+            "Book not found.",
+            "No image uploaded.",
+            "An error occurred while uploading the image. Please try again.",
+            "An error occurred while updating the book image."
+        });
+        }
+    }
+
+    public class UpdateBookCategoriesSuccessExample : IExamplesProvider<ApiResponse<List<string>>>
+    {
+        public ApiResponse<List<string>> GetExamples()
+        {
+            return new ApiResponse<List<string>>(200, "Book categories updated successfully.", new List<string>());
+        }
+    }
+
+    public class UpdateBookCategoriesErrorExample : IExamplesProvider<ApiResponse<List<string>>>
+    {
+        public ApiResponse<List<string>> GetExamples()
+        {
+            return new ApiResponse<List<string>>(400, "Failed to update book categories", new List<string>
+        {
+            "book not found.",
+            "Failed to assign new categories to the book."
+        });
+        }
+    }
 }

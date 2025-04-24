@@ -73,7 +73,7 @@ namespace Readify.API.Controllers
         Description = "Allows admins to add a new book with image, categories, and availability count."
         )]
 
-        public async Task<IActionResult> AddBook([FromQuery] AddBookDto bookDto)
+        public async Task<IActionResult> AddBook([FromBody] AddBookDto bookDto)
         {
             var errors = await _bookService.AddBook(bookDto);
 
@@ -130,6 +130,51 @@ namespace Readify.API.Controllers
             return Ok(new ApiResponse<List<string>>(200, "Book deleted successfully", new List<string>()));
         }
 
+
+        #endregion
+
+        #region Change book Image 
+
+        [HttpPut("ChangeImage")]
+        [SwaggerResponse(200, "Success", typeof(ApiResponse<List<string>>))]
+        [SwaggerResponseExample(200, typeof(ChangeBookImageSuccessExample))]
+        [SwaggerResponse(400, "Error", typeof(ApiResponse<List<string>>))]
+        [SwaggerResponseExample(400, typeof(ChangeBookImageErrorsExample))]
+        [SwaggerOperation(
+        Summary = "Change Book Image",
+        Description = "Updates the image of a specific book. If a previous image exists, it is deleted from the server after successful update."
+        )]
+        public async Task<IActionResult> ChangeImage([FromForm] ChangeBookImage imageDto)
+        {
+            var result = await _bookService.ChangeBookImage(imageDto);
+            if (result.Any())
+                return BadRequest(new ApiResponse<List<string>>(400, "Failed to update book image", result));
+
+            return Ok(new ApiResponse<List<string>>(200, "Book image updated successfully.", result));
+        }
+
+
+        #endregion
+
+        #region Update book catgories
+
+        [HttpPut("UpdateBookCategories")]
+        [SwaggerResponse(200, "Success", typeof(ApiResponse<List<string>>))]
+        [SwaggerResponseExample(200, typeof(UpdateBookCategoriesSuccessExample))]
+        [SwaggerResponse(400, "Bad Request", typeof(ApiResponse<List<string>>))]
+        [SwaggerResponseExample(400, typeof(UpdateBookCategoriesErrorExample))]
+        [SwaggerOperation(
+        Summary = "Update book categories",
+        Description = "Updates the assigned categories of a specific book by removing unselected ones and adding new ones."
+        )]
+        public async Task<IActionResult> UpdateBookCategories([FromBody] AddCategoriesToBookDto dto)
+        {
+            var result = await _bookService.UpdateBookCategories(dto);
+            if (result.Any())
+                return BadRequest(new ApiResponse<List<string>>(400, "Failed to update book categories", result));
+
+            return Ok(new ApiResponse<List<string>>(200, "Book categories updated successfully.", result));
+        }
 
         #endregion
     }

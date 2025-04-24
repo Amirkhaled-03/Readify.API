@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Readify.DAL.Repositories.BookCategoriesRepo;
 using Readify.DAL.Repositories.BookRepo;
 using Readify.DAL.Repositories.BorrowedBookRepo;
 using Readify.DAL.Repositories.BorrowRequestRepo;
@@ -16,6 +17,7 @@ namespace Readify.DAL
             services.AddScoped<IBorrowedBookRepository, BorrowedBookRepository>();
             services.AddScoped<IBorrowRequestRepository, BorrowRequestRepository>();
             services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+            services.AddScoped<IBookCategoriesRepository, BookCategoriesRepository>();
 
             return services;
         }

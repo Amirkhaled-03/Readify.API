@@ -10,5 +10,7 @@ namespace Readify.BLL.Features.Book.Services
         Task<List<string>> AddBook(AddBookDto bookDto);
         Task<List<string>> UpdateBook(UpdateBookDto bookDto);
         Task<List<string>> DeleteById(int id);
+        Task<List<string>> ChangeBookImage(ChangeBookImage imageDto);
+        Task<List<string>> UpdateBookCategories(AddCategoriesToBookDto toBookDto);
     }
 }

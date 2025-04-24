@@ -174,5 +174,92 @@ namespace Readify.BLL.Features.Book.Services
             errors.Add("This book not exists, can not delete it");
             return errors; // Not found
         }
+
+        public async Task<List<string>> ChangeBookImage(ChangeBookImage imageDto)
+        {
+            var errors = new List<string>();
+
+            if (imageDto.NewImage == null || imageDto.NewImage.Length == 0)
+            {
+                errors.Add("No image uploaded.");
+                return errors;
+            }
+
+            var book = _unitOfWork.BookRepository.GetByID(imageDto.Id);
+            if (book == null)
+            {
+                errors.Add("Book not found.");
+                return errors;
+            }
+
+            string imageUrl = await ImageHelper.UploadImageAsync(imageDto.NewImage, book.ISBN);
+            if (string.IsNullOrEmpty(imageUrl))
+            {
+                errors.Add("An error occurred while uploading the image. Please try again.");
+                return errors;
+            }
+
+            // Save the new image URL to the employee record
+            string oldPath = book.ImageUrl;
+            book.ImageUrl = imageUrl;
+
+            _unitOfWork.BookRepository.UpdateEntity(book);
+
+            int affectedRows = await _unitOfWork.SaveAsync();
+            if (affectedRows <= 0)
+            {
+                errors.Add("An error occurred while updating the book image.");
+                return errors;
+            }
+
+            // Delete the old image if it exists
+            if (!string.IsNullOrEmpty(oldPath))
+                ImageHelper.DeleteImage(oldPath);
+
+            return errors;
+        }
+
+        public async Task<List<string>> UpdateBookCategories(AddCategoriesToBookDto toBookDto)
+        {
+            var errors = new List<string>();
+            var book = _unitOfWork.BookRepository.GetByID(toBookDto.BookId);
+
+            if (book == null)
+            {
+                errors.Add("book not found.");
+                return errors;
+            }
+
+            IReadOnlyList<int> currentCategoriesIds = await _unitOfWork.BookCategoriesRepository.GetBookCategoriesIdsByBookId(toBookDto.BookId);
+            var newCategoriesIds = new HashSet<int>(toBookDto.CategoriesIds.Where(id => id > 0));
+
+            // Remove unassigned Categories
+            foreach (var id in currentCategoriesIds.Where(d => !newCategoriesIds.Contains(d)))
+            {
+                var toDelete = await _unitOfWork.BookCategoriesRepository.FindAsync(ud =>
+                    ud.BookId == toBookDto.BookId &&
+                    ud.CategoryId == id);
+
+                _unitOfWork.BookCategoriesRepository.DeleteEntity(toDelete);
+            }
+
+            // Add new Categories
+            foreach (var id in newCategoriesIds.Where(id => !currentCategoriesIds.Contains(id)))
+            {
+                _unitOfWork.BookCategoriesRepository.AddEntity(new BookCategory
+                {
+                    CategoryId = id,
+                    BookId = toBookDto.BookId,
+                });
+            }
+
+            int affectedRows = await _unitOfWork.SaveAsync();
+            if (affectedRows <= 0 && newCategoriesIds.Any())
+            {
+                errors.Add("Failed to assign new categories to the book.");
+            }
+
+            return errors;
+        }
     }
 }

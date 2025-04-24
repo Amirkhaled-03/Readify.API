@@ -6,5 +6,6 @@
         public int TotalUsers { get; set; }
         public int TotalLibrarians { get; set; }
         public int TotalBorrowRecords { get; set; }
+        public int CategoriesCount { get; set; }
     }
 }

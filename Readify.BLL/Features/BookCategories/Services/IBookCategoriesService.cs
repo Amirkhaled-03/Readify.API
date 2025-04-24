@@ -10,5 +10,6 @@ namespace Readify.BLL.Features.BookCategories.Services
         Task<List<string>> AddCategoryAsync(AddCategoryDto dto);
         Task<List<string>> UpdateCategoryAsync(UpdateCategoryDto dto);
         Task<List<string>> DeleteCategoryAsync(int id);
+        Task<IReadOnlyList<CategoryDto>> GetCategoiesByBookId(int bookId);
     }
 }

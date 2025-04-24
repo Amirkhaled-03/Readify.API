@@ -1,11 +1,12 @@
 using Readify.API.Extensions;
+using Readify.API.Helpers;
 using Readify.API.Middlewares;
 
 namespace Readify.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,7 @@ namespace Readify.API
             // Use CORS policy
             app.UseCors("AllowedApps");
 
-            // await ApplySeeding.ApplySeedingAsync(app);
+            await ApplySeeding.ApplySeedingAsync(app);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

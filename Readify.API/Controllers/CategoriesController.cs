@@ -131,5 +131,24 @@ namespace Readify.API.Controllers
 
         #endregion
 
+        #region Get book Categories 
+
+        [HttpGet("{bookId}/categories")]
+        [SwaggerResponse(200, "Success", typeof(ApiResponse<IReadOnlyList<CategoryDto>>))]
+        [SwaggerResponseExample(200, typeof(GetCategoriesByBookIdSuccessExample))]
+        [SwaggerOperation(
+        Summary = "Get categories assigned to a book",
+        Description = "Returns all categories that are assigned to the specified book."
+        )]
+        public async Task<IActionResult> GetCategoriesByBookId(int bookId)
+        {
+            var categories = await _categoryService.GetCategoiesByBookId(bookId);
+            var message = categories.Any() ? "Success" : "No categories assigned to this book";
+            return Ok(new ApiResponse<IReadOnlyList<CategoryDto>>(200, message, categories));
+        }
+
+
+        #endregion
+
     }
 }

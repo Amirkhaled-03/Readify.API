@@ -22,6 +22,7 @@ namespace Readify.BLL.Features.Admin.Services
             int totalUsers = _userManager.Users.Count(u => u.UserType == UserType.User);
             int totalLibrarians = _userManager.Users.Count(u => u.UserType == UserType.Librarian);
             int borrowRecords = await _unitOfWork.BorrowRequestRepository.CountAsync();
+            int categoriesCount = await _unitOfWork.CategoriesRepository.CountAsync();
 
             return new AdminDashboard
             {
@@ -30,7 +31,8 @@ namespace Readify.BLL.Features.Admin.Services
                     TotalBooks = totalBooks,
                     TotalUsers = totalUsers,
                     TotalBorrowRecords = borrowRecords,
-                    TotalLibrarians = totalLibrarians
+                    TotalLibrarians = totalLibrarians,
+                    CategoriesCount = categoriesCount
                 }
             };
         }

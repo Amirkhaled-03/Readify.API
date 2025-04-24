@@ -107,5 +107,26 @@ namespace Readify.API.ResponseExample.Category
             });
             }
         }
+
+        public class GetCategoriesByBookIdSuccessExample : IExamplesProvider<ApiResponse<IReadOnlyList<CategoryDto>>>
+        {
+            public ApiResponse<IReadOnlyList<CategoryDto>> GetExamples()
+            {
+                return new ApiResponse<IReadOnlyList<CategoryDto>>(200, "Success", new List<CategoryDto>
+            {
+                new CategoryDto { Id = 1, Name = "Software Engineering" },
+                new CategoryDto { Id = 2, Name = "Programming" }
+            });
+            }
+        }
+
+        public class GetCategoriesByBookIdEmptyExample : IExamplesProvider<ApiResponse<IReadOnlyList<CategoryDto>>>
+        {
+            public ApiResponse<IReadOnlyList<CategoryDto>> GetExamples()
+            {
+                return new ApiResponse<IReadOnlyList<CategoryDto>>(200, "No categories assigned to this book", new List<CategoryDto>());
+            }
+        }
+
     }
 }

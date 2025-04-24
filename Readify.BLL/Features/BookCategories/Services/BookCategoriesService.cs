@@ -65,6 +65,19 @@ namespace Readify.BLL.Features.BookCategories.Services
             };
         }
 
+        public async Task<IReadOnlyList<CategoryDto>> GetCategoiesByBookId(int bookId)
+        {
+            var bookCategories = await _unitOfWork.BookCategoriesRepository.GetBookCategoriesByBookId(bookId)
+                                ?? Array.Empty<Category>();
+
+
+            return bookCategories.Select(c => new CategoryDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+            }).ToList().AsReadOnly();
+        }
+
         public async Task<List<string>> AddCategoryAsync(AddCategoryDto dto)
         {
             var errors = new List<string>();
