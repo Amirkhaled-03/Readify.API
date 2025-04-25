@@ -18,6 +18,7 @@ namespace Readify.DAL
             services.AddScoped<IBorrowRequestRepository, BorrowRequestRepository>();
             services.AddScoped<ICategoriesRepository, CategoriesRepository>();
             services.AddScoped<IBookCategoriesRepository, BookCategoriesRepository>();
+            services.AddScoped<IBorrowRequestRepository, BorrowRequestRepository>();
 
             return services;
         }
