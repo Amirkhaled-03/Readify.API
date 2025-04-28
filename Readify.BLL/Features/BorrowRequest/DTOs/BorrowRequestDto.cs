@@ -15,6 +15,8 @@ namespace Readify.BLL.Features.BorrowRequest.DTOs
         public string? ApprovedBy { get; set; }
         public string BookTitle { get; set; }
         public int AvailableCopies { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public BorrowRequestStatus Status { get; set; }
         public DateTime RequestedAt { get; set; }
     }

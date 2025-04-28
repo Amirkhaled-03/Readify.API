@@ -11,6 +11,8 @@ namespace Readify.DAL.Entities
 
         public BorrowRequestStatus Status { get; set; }
         public DateTime RequestedAt { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public string? ApprovedById { get; set; }
 

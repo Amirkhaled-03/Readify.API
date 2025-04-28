@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Readify.DAL\Readify.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Librarian\DTOs\" />
+  </ItemGroup>
+
 </Project>

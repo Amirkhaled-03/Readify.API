@@ -1,4 +1,5 @@
-﻿using Readify.BLL.Constants;
+﻿using Microsoft.EntityFrameworkCore;
+using Readify.BLL.Constants;
 using Readify.BLL.Features.BookCategories.DTOs;
 using Readify.BLL.Helpers;
 using Readify.BLL.Specifications.CategoriesSpec;
@@ -35,7 +36,8 @@ namespace Readify.BLL.Features.BookCategories.Services
             var categoriesDto = categories.Select(c => new CategoryDto
             {
                 Id = c.Id,
-                Name = c.Name
+                Name = c.Name,
+                CreatedAt = c.CreatedAt
             });
 
             var pagination = new Pagination
@@ -61,7 +63,8 @@ namespace Readify.BLL.Features.BookCategories.Services
             return new CategoryDto
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                CreatedAt = category.CreatedAt
             };
         }
 
@@ -75,6 +78,7 @@ namespace Readify.BLL.Features.BookCategories.Services
             {
                 Id = c.Id,
                 Name = c.Name,
+                CreatedAt = c.CreatedAt,
             }).ToList().AsReadOnly();
         }
 
@@ -89,7 +93,7 @@ namespace Readify.BLL.Features.BookCategories.Services
                 return errors;
             }
 
-            var category = new Category { Name = dto.Name };
+            var category = new Category { Name = dto.Name};
             _unitOfWork.CategoriesRepository.AddEntity(category);
 
             var result = await _unitOfWork.SaveAsync();
@@ -145,6 +149,21 @@ namespace Readify.BLL.Features.BookCategories.Services
 
             errors.Add("Failed to delete the category.");
             return errors;
+        }
+
+        public async Task<List<CategoryDto>> GetLatestCategoriesAsync()
+        {
+            var categories = await _unitOfWork.CategoriesRepository.GetAllAsQueryable()
+                .OrderByDescending(c => c.CreatedAt)
+                .Take(5)
+                .Select(c => new CategoryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    CreatedAt = c.CreatedAt,
+                }).ToListAsync();
+
+            return categories;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Readify.BLL.Validators.BorrowRequestValidators
             _tokenService = tokenService;
         }
 
-        public async Task<List<string>> ValidateCreateBorrowRequest(string userId, int bookId)
+        public async Task<List<string>> ValidateCreateBorrowRequest(string userId, int bookId, DateTime startDate, DateTime endDate)
         {
             List<string> errors = new List<string>();
 
@@ -42,6 +42,16 @@ namespace Readify.BLL.Validators.BorrowRequestValidators
 
             if (existingRequest != null)
                 errors.Add("You already have a request for this book!");
+
+            if (startDate < DateTime.UtcNow || endDate < DateTime.UtcNow)
+                errors.Add("Date already passed");
+
+            if (endDate < startDate)
+                errors.Add("End date must be greater than start date");
+
+            if (endDate > startDate.AddMonths(1))
+                errors.Add("End date shouldn't exceed start date by a month");
+
             return errors;
         }
 

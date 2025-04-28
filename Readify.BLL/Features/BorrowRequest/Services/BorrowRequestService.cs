@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Readify.BLL.Features.Book.DTOs;
+using Readify.BLL.Features.BorrowedBooks.DTOs;
+using Readify.BLL.Features.BorrowedBooks.Services;
 using Readify.BLL.Features.BorrowRequest.DTOs;
 using Readify.BLL.Features.JWTToken;
 using Readify.BLL.Helpers;
-using Readify.BLL.Specifications.BookSpec;
 using Readify.BLL.Specifications.BorrowRequestSpec;
 using Readify.BLL.Validators.BorrowRequestValidators;
 using Readify.DAL.Entities;
@@ -20,18 +20,20 @@ namespace Readify.BLL.Features.BorrowRequest.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITokenService _tokenService;
         private readonly IBorrowRequestValidator _borrowRequestValidator;
-        public BorrowRequestService(IUnitOfWork unitOfWork, ITokenService tokenService, IBorrowRequestValidator borrowRequestValidator)
+        private readonly IBorrowedBookService _borrowedBookService;
+        public BorrowRequestService(IUnitOfWork unitOfWork, ITokenService tokenService, IBorrowRequestValidator borrowRequestValidator, IBorrowedBookService borrowedBookService)
         {
             _unitOfWork = unitOfWork;
             _tokenService = tokenService;
             _borrowRequestValidator = borrowRequestValidator;
+            _borrowedBookService = borrowedBookService;
         }
         public async Task<List<string>> CreateBorrowRequestAsync(CreateBorrowRequestDto createBorrowRequestDto)
         {
             List<string> errors = new List<string>();
 
             var userId = _tokenService.GetUserIdFromToken();
-            errors.AddRange(await _borrowRequestValidator.ValidateCreateBorrowRequest(userId, createBorrowRequestDto.BookId));
+            errors.AddRange(await _borrowRequestValidator.ValidateCreateBorrowRequest(userId, createBorrowRequestDto.BookId, createBorrowRequestDto.StartDate, createBorrowRequestDto.EndDate));
 
             if (errors.Any())
                 return errors;
@@ -41,6 +43,8 @@ namespace Readify.BLL.Features.BorrowRequest.Services
             {
                 BookId = createBorrowRequestDto.BookId,
                 UserId = userId,
+                StartDate = createBorrowRequestDto.StartDate,
+                EndDate = createBorrowRequestDto.EndDate,
                 RequestedAt = DateTime.UtcNow,
                 Status = BorrowRequestStatus.Pending,
                 ApprovedById = null
@@ -98,6 +102,8 @@ namespace Readify.BLL.Features.BorrowRequest.Services
                 RequestedBy = br.User.UserName,
                 PhoneNumber = br.User.PhoneNumber,
                 ApprovedBy = br.ApprovedById == null ? null : br.ApprovedBy.Fullname,
+                StartDate = br.StartDate,
+                EndDate = br.EndDate,
                 RequestedAt = br.RequestedAt,
                 Status = br.Status,
             });
@@ -128,6 +134,8 @@ namespace Readify.BLL.Features.BorrowRequest.Services
                 RequestedBy = borrowRequest.User.UserName,
                 PhoneNumber = borrowRequest.User.PhoneNumber,
                 ApprovedBy = borrowRequest.ApprovedById == null ? null : borrowRequest.ApprovedBy.Fullname,
+                StartDate = borrowRequest.StartDate,
+                EndDate = borrowRequest.EndDate,
                 RequestedAt = borrowRequest.RequestedAt,
                 Status = borrowRequest.Status,
             };
@@ -149,6 +157,8 @@ namespace Readify.BLL.Features.BorrowRequest.Services
                 RequestedBy = br.User.UserName,
                 PhoneNumber = br.User.PhoneNumber,
                 ApprovedBy = br.ApprovedById == null ? null : br.ApprovedBy.Fullname,
+                StartDate = br.StartDate,
+                EndDate = br.EndDate,
                 RequestedAt = br.RequestedAt,
                 Status = br.Status,
             }).ToList();
@@ -177,10 +187,34 @@ namespace Readify.BLL.Features.BorrowRequest.Services
             request.ApprovedById = _tokenService.GetUserIdFromToken();
 
             _unitOfWork.BorrowRequestRepository.UpdateEntity(request);
-            int affctedRows = await _unitOfWork.SaveAsync();
+            int affectedRows = await _unitOfWork.SaveAsync();
 
-            if (affctedRows <= 0)
+            if (affectedRows <= 0)
+            {
                 errors.Add("An error occurred while updating the status.");
+                return errors;
+            }
+
+
+            if (request.Status == BorrowRequestStatus.Approved)
+            {
+                //var book = new BorrowedBook
+                //{
+                //    BookId = request.BookId,
+                //    UserId = request.UserId,
+                //    ConfirmedById = request.ApprovedById,
+                //    BorrowedAt = request.StartDate,
+                //    DueDate = request.EndDate,
+                //};
+                //_unitOfWork.BorrowedBookRepository.AddEntity(book);
+                //int bookaffectedRows = await _unitOfWork.SaveAsync();
+
+                //if (bookaffectedRows <= 0)
+                //    errors.Add("An error occurred while adding borrowed book.");
+
+                errors.AddRange(await _borrowedBookService.AddBorrowedBookAsync(request));
+
+            }
 
             return errors;
         }

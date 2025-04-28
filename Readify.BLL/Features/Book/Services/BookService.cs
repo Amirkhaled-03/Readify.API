@@ -1,4 +1,5 @@
-﻿using Readify.BLL.Features.Book.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using Readify.BLL.Features.Book.DTOs;
 using Readify.BLL.Features.JWTToken;
 using Readify.BLL.Helpers;
 using Readify.BLL.Specifications.BookSpec;
@@ -260,6 +261,24 @@ namespace Readify.BLL.Features.Book.Services
             }
 
             return errors;
+        }
+
+        public async Task<List<BookDto>> GetLatestBooksAsync()
+        {
+            var books = await _unitOfWork.BookRepository.GetAllAsQueryable()
+                .OrderByDescending(b => b.CreatedAt)
+                .Take(5)
+                .Select(b => new BookDto
+                {
+                    Id = b.Id,
+                    ISBN = b.ISBN,
+                    Title = b.Title,
+                    Author = b.Author,
+                    AvailableCount = b.AvailableCount,
+                    CreatedAt = b.CreatedAt
+                }).ToListAsync();
+
+            return books;
         }
     }
 }

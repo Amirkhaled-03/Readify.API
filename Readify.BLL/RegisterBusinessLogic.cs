@@ -4,12 +4,12 @@ using Readify.BLL.Features.Account.ServicesContracts;
 using Readify.BLL.Features.Admin.Services;
 using Readify.BLL.Features.Book.Services;
 using Readify.BLL.Features.BookCategories.Services;
+using Readify.BLL.Features.BorrowedBooks.Services;
 using Readify.BLL.Features.BorrowRequest.Services;
 using Readify.BLL.Features.JWTToken;
 using Readify.BLL.Validators.Account;
 using Readify.BLL.Validators.BookValidator;
 using Readify.BLL.Validators.BorrowRequestValidators;
-using Readify.DAL.Repositories.BorrowRequestRepo;
 
 namespace Readify.BLL
 {
@@ -24,6 +24,8 @@ namespace Readify.BLL
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IBookCategoriesService, BookCategoriesService>();
             services.AddScoped<IBorrowRequestService, BorrowRequestService>();
+            services.AddScoped<IBorrowedBookService, BorrowedBookService>();
+
 
 
             // validators

@@ -177,6 +177,16 @@ namespace Readify.API.Controllers
         }
 
         #endregion
-    }
 
+        #region Get Latest 5 Books
+        [HttpGet("latestBooks")]
+        public async Task<IActionResult> GetLatestBooks()
+        {
+            var result = await _bookService.GetLatestBooksAsync();
+
+            return Ok(new ApiResponse<List<BookDto>> (200, "success", data: result));
+        }
+
+        #endregion
+    }
 }
