@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Readify.BLL.Features.Librarian.DTOs;
+using Readify.BLL.Specifications.LibrarianSpec;
 
 namespace Readify.BLL.Features.Librarian.Services
 {
     public interface ILibrarianService
     {
+        Task<ManageLibrarianPageDto> GetAdminsAsync(LibrarianSpecifications specification);
     }
 }
