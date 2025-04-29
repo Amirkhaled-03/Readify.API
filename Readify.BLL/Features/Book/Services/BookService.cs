@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Readify.BLL.Features.Book.DTOs;
-using Readify.BLL.Features.JWTToken;
 using Readify.BLL.Helpers;
 using Readify.BLL.Specifications.BookSpec;
-using Readify.BLL.Validators.BookValidator;
 using Readify.DAL.Entities;
 using Readify.DAL.UOW;
 
@@ -32,24 +30,20 @@ namespace Readify.BLL.Features.Book.Services
 
             var specs = new BookSpecificationsWithCategoryFilter(specification);
 
-            //if (matchedFilterationCount <= AppConstants.DefaultPageSize)
-            //{
-            //    specification.PageIndex = 1;
-            //    specs = new BookSpecificationsWithCategoryFilter(specification);
-            //}
-
             var books = await _unitOfWork.BookRepository.GetWithSpecificationsAsync(specs)
                ?? Enumerable.Empty<DAL.Entities.Book>();
 
-            var booksDto = books.Select(b => new BookDto
+            var booksDto = await Task.WhenAll(books.Select(async b => new BookDto
             {
                 Id = b.Id,
                 Author = b.Author,
                 ISBN = b.ISBN,
                 Title = b.Title,
                 AvailableCount = b.AvailableCount,
-                CreatedAt = b.CreatedAt
-            });
+                CreatedAt = b.CreatedAt,
+                Image = b.ImageUrl == null ? null : await ImageHelper.ConvertImageToBase64Async(b.ImageUrl),
+            }));
+
 
             var pagination = new Pagination
             {
@@ -286,7 +280,7 @@ namespace Readify.BLL.Features.Book.Services
             List<string> errors = new List<string>();
             var book = _unitOfWork.BookRepository.GetByID(bookId);
 
-            if(book == null)
+            if (book == null)
             {
                 errors.Add("Book not found!");
                 return errors;

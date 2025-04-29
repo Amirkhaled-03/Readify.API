@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Readify.BLL.Features.JWTToken;
 using Readify.BLL.Features.Librarian.DTOs;
 using Readify.BLL.Helpers;
 using Readify.BLL.Specifications.LibrarianSpec;

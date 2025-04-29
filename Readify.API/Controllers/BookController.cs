@@ -73,7 +73,7 @@ namespace Readify.API.Controllers
         Description = "Allows admins to add a new book with image, categories, and availability count."
         )]
 
-        public async Task<IActionResult> AddBook([FromBody] AddBookDto bookDto)
+        public async Task<IActionResult> AddBook([FromForm] AddBookDto bookDto)
         {
             var errors = await _bookService.AddBook(bookDto);
 
@@ -184,7 +184,7 @@ namespace Readify.API.Controllers
         {
             var result = await _bookService.GetLatestBooksAsync();
 
-            return Ok(new ApiResponse<List<BookDto>> (200, "success", data: result));
+            return Ok(new ApiResponse<List<BookDto>>(200, "success", data: result));
         }
 
         #endregion

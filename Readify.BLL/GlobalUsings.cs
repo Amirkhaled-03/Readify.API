@@ -1,6 +1,13 @@
-﻿namespace Readify.BLL
-{
-    internal class GlobalUsings
-    {
-    }
-}
+﻿global using Microsoft.Extensions.DependencyInjection;
+global using Readify.BLL.Features.Account.Services;
+global using Readify.BLL.Features.Account.ServicesContracts;
+global using Readify.BLL.Features.Admin.Services;
+global using Readify.BLL.Features.Book.Services;
+global using Readify.BLL.Features.BookCategories.Services;
+global using Readify.BLL.Features.BorrowedBooks.Services;
+global using Readify.BLL.Features.BorrowRequest.Services;
+global using Readify.BLL.Features.JWTToken;
+global using Readify.BLL.Validators.Account;
+global using Readify.BLL.Validators.BookValidator;
+global using Readify.BLL.Validators.BorrowedBookValidators;
+global using Readify.BLL.Validators.BorrowRequestValidators;

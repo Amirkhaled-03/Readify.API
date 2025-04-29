@@ -8,5 +8,8 @@
         public required string ISBN { get; set; }
         public int AvailableCount { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        // as base64
+        public string? Image { get; set; }
     }
 }
