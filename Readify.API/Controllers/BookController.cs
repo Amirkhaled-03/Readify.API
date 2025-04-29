@@ -96,7 +96,7 @@ namespace Readify.API.Controllers
         Summary = "Update existing book",
         Description = "Allows admins to update book info including title, author, ISBN, and count."
         )]
-        public async Task<IActionResult> UpdateBook(UpdateBookDto bookDto)
+        public async Task<IActionResult> UpdateBook([FromForm] UpdateBookDto bookDto)
         {
             var errors = await _bookService.UpdateBook(bookDto);
 
