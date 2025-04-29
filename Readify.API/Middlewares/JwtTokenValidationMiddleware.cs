@@ -20,9 +20,10 @@ namespace Readify.API.Middlewares
             var path = context.Request.Path.Value;
             var accountController = "/api/Account";
 
-            // Skip token checks for Login & RegisterEmployee
             if (path.Equals($"{accountController}/Login", StringComparison.OrdinalIgnoreCase) ||
-                path.Equals($"{accountController}/RegisterEmployee", StringComparison.OrdinalIgnoreCase)
+                path.Equals($"{accountController}/RegisterAdmin", StringComparison.OrdinalIgnoreCase) ||
+                path.Equals($"{accountController}/RegisterLibrarian", StringComparison.OrdinalIgnoreCase) ||
+                path.Equals($"{accountController}/RegisterUser", StringComparison.OrdinalIgnoreCase)
                 )
             {
                 await _next(context);
