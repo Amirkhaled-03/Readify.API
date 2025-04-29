@@ -64,5 +64,29 @@ namespace Readify.BLL.Validators.Account
 
             return errors;
         }
+
+        public async Task<List<string>> ValidateUpdateStatus(string userId, UserStatus status)
+        {
+            var errors = new List<string>();
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user.UserStatus == status)
+            {
+                errors.Add("User already has this status");
+                return errors;
+            }
+
+            if (user.UserStatus == UserStatus.Approved)
+            {
+                errors.Add("Cannot change approved user status");
+                return errors;
+            }
+
+            if (user.UserStatus == UserStatus.Rejected)
+                errors.Add("Cannot change rejected status");
+
+            return errors;
+        }
     }
 }

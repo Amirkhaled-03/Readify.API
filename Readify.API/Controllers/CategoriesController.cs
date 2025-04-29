@@ -149,16 +149,5 @@ namespace Readify.API.Controllers
 
 
         #endregion
-
-        #region Get Latest 5 Categories
-        [HttpGet("latestCategories")]
-        public async Task<IActionResult> GetLatestCategories()
-        {
-            var result = await _categoryService.GetLatestCategoriesAsync();
-
-            return Ok(new ApiResponse<List<CategoryDto>>(200, "success", result));
-        }
-
-        #endregion
     }
 }

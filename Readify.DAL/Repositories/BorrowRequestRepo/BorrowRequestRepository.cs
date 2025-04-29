@@ -17,7 +17,6 @@ namespace Readify.DAL.Repositories.BorrowRequestRepo
             return await _dbSet.Where(br => br.Id == id)
                  .AsNoTracking()
                  .Include(br => br.User)
-                 .Include(br => br.ApprovedBy)
                  .Include(br => br.Book)
                  .ThenInclude(br => br.BookCategories)
                  .ThenInclude(br => br.Category)
@@ -29,7 +28,6 @@ namespace Readify.DAL.Repositories.BorrowRequestRepo
             return await _dbSet
                 .Where(br => br.UserId == userId)
                 .Include(br => br.User)
-                .Include(br => br.ApprovedBy)
                 .Include(br => br.Book)
                 .ToListAsync();
         }

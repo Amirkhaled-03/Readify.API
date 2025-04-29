@@ -1,4 +1,8 @@
-﻿namespace Readify.BLL
+﻿using Readify.BLL.Features.Librarian.Services;
+using Readify.BLL.Features.User.Services;
+using Readify.BLL.ServiceContracts.AccountContracts;
+
+namespace Readify.BLL
 {
     public static class RegisterBusinessLogic
     {
@@ -14,6 +18,7 @@
             services.AddScoped<IBookCategoriesService, BookCategoriesService>();
             services.AddScoped<IBorrowRequestService, BorrowRequestService>();
             services.AddScoped<IBorrowedBookService, BorrowedBookService>();
+            services.AddScoped<IUserManagementService, UserManagementService>();
 
             // validators
             services.AddScoped<IAccountValidator, AccountValidator>();

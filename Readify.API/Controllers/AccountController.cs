@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Readify.API.HandleResponses;
 using Readify.API.ResponseExample.Account;
+using Readify.BLL.Features.Account.DTOs;
 using Readify.BLL.Features.Account.DTOs.Login;
 using Readify.BLL.Features.Account.DTOs.Registration;
 using Readify.BLL.Features.Account.ServicesContracts;
+using Readify.BLL.Features.User.Services;
+using Readify.BLL.ServiceContracts.AccountContracts;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -14,11 +17,13 @@ namespace Readify.API.Controllers
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly IUserRegistrationService _userRegistrationService;
+        private readonly IUserManagementService _userManagementService;
 
-        public AccountController(IAuthenticationService authenticationService, IUserRegistrationService userRegistrationService)
+        public AccountController(IAuthenticationService authenticationService, IUserRegistrationService userRegistrationService, IUserManagementService userManagementService)
         {
             _authenticationService = authenticationService;
             _userRegistrationService = userRegistrationService;
+            _userManagementService = userManagementService;
         }
 
         #region Login 
@@ -108,6 +113,29 @@ namespace Readify.API.Controllers
                 return BadRequest(new ApiResponse<List<string>>(400, "bad request", errors: errors));
 
             return CreatedAtAction(nameof(RegisterUser), new ApiResponse<string>(201, "Created successfully"));
+        }
+
+        #endregion
+
+
+        #region Update Account Status
+
+        [HttpPut("UpdateAccountStatus")]
+        [SwaggerOperation(
+            Summary = "Update the status of a user account",
+            Description = "This endpoint allows Admins to update the status of a user account (e.g., Pending, Approved, Rejected, etc.).")]
+        [SwaggerResponse(200, "Status updated successfully", typeof(ApiResponse<string>))]
+        [SwaggerResponse(400, "Bad request", typeof(ApiResponse<List<string>>))]
+        [SwaggerResponseExample(200, typeof(UpdateAccountStatusSuccessExample))]
+        [SwaggerResponseExample(400, typeof(UpdateAccountStatusErrorExample))]
+        public async Task<IActionResult> UpdateAccountStatus(UpdateAccountStatusDto updateStatusDto)
+        {
+            var errors = await _userManagementService.UpdateAccountStatusAsync(updateStatusDto);
+
+            if (errors.Any())
+                return BadRequest(new ApiResponse<List<string>>(400, "Bad request", errors: errors));
+
+            return Ok(new ApiResponse<string>(200, "Status updated successfully"));
         }
 
         #endregion

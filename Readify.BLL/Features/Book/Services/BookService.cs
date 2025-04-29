@@ -257,17 +257,15 @@ namespace Readify.BLL.Features.Book.Services
             return errors;
         }
 
-        public async Task<List<BookDto>> GetLatestBooksAsync()
+        public async Task<List<LatestBooksDto>> GetLatestBooksAsync()
         {
             var books = await _unitOfWork.BookRepository.GetAllAsQueryable()
                 .OrderByDescending(b => b.CreatedAt)
                 .Take(5)
-                .Select(b => new BookDto
+                .Select(b => new LatestBooksDto
                 {
                     Id = b.Id,
-                    ISBN = b.ISBN,
                     Title = b.Title,
-                    Author = b.Author,
                     AvailableCount = b.AvailableCount,
                     CreatedAt = b.CreatedAt
                 }).ToListAsync();
