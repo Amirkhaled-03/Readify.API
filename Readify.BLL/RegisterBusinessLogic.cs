@@ -9,6 +9,8 @@
             services.AddScoped<IUserRegistrationService, UserRegistrationService>();
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ILibrarianService, LibrarianService>();
             services.AddScoped<IBookCategoriesService, BookCategoriesService>();
             services.AddScoped<IBorrowRequestService, BorrowRequestService>();
             services.AddScoped<IBorrowedBookService, BorrowedBookService>();

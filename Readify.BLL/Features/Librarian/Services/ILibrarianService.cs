@@ -5,6 +5,9 @@ namespace Readify.BLL.Features.Librarian.Services
 {
     public interface ILibrarianService
     {
-        Task<ManageLibrarianPageDto> GetAdminsAsync(LibrarianSpecifications specification);
+        Task<ManageLibrarianPageDto> GetLibrarianAsync(LibrarianSpecifications specification);
+        Task<LibrarianDto?> GetLibrarianByIdAsync(string id);
+        Task<List<string>> EditLibrarian(EditLibrarianDto editLibrarian);
+        Task<bool> DeleteLibrarianById(string id);
     }
 }

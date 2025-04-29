@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Readify.BLL.Features.User.DTOs
+﻿namespace Readify.BLL.Features.User.DTOs
 {
     public class UserDto
     {
-        public int Id { get; set; }
-        public string Email { get; set; }
-        public string FullName { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public string PhoneNumber { get; set; }
-        public UserStatus Status { get; set; }
+        public required string Id { get; set; }
+        public required string Fullname { get; set; }
+        public required string Username { get; set; }
+        public required string PhoneNumber { get; set; }
+        public required UserStatus UserStatus { get; set; } = UserStatus.Pending;
+        public required DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

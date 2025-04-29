@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Readify.BLL.Features.Librarian.DTOs;
 using Readify.BLL.Features.User.DTOs;
 using Readify.BLL.Specifications.UserSpec;
 
@@ -10,6 +6,9 @@ namespace Readify.BLL.Features.User.Services
 {
     public interface IUserService
     {
-        Task<List<UserDto>> GetAllUsers(UserSpecification specs);
+        Task<ManageLibrarianPageDto> GetUsersAsync(UserSpecification specification);
+        Task<LibrarianDto?> GetUserByIdAsync(string id);
+        Task<bool> DeleteUserById(string id);
+        Task<List<string>> EditUser(EditUserDto editUser);
     }
 }

@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Azure.Core;
-using Readify.BLL.Features.Book.Services;
-using Readify.BLL.Features.BorrowedBooks.DTOs;
-using Readify.BLL.Features.JWTToken;
+﻿using Readify.BLL.Features.BorrowedBooks.DTOs;
 using Readify.BLL.Helpers;
 using Readify.BLL.Specifications.BorrowedBookSpec;
-using Readify.BLL.Validators.BorrowedBookValidators;
 using Readify.DAL.Entities;
 using Readify.DAL.UOW;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Readify.BLL.Features.BorrowedBooks.Services
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Readify.BLL.Constants;
-using Readify.DAL.Entities.Identity;
+﻿using Readify.DAL.Entities.Identity;
 using Readify.DAL.SpecificationPattern;
 
 namespace Readify.BLL.Specifications.UserSpec

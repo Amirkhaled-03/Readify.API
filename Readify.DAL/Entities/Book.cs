@@ -1,6 +1,4 @@
-﻿using Readify.DAL.Entities.Identity;
-
-namespace Readify.DAL.Entities
+﻿namespace Readify.DAL.Entities
 {
     public class Book : BaseEntity
     {
@@ -10,11 +8,9 @@ namespace Readify.DAL.Entities
         public string ISBN { get; set; }
         public string ImageUrl { get; set; }
         public int AvailableCount { get; set; }
-        public string CreatedById { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        // Navigation
-        public ApplicationUser CreatedBy { get; set; }
         public ICollection<BorrowRequest> BorrowRequests { get; set; }
         public ICollection<BorrowedBook> BorrowedBooks { get; set; }
 

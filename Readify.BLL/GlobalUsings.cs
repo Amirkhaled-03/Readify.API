@@ -7,6 +7,8 @@ global using Readify.BLL.Features.BookCategories.Services;
 global using Readify.BLL.Features.BorrowedBooks.Services;
 global using Readify.BLL.Features.BorrowRequest.Services;
 global using Readify.BLL.Features.JWTToken;
+global using Readify.BLL.Features.Librarian.Services;
+global using Readify.BLL.Features.User.Services;
 global using Readify.BLL.Validators.Account;
 global using Readify.BLL.Validators.BookValidator;
 global using Readify.BLL.Validators.BorrowedBookValidators;

@@ -8,11 +8,11 @@ namespace Readify.DAL.Configuration
     {
         public void Configure(EntityTypeBuilder<Book> builder)
         {
-            builder
-                 .HasOne(b => b.CreatedBy)
-                 .WithMany()
-                 .HasForeignKey(b => b.CreatedById)
-                 .OnDelete(DeleteBehavior.Restrict);
+            //builder
+            //     .HasOne(b => b.CreatedBy)
+            //     .WithMany()
+            //     .HasForeignKey(b => b.CreatedById)
+            //     .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

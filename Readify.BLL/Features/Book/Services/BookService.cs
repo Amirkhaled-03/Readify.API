@@ -77,7 +77,7 @@ namespace Readify.BLL.Features.Book.Services
                 Image = book.ImageUrl == null ? null : await ImageHelper.ConvertImageToBase64Async(book.ImageUrl),
                 Author = book.Author,
                 AvailableCount = book.AvailableCount,
-                CreatedBy = book.CreatedBy.Fullname,
+                CreatedBy = book.CreatedBy,
                 Id = book.Id,
                 Title = book.Title,
                 Categories = book.BookCategories.Select(bc => bc.Category.Name).ToList(),
@@ -103,7 +103,7 @@ namespace Readify.BLL.Features.Book.Services
             {
                 Author = bookDto.Author,
                 AvailableCount = bookDto.Count,
-                CreatedBy = createdBy,
+                CreatedBy = createdBy.Fullname,
                 Title = bookDto.Title,
                 ISBN = bookDto.ISBN,
                 ImageUrl = imageUrl,

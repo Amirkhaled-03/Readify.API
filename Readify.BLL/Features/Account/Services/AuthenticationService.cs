@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Readify.BLL.Features.Account.DTOs.Login;
-using Readify.BLL.Features.Account.ServicesContracts;
-using Readify.BLL.Features.JWTToken;
 using Readify.DAL.Entities.Identity;
 
 namespace Readify.BLL.Features.Account.Services

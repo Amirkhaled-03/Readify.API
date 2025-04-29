@@ -15,7 +15,6 @@ namespace Readify.DAL.Repositories.BookRepo
         {
             return await _dbSet.Where(b => b.Id == id)
                   .AsNoTracking()
-                  .Include(b => b.CreatedBy)
                   .Include(b => b.BookCategories)
                   .ThenInclude(c => c.Category)
                   .FirstOrDefaultAsync();

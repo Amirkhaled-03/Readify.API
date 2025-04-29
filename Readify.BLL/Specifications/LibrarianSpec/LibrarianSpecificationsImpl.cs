@@ -3,9 +3,9 @@ using Readify.DAL.SpecificationPattern;
 
 namespace Readify.BLL.Specifications.LibrarianSpec
 {
-    public class LibrarianSpecificationsTable : BaseSpecification<ApplicationUser>
+    public class LibrarianSpecificationsImpl : BaseSpecification<ApplicationUser>
     {
-        public LibrarianSpecificationsTable(LibrarianSpecifications specification)
+        public LibrarianSpecificationsImpl(LibrarianSpecifications specification)
         : base(x =>
             (string.IsNullOrEmpty(specification.SearchById) || x.Id.ToLower().Trim().Contains(specification.SearchById)) &&
             (!specification.Status.HasValue || x.UserStatus == specification.Status.Value) &&
