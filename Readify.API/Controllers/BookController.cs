@@ -135,23 +135,23 @@ namespace Readify.API.Controllers
 
         #region Change book Image 
 
-        [HttpPut("ChangeImage")]
-        [SwaggerResponse(200, "Success", typeof(ApiResponse<List<string>>))]
-        [SwaggerResponseExample(200, typeof(ChangeBookImageSuccessExample))]
-        [SwaggerResponse(400, "Error", typeof(ApiResponse<List<string>>))]
-        [SwaggerResponseExample(400, typeof(ChangeBookImageErrorsExample))]
-        [SwaggerOperation(
-        Summary = "Change Book Image",
-        Description = "Updates the image of a specific book. If a previous image exists, it is deleted from the server after successful update."
-        )]
-        public async Task<IActionResult> ChangeImage([FromForm] ChangeBookImage imageDto)
-        {
-            var result = await _bookService.ChangeBookImage(imageDto);
-            if (result.Any())
-                return BadRequest(new ApiResponse<List<string>>(400, "Failed to update book image", result));
+        //[HttpPut("ChangeImage")]
+        //[SwaggerResponse(200, "Success", typeof(ApiResponse<List<string>>))]
+        //[SwaggerResponseExample(200, typeof(ChangeBookImageSuccessExample))]
+        //[SwaggerResponse(400, "Error", typeof(ApiResponse<List<string>>))]
+        //[SwaggerResponseExample(400, typeof(ChangeBookImageErrorsExample))]
+        //[SwaggerOperation(
+        //Summary = "Change Book Image",
+        //Description = "Updates the image of a specific book. If a previous image exists, it is deleted from the server after successful update."
+        //)]
+        //public async Task<IActionResult> ChangeImage([FromForm] ChangeBookImage imageDto)
+        //{
+        //    var result = await _bookService.ChangeBookImage(imageDto);
+        //    if (result.Any())
+        //        return BadRequest(new ApiResponse<List<string>>(400, "Failed to update book image", result));
 
-            return Ok(new ApiResponse<List<string>>(200, "Book image updated successfully.", result));
-        }
+        //    return Ok(new ApiResponse<List<string>>(200, "Book image updated successfully.", result));
+        //}
 
 
         #endregion

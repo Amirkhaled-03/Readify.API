@@ -131,21 +131,41 @@ namespace Readify.BLL.Features.Book.Services
             var book = _unitOfWork.BookRepository.GetByID(bookDto.Id);
             if (book == null)
             {
-                errors.Add("This book not exists");
+                errors.Add("This book does not exist.");
                 return errors;
             }
 
+            // Validate book fields
             errors.AddRange(await _bookValidator.ValidateEditBook(bookDto.Id, bookDto.ISBN, bookDto.Title, bookDto.Author));
 
+            // Update basic fields
             book.Title = bookDto.Title;
             book.Author = bookDto.Author;
             book.AvailableCount = bookDto.Count;
             book.ISBN = bookDto.ISBN;
 
+            // If a new image is uploaded, handle image upload
+            if (bookDto.NewImage != null && bookDto.NewImage.Length > 0)
+            {
+                string oldPath = book.ImageUrl;
+                string imageUrl = await ImageHelper.UploadImageAsync(bookDto.NewImage, book.ISBN);
+                if (string.IsNullOrEmpty(imageUrl))
+                {
+                    errors.Add("An error occurred while uploading the image.");
+                    return errors;
+                }
+
+                book.ImageUrl = imageUrl;
+
+                // Optionally delete old image
+                if (!string.IsNullOrEmpty(oldPath))
+                    ImageHelper.DeleteImage(oldPath);
+            }
+
             _unitOfWork.BookRepository.UpdateEntity(book);
-            int affctedRows = await _unitOfWork.SaveAsync();
-            if (affctedRows <= 0)
-                errors.Add("An error occurred while updating the Book.");
+            int affectedRows = await _unitOfWork.SaveAsync();
+            if (affectedRows <= 0)
+                errors.Add("An error occurred while saving the book update.");
 
             return errors;
         }

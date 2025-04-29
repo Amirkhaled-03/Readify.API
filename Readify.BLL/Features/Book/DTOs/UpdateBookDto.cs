@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Readify.BLL.Features.Book.DTOs
 {
@@ -22,7 +23,6 @@ namespace Readify.BLL.Features.Book.DTOs
 
         //[MinLength(1, ErrorMessage = "At least one category must be selected.")]
         //public List<int> CategoriesIds { get; set; } = new List<int>();
-
-        //public IFormFile? Image { get; set; }
+        public IFormFile? NewImage { get; set; }
     }
 }
