@@ -5,7 +5,6 @@ using Readify.API.ResponseExample.Book;
 using Readify.BLL.Features.Book.DTOs;
 using Readify.BLL.Features.BorrowRequest.DTOs;
 using Readify.BLL.Features.BorrowRequest.Services;
-using Readify.BLL.Specifications.BookSpec;
 using Readify.BLL.Specifications.BorrowRequestSpec;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -29,7 +28,7 @@ namespace Readify.API.Controllers
         {
             var result = await _borrowRequestService.GetAllBorrowRequestsAsync(specification);
 
-            return Ok(new ApiResponse<List<BorrowRequestDto>> (200, "success", data: result));
+            return Ok(new ApiResponse<ListAllRequestsDto> (200, "success", data: result));
         }
         
         [HttpGet("myBorrowRequests")]

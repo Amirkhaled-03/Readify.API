@@ -10,14 +10,16 @@ namespace Readify.BLL.Features.BorrowedBooks.DTOs
     {
         public int Id { get; set; }
 
-        public string UserId { get; set; }
+        public string BorrowerId { get; set; }
+        public string BorrowerName { get; set; }
+        public string BorrowerPhoneNo { get; set; }
         public int BookId { get; set; }
-
+        public string BookName { get; set; }
         public DateTime BorrowedAt { get; set; }
         public DateTime DueDate { get; set; }
-        public DateTime? ReturnedAt { get; set; } // if it has value, this means that the book is returned
-
+        public DateTime? ReturnedAt { get; set; }
         public string? ConfirmedById { get; set; }
-
+        public string? ConfirmedByUser { get; set; }
+        public BorrowedBookStatus Status { get; set; }
     }
 }

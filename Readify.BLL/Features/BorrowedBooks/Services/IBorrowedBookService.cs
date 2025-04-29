@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Readify.BLL.Features.BorrowedBooks.DTOs;
-using Readify.BLL.Features.BorrowRequest.DTOs;
+using Readify.BLL.Specifications.BorrowedBookSpec;
 using Readify.DAL.Entities;
 
 namespace Readify.BLL.Features.BorrowedBooks.Services
@@ -12,5 +12,9 @@ namespace Readify.BLL.Features.BorrowedBooks.Services
     public interface IBorrowedBookService
     {
         Task<List<string>> AddBorrowedBookAsync(DAL.Entities.BorrowRequest bookDto);
+        Task<ManageBorrowedBooksDto> GetAllBorrowedBooksAsync(BorrowedBookSpecification specs);
+        Task<BorrowedBookDto> GetBorrowedBookByIdAsync(int id);
+        Task<List<BorrowedBookDto>> GetUserBorrowBooksAsync();
+        Task<List<string>> UpdateBorrowedBookStatusAsync(UpdateBorrowedBookStatusDto bookDto);
     }
 }

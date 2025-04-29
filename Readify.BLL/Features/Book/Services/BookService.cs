@@ -280,5 +280,57 @@ namespace Readify.BLL.Features.Book.Services
 
             return books;
         }
+
+        public async Task<List<string>> DecrementAvailableCopies(int bookId)
+        {
+            List<string> errors = new List<string>();
+            var book = _unitOfWork.BookRepository.GetByID(bookId);
+
+            if(book == null)
+            {
+                errors.Add("Book not found!");
+                return errors;
+            }
+
+            if (book.AvailableCount <= 0)
+            {
+                errors.Add("Cannot decrement no copies of book");
+                return errors;
+            }
+
+            book.AvailableCount -= 1;
+            _unitOfWork.BookRepository.UpdateEntity(book);
+
+            var affectedRows = await _unitOfWork.SaveAsync();
+            if (affectedRows <= 0)
+            {
+                errors.Add("Failed to decrement available book copies.");
+            }
+
+            return errors;
+        }
+
+        public async Task<List<string>> IncrementAvailableCopies(int bookId)
+        {
+            List<string> errors = new List<string>();
+            var book = _unitOfWork.BookRepository.GetByID(bookId);
+
+            if (book == null)
+            {
+                errors.Add("Book not found!");
+                return errors;
+            }
+
+            book.AvailableCount += 1;
+            _unitOfWork.BookRepository.UpdateEntity(book);
+
+            var affectedRows = await _unitOfWork.SaveAsync();
+            if (affectedRows <= 0)
+            {
+                errors.Add("Failed to increment available book copies.");
+            }
+
+            return errors;
+        }
     }
 }

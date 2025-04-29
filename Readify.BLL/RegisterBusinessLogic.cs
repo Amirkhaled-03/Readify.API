@@ -9,6 +9,7 @@ using Readify.BLL.Features.BorrowRequest.Services;
 using Readify.BLL.Features.JWTToken;
 using Readify.BLL.Validators.Account;
 using Readify.BLL.Validators.BookValidator;
+using Readify.BLL.Validators.BorrowedBookValidators;
 using Readify.BLL.Validators.BorrowRequestValidators;
 
 namespace Readify.BLL
@@ -32,6 +33,8 @@ namespace Readify.BLL
             services.AddScoped<IAccountValidator, AccountValidator>();
             services.AddScoped<IBookValidator, BookValidator>();
             services.AddScoped<IBorrowRequestValidator, BorrowRequestValidator>();
+            services.AddScoped<IBorrowedBookValidator, BorrowedBookValidator>();
+
 
 
             return services;

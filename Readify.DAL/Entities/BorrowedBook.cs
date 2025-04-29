@@ -14,6 +14,7 @@ namespace Readify.DAL.Entities
         public DateTime? ReturnedAt { get; set; } // if it has value, this means that the book is returned
 
         public string? ConfirmedById { get; set; }
+        public BorrowedBookStatus Status { get; set; }
 
         // Navigation
         public ApplicationUser User { get; set; }

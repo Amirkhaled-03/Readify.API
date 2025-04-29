@@ -19,6 +19,8 @@ namespace Readify.BLL.Specifications.BorrowRequestSpec
             AddInclude(br => br.ApprovedBy);
 
             ApplyNoTracking();
+
+            AddOrderByDescending(br => br.RequestedAt);
         }
     }
 }

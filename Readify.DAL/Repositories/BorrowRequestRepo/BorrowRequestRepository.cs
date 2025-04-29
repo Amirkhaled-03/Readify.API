@@ -19,6 +19,8 @@ namespace Readify.DAL.Repositories.BorrowRequestRepo
                  .Include(br => br.User)
                  .Include(br => br.ApprovedBy)
                  .Include(br => br.Book)
+                 .ThenInclude(br => br.BookCategories)
+                 .ThenInclude(br => br.Category)
                  .FirstOrDefaultAsync();
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Readify.BLL.Features.Book.Services;
 using Readify.BLL.Features.BorrowedBooks.DTOs;
 using Readify.BLL.Features.BorrowedBooks.Services;
 using Readify.BLL.Features.BorrowRequest.DTOs;
@@ -21,12 +22,15 @@ namespace Readify.BLL.Features.BorrowRequest.Services
         private readonly ITokenService _tokenService;
         private readonly IBorrowRequestValidator _borrowRequestValidator;
         private readonly IBorrowedBookService _borrowedBookService;
-        public BorrowRequestService(IUnitOfWork unitOfWork, ITokenService tokenService, IBorrowRequestValidator borrowRequestValidator, IBorrowedBookService borrowedBookService)
+        private readonly IBookService _bookService;
+
+        public BorrowRequestService(IUnitOfWork unitOfWork, ITokenService tokenService, IBorrowRequestValidator borrowRequestValidator, IBorrowedBookService borrowedBookService, IBookService bookService)
         {
             _unitOfWork = unitOfWork;
             _tokenService = tokenService;
             _borrowRequestValidator = borrowRequestValidator;
             _borrowedBookService = borrowedBookService;
+            _bookService = bookService;
         }
         public async Task<List<string>> CreateBorrowRequestAsync(CreateBorrowRequestDto createBorrowRequestDto)
         {
@@ -81,7 +85,7 @@ namespace Readify.BLL.Features.BorrowRequest.Services
             return errors;
         }
 
-        public async Task<List<BorrowRequestDto>> GetAllBorrowRequestsAsync(BorrowRequestSpecification specs)
+        public async Task<ListAllRequestsDto> GetAllBorrowRequestsAsync(BorrowRequestSpecification specs)
         {
             var totalCountSpec = new BorrowRequestSpecificationImpl(specs);
             totalCountSpec.IgnorePagination();
@@ -116,7 +120,14 @@ namespace Readify.BLL.Features.BorrowRequest.Services
                 TotalPages = (int)Math.Ceiling((double)matchedFilterationCount / specs.PageSize)
             };
 
-            return borrowRequestDto.ToList();
+            return new ListAllRequestsDto
+            {
+                BorrowRequests = borrowRequestDto.ToList(),
+                Metadata = new Metadata()
+                {
+                    Pagination = pagination,
+                }
+            };
 
         }
         public async Task<BorrowRequestDto> GetBorrowRequestByIdAsync(int id)
@@ -198,22 +209,8 @@ namespace Readify.BLL.Features.BorrowRequest.Services
 
             if (request.Status == BorrowRequestStatus.Approved)
             {
-                //var book = new BorrowedBook
-                //{
-                //    BookId = request.BookId,
-                //    UserId = request.UserId,
-                //    ConfirmedById = request.ApprovedById,
-                //    BorrowedAt = request.StartDate,
-                //    DueDate = request.EndDate,
-                //};
-                //_unitOfWork.BorrowedBookRepository.AddEntity(book);
-                //int bookaffectedRows = await _unitOfWork.SaveAsync();
-
-                //if (bookaffectedRows <= 0)
-                //    errors.Add("An error occurred while adding borrowed book.");
-
                 errors.AddRange(await _borrowedBookService.AddBorrowedBookAsync(request));
-
+                errors.AddRange(await _bookService.DecrementAvailableCopies(request.BookId));
             }
 
             return errors;

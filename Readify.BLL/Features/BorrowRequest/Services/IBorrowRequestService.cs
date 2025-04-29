@@ -12,7 +12,7 @@ namespace Readify.BLL.Features.BorrowRequest.Services
     {
         Task<List<string>> CreateBorrowRequestAsync(CreateBorrowRequestDto createBorrowRequestDto);
         Task<List<string>> DeleteRequestByIdAsync(int id);
-        Task<List<BorrowRequestDto>> GetAllBorrowRequestsAsync(BorrowRequestSpecification specs);
+        Task<ListAllRequestsDto> GetAllBorrowRequestsAsync(BorrowRequestSpecification specs);
         Task<BorrowRequestDto> GetBorrowRequestByIdAsync(int id);
         Task<List<BorrowRequestDto>> GetUserBorrowRequestsAsync();
         Task<List<string>> UpdateBorrowRequestStatusAsync(UpdateBorrowRequestStatusDto requestDto);
