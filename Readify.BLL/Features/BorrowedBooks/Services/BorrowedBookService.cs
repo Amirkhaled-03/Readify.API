@@ -40,14 +40,14 @@ namespace Readify.BLL.Features.BorrowedBooks.Services
                 Id = bb.Id,
                 BookId = bb.BookId,
                 BorrowedAt = bb.BorrowedAt,
-                ConfirmedById = bb.ConfirmedById == null ? null : bb.ConfirmedById,
+                ConfirmedById = bb.ConfirmedBy == null ? null : bb.ConfirmedBy,
                 DueDate = bb.DueDate,
                 ReturnedAt = bb.ReturnedAt,
                 BorrowerId = bb.UserId,
                 BookName = bb.Book.Title,
                 BorrowerName = bb.User.Fullname,
                 BorrowerPhoneNo = bb.User.PhoneNumber,
-                ConfirmedByUser = bb.ConfirmedById == null ? null : bb.ConfirmedBy.Fullname,
+                ConfirmedByUser = bb.ConfirmedBy == null ? null : bb.ConfirmedBy,
                 Status = bb.Status,
             });
 
@@ -87,8 +87,8 @@ namespace Readify.BLL.Features.BorrowedBooks.Services
                 BorrowedAt = book.BorrowedAt,
                 BorrowerName = book.User.Fullname,
                 BorrowerPhoneNo = book.User.PhoneNumber,
-                ConfirmedById = book.ConfirmedById,
-                ConfirmedByUser = book.ConfirmedById == null ? null : book.ConfirmedBy.Fullname,
+                ConfirmedById = book.ConfirmedBy,
+                ConfirmedByUser = book.ConfirmedBy == null ? null : book.ConfirmedBy,
                 DueDate = book.DueDate,
                 ReturnedAt = book.ReturnedAt,
                 Status = book.Status
@@ -138,8 +138,8 @@ namespace Readify.BLL.Features.BorrowedBooks.Services
                 BorrowedAt = br.BorrowedAt,
                 BorrowerName = br.User.Fullname,
                 BorrowerPhoneNo = br.User.PhoneNumber,
-                ConfirmedById = br.ConfirmedById,
-                ConfirmedByUser = br.ConfirmedById == null ? null : br.ConfirmedBy.Fullname,
+                ConfirmedById = br.ConfirmedBy,
+                ConfirmedByUser = br.ConfirmedBy,
                 DueDate = br.DueDate,
                 ReturnedAt = br.ReturnedAt,
                 Status = br.Status
@@ -168,7 +168,7 @@ namespace Readify.BLL.Features.BorrowedBooks.Services
             borrowedbook.Status = bookDto.Status;
             if (bookDto.Status == BorrowedBookStatus.Returned)
             {
-                borrowedbook.ConfirmedById = _tokenService.GetUserIdFromToken();
+                borrowedbook.ConfirmedBy = _tokenService.GetUserIdFromToken();
                 borrowedbook.ReturnedAt = DateTime.UtcNow;
             }
 

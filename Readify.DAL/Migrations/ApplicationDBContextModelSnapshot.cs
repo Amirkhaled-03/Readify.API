@@ -190,8 +190,8 @@ namespace Readify.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ApprovedById")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BookId")
                         .HasColumnType("int");
@@ -214,8 +214,6 @@ namespace Readify.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApprovedById");
-
                     b.HasIndex("BookId");
 
                     b.HasIndex("UserId");
@@ -237,8 +235,8 @@ namespace Readify.DAL.Migrations
                     b.Property<DateTime>("BorrowedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ConfirmedById")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("ConfirmedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
@@ -256,8 +254,6 @@ namespace Readify.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
-
-                    b.HasIndex("ConfirmedById");
 
                     b.HasIndex("UserId");
 
@@ -423,11 +419,6 @@ namespace Readify.DAL.Migrations
 
             modelBuilder.Entity("Readify.DAL.Entities.BorrowRequest", b =>
                 {
-                    b.HasOne("Readify.DAL.Entities.Identity.ApplicationUser", "ApprovedBy")
-                        .WithMany()
-                        .HasForeignKey("ApprovedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Readify.DAL.Entities.Book", "Book")
                         .WithMany("BorrowRequests")
                         .HasForeignKey("BookId")
@@ -439,8 +430,6 @@ namespace Readify.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("ApprovedBy");
 
                     b.Navigation("Book");
 
@@ -455,11 +444,6 @@ namespace Readify.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Readify.DAL.Entities.Identity.ApplicationUser", "ConfirmedBy")
-                        .WithMany()
-                        .HasForeignKey("ConfirmedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Readify.DAL.Entities.Identity.ApplicationUser", "User")
                         .WithMany("BorrowedBooks")
                         .HasForeignKey("UserId")
@@ -467,8 +451,6 @@ namespace Readify.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Book");
-
-                    b.Navigation("ConfirmedBy");
 
                     b.Navigation("User");
                 });

@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Readify.BLL.Features.Book.Services;
-using Readify.BLL.Features.BorrowedBooks.DTOs;
-using Readify.BLL.Features.BorrowedBooks.Services;
-using Readify.BLL.Features.BorrowRequest.DTOs;
-using Readify.BLL.Features.JWTToken;
+﻿using Readify.BLL.Features.BorrowRequest.DTOs;
 using Readify.BLL.Helpers;
 using Readify.BLL.Specifications.BorrowRequestSpec;
-using Readify.BLL.Validators.BorrowRequestValidators;
-using Readify.DAL.Entities;
 using Readify.DAL.UOW;
 
 namespace Readify.BLL.Features.BorrowRequest.Services
@@ -51,7 +40,7 @@ namespace Readify.BLL.Features.BorrowRequest.Services
                 EndDate = createBorrowRequestDto.EndDate,
                 RequestedAt = DateTime.UtcNow,
                 Status = BorrowRequestStatus.Pending,
-                ApprovedById = null
+                ApprovedBy = null
             };
 
             _unitOfWork.BorrowRequestRepository.AddEntity(borrowRequest);
@@ -105,7 +94,7 @@ namespace Readify.BLL.Features.BorrowRequest.Services
                 AvailableCopies = br.Book.AvailableCount,
                 RequestedBy = br.User.UserName,
                 PhoneNumber = br.User.PhoneNumber,
-                ApprovedBy = br.ApprovedById == null ? null : br.ApprovedBy.Fullname,
+                ApprovedBy = br.ApprovedBy,
                 StartDate = br.StartDate,
                 EndDate = br.EndDate,
                 RequestedAt = br.RequestedAt,
@@ -144,7 +133,7 @@ namespace Readify.BLL.Features.BorrowRequest.Services
                 AvailableCopies = borrowRequest.Book.AvailableCount,
                 RequestedBy = borrowRequest.User.UserName,
                 PhoneNumber = borrowRequest.User.PhoneNumber,
-                ApprovedBy = borrowRequest.ApprovedById == null ? null : borrowRequest.ApprovedBy.Fullname,
+                ApprovedBy = borrowRequest.ApprovedBy,
                 StartDate = borrowRequest.StartDate,
                 EndDate = borrowRequest.EndDate,
                 RequestedAt = borrowRequest.RequestedAt,
@@ -167,7 +156,7 @@ namespace Readify.BLL.Features.BorrowRequest.Services
                 AvailableCopies = br.Book.AvailableCount,
                 RequestedBy = br.User.UserName,
                 PhoneNumber = br.User.PhoneNumber,
-                ApprovedBy = br.ApprovedById == null ? null : br.ApprovedBy.Fullname,
+                ApprovedBy = br.ApprovedBy,
                 StartDate = br.StartDate,
                 EndDate = br.EndDate,
                 RequestedAt = br.RequestedAt,
@@ -178,7 +167,7 @@ namespace Readify.BLL.Features.BorrowRequest.Services
         public async Task<List<string>> UpdateBorrowRequestStatusAsync(UpdateBorrowRequestStatusDto requestDto)
         {
             List<string> errors = new List<string>();
-            
+
             var request = await _unitOfWork.BorrowRequestRepository.GetRequestById(requestDto.Id);
 
             if (request == null)
@@ -195,7 +184,8 @@ namespace Readify.BLL.Features.BorrowRequest.Services
             }
 
             request.Status = requestDto.Status;
-            request.ApprovedById = _tokenService.GetUserIdFromToken();
+            var user = await _tokenService.GetUserFromTokenAsync();
+            request.ApprovedBy = user.Fullname;
 
             _unitOfWork.BorrowRequestRepository.UpdateEntity(request);
             int affectedRows = await _unitOfWork.SaveAsync();

@@ -15,7 +15,7 @@ namespace Readify.BLL.Specifications.BorrowedBookSpec
                 (!specification.SearchById.HasValue || bb.Id == specification.SearchById.Value) &&
                 (!specification.SearchByBookId.HasValue || bb.BookId == specification.SearchByBookId.Value) &&
                 (string.IsNullOrEmpty(specification.SearchByUserId) || bb.UserId.ToLower() == specification.SearchByUserId) &&
-                (string.IsNullOrEmpty(specification.SearchByConfirmedById) || bb.ConfirmedById.ToLower() == specification.SearchByConfirmedById) &&
+                (string.IsNullOrEmpty(specification.SearchByConfirmedById) || bb.ConfirmedBy.ToLower() == specification.SearchByConfirmedById) &&
                 (!specification.SearchByBorrowedAt.HasValue || bb.BorrowedAt.Date == specification.SearchByBorrowedAt.Value.Date) &&
                 (!specification.SearchByDueDate.HasValue || bb.DueDate.Date == specification.SearchByDueDate.Value.Date) &&
                 (!specification.SearchByReturnedAt.HasValue || (bb.ReturnedAt.HasValue && bb.ReturnedAt.Value.Date == specification.SearchByReturnedAt.Value.Date) &&

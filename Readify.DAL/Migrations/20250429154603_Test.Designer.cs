@@ -12,8 +12,8 @@ using Readify.DAL.DBContext;
 namespace Readify.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250420232121_RemoveRoleFromASPUsers")]
-    partial class RemoveRoleFromASPUsers
+    [Migration("20250429154603_Test")]
+    partial class Test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -149,9 +149,9 @@ namespace Readify.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedById")
+                    b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISBN")
                         .IsRequired()
@@ -167,9 +167,22 @@ namespace Readify.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedById");
-
                     b.ToTable("Book");
+                });
+
+            modelBuilder.Entity("Readify.DAL.Entities.BookCategory", b =>
+                {
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("BookCategory");
                 });
 
             modelBuilder.Entity("Readify.DAL.Entities.BorrowRequest", b =>
@@ -180,26 +193,29 @@ namespace Readify.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ApprovedById")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("RequestedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApprovedById");
 
                     b.HasIndex("BookId");
 
@@ -222,14 +238,17 @@ namespace Readify.DAL.Migrations
                     b.Property<DateTime>("BorrowedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ConfirmedById")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("ConfirmedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("ReturnedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -239,11 +258,29 @@ namespace Readify.DAL.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("ConfirmedById");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("BorrowedBook");
+                });
+
+            modelBuilder.Entity("Readify.DAL.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("Readify.DAL.Entities.Identity.ApplicationRole", b =>
@@ -290,6 +327,9 @@ namespace Readify.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -361,24 +401,27 @@ namespace Readify.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Readify.DAL.Entities.Book", b =>
+            modelBuilder.Entity("Readify.DAL.Entities.BookCategory", b =>
                 {
-                    b.HasOne("Readify.DAL.Entities.Identity.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("Readify.DAL.Entities.Book", "Book")
+                        .WithMany("BookCategories")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CreatedBy");
+                    b.HasOne("Readify.DAL.Entities.Category", "Category")
+                        .WithMany("BookCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Readify.DAL.Entities.BorrowRequest", b =>
                 {
-                    b.HasOne("Readify.DAL.Entities.Identity.ApplicationUser", "ApprovedBy")
-                        .WithMany()
-                        .HasForeignKey("ApprovedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Readify.DAL.Entities.Book", "Book")
                         .WithMany("BorrowRequests")
                         .HasForeignKey("BookId")
@@ -390,8 +433,6 @@ namespace Readify.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("ApprovedBy");
 
                     b.Navigation("Book");
 
@@ -406,11 +447,6 @@ namespace Readify.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Readify.DAL.Entities.Identity.ApplicationUser", "ConfirmedBy")
-                        .WithMany()
-                        .HasForeignKey("ConfirmedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Readify.DAL.Entities.Identity.ApplicationUser", "User")
                         .WithMany("BorrowedBooks")
                         .HasForeignKey("UserId")
@@ -419,16 +455,21 @@ namespace Readify.DAL.Migrations
 
                     b.Navigation("Book");
 
-                    b.Navigation("ConfirmedBy");
-
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Readify.DAL.Entities.Book", b =>
                 {
+                    b.Navigation("BookCategories");
+
                     b.Navigation("BorrowRequests");
 
                     b.Navigation("BorrowedBooks");
+                });
+
+            modelBuilder.Entity("Readify.DAL.Entities.Category", b =>
+                {
+                    b.Navigation("BookCategories");
                 });
 
             modelBuilder.Entity("Readify.DAL.Entities.Identity.ApplicationUser", b =>

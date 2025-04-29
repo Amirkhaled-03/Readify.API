@@ -14,11 +14,10 @@ namespace Readify.DAL.Entities
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public string? ApprovedById { get; set; }
+        public string? ApprovedBy { get; set; }
 
         // Navigation
         public ApplicationUser User { get; set; }
         public Book Book { get; set; }
-        public ApplicationUser? ApprovedBy { get; set; }
     }
 }

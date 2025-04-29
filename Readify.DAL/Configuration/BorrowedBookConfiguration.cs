@@ -20,11 +20,11 @@ namespace Readify.DAL.Configuration
                 .HasForeignKey(bb => bb.BookId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder
-                .HasOne(bb => bb.ConfirmedBy)
-                .WithMany()
-                .HasForeignKey(bb => bb.ConfirmedById)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder
+            //    .HasOne(bb => bb.ConfirmedBy)
+            //    .WithMany()
+            //    .HasForeignKey(bb => bb.ConfirmedBy)
+            //    .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
