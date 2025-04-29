@@ -16,7 +16,6 @@ namespace Readify.BLL.Specifications.BorrowRequestSpec
 
             AddInclude(br => br.Book);
             AddInclude(br => br.User);
-            AddInclude(br => br.ApprovedBy);
 
             ApplyNoTracking();
 

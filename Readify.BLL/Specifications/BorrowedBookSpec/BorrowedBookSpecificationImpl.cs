@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Readify.DAL.Entities;
+﻿using Readify.DAL.Entities;
 using Readify.DAL.SpecificationPattern;
 
 namespace Readify.BLL.Specifications.BorrowedBookSpec
@@ -25,7 +20,6 @@ namespace Readify.BLL.Specifications.BorrowedBookSpec
             ApplyPagination(specification.PageSize * (specification.PageIndex - 1), specification.PageSize);
 
             AddInclude(b => b.User);
-            AddInclude(b => b.ConfirmedBy);
             AddInclude(b => b.Book);
 
             ApplyNoTracking();
