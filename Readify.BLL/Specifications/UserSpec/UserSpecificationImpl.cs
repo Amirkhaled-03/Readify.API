@@ -7,8 +7,9 @@ namespace Readify.BLL.Specifications.UserSpec
     {
         public UserSpecificationImpl(UserSpecification specification)
             : base(u =>
+                (u.UserType == UserType.User) &&
                 (string.IsNullOrEmpty(specification.SearchByUserId) || u.Id.ToLower() == specification.SearchByUserId) &&
-                (string.IsNullOrEmpty(specification.SearchByEmail) || u.Email.ToLower().Contains(specification.SearchByEmail)) &&
+                (string.IsNullOrEmpty(specification.SearchByUserName) || u.UserName.ToLower().Contains(specification.SearchByUserName)) &&
                 (string.IsNullOrEmpty(specification.SearchByPhoneNumber) || u.PhoneNumber.ToLower().Contains(specification.SearchByPhoneNumber)) &&
                 (string.IsNullOrEmpty(specification.SearchByFullName) || u.Fullname.ToLower().Contains(specification.SearchByFullName)) &&
                 (!specification.SearchByStatus.HasValue || u.UserStatus == specification.SearchByStatus.Value)

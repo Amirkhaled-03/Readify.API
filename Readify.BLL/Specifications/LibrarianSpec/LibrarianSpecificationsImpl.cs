@@ -7,10 +7,11 @@ namespace Readify.BLL.Specifications.LibrarianSpec
     {
         public LibrarianSpecificationsImpl(LibrarianSpecifications specification)
         : base(x =>
+            (x.UserType == UserType.Librarian) &&
             (string.IsNullOrEmpty(specification.SearchById) || x.Id.ToLower().Trim().Contains(specification.SearchById)) &&
             (!specification.Status.HasValue || x.UserStatus == specification.Status.Value) &&
             (string.IsNullOrEmpty(specification.SearchByUserName) || x.UserName.ToLower().Trim().Contains(specification.SearchByUserName)) &&
-            (string.IsNullOrEmpty(specification.SearchByFullname) || x.Email.ToLower().Trim().Contains(specification.SearchByFullname)) &&
+            (string.IsNullOrEmpty(specification.SearchByFullname) || x.UserName.ToLower().Trim().Contains(specification.SearchByFullname)) &&
             (string.IsNullOrEmpty(specification.SearchByPhone) || x.PhoneNumber.ToLower().Trim().Contains(specification.SearchByPhone))
         )
         {

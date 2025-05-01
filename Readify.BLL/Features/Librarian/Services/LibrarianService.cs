@@ -23,7 +23,7 @@ namespace Readify.BLL.Features.Librarian.Services
 
         public async Task<ManageLibrarianPageDto> GetLibrarianAsync(LibrarianSpecifications specification)
         {
-            var query = _userManager.Users.AsQueryable();
+            var query = _userManager.Users.Where(u => u.UserType == UserType.Librarian).AsQueryable();
             int totalCount = await query.CountAsync();
 
             var spec = new LibrarianSpecificationsImpl(specification);
@@ -82,7 +82,6 @@ namespace Readify.BLL.Features.Librarian.Services
 
             return librarian;
         }
-
 
         public async Task<List<string>> EditLibrarian(EditLibrarianDto editLibrarian)
         {

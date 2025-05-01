@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Readify.BLL.Features.Librarian.DTOs;
 using Readify.BLL.Features.User.DTOs;
 using Readify.BLL.Helpers;
 using Readify.BLL.Specifications.UserSpec;
@@ -24,9 +23,9 @@ namespace Readify.BLL.Features.User.Services
             _accountValidator = accountValidator;
         }
 
-        public async Task<ManageLibrarianPageDto> GetUsersAsync(UserSpecification specification)
+        public async Task<ManageUsersPageDto> GetUsersAsync(UserSpecification specification)
         {
-            var query = _userManager.Users.AsQueryable();
+            var query = _userManager.Users.Where(u => u.UserType == UserType.User).AsQueryable();
             int totalCount = await query.CountAsync();
 
             var spec = new UserSpecificationImpl(specification);
@@ -34,12 +33,12 @@ namespace Readify.BLL.Features.User.Services
             query = FilterAndSortUsersQuery(query, spec);
             int filteredCount = query.Count();
 
-            var pagedLibrarian = await query
+            var pagedUsers = await query
                 .Skip(spec.Skip)
                 .Take(spec.Take)
                 .ToListAsync();
 
-            var mappedLibrarian = pagedLibrarian.Select(l => new LibrarianDto
+            var mappedUsers = pagedUsers.Select(l => new UserDto
             {
                 Id = l.Id,
                 CreatedAt = l.CreatedAt,
@@ -57,9 +56,9 @@ namespace Readify.BLL.Features.User.Services
                 TotalPages = (int)Math.Ceiling((double)filteredCount / specification.PageSize)
             };
 
-            return new ManageLibrarianPageDto
+            return new ManageUsersPageDto
             {
-                Librarians = mappedLibrarian.ToList(),
+                Users = mappedUsers.ToList(),
                 Metadata = new Metadata
                 {
                     Pagination = pagination
@@ -67,13 +66,13 @@ namespace Readify.BLL.Features.User.Services
             };
         }
 
-        public async Task<LibrarianDto?> GetUserByIdAsync(string id)
+        public async Task<UserDto?> GetUserByIdAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
                 return null;
 
-            var userDto = new LibrarianDto
+            var userDto = new UserDto
             {
                 Id = user.Id,
                 CreatedAt = user.CreatedAt,
@@ -85,7 +84,6 @@ namespace Readify.BLL.Features.User.Services
 
             return userDto;
         }
-
 
         public async Task<List<string>> EditUser(EditUserDto editUser)
         {
@@ -123,10 +121,9 @@ namespace Readify.BLL.Features.User.Services
             return result.Succeeded;
         }
 
-
         private IQueryable<ApplicationUser> FilterAndSortUsersQuery(IQueryable<ApplicationUser> query, UserSpecificationImpl specs)
         {
-            query = query.Where(user => user.UserType == UserType.Librarian);
+            query = query.Where(user => user.UserType == UserType.User);
 
             if (specs.Criteria != null)
             {
@@ -149,6 +146,5 @@ namespace Readify.BLL.Features.User.Services
 
             return query;
         }
-
     }
 }

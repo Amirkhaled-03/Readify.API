@@ -34,7 +34,7 @@ namespace Readify.API.Controllers
         {
             var result = await _userService.GetUsersAsync(specification);
 
-            return Ok(new ApiResponse<ManageLibrarianPageDto>(200, "success", result));
+            return Ok(new ApiResponse<ManageUsersPageDto>(200, "success", result));
         }
 
         #endregion
@@ -57,7 +57,7 @@ namespace Readify.API.Controllers
             if (user == null)
                 return NotFound(new ApiResponse<object>(404, "User not found."));
 
-            return Ok(new ApiResponse<LibrarianDto>(200, "success", user));
+            return Ok(new ApiResponse<UserDto>(200, "success", user));
         }
 
         #endregion
