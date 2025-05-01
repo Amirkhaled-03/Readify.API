@@ -27,7 +27,6 @@ namespace Readify.DAL.Repositories.BorrowedBookRepo
             return await _dbSet
                 .Where(bb => bb.UserId == userId)
                 .Include(bb => bb.User)
-                .Include(bb => bb.ConfirmedBy)
                 .Include(bb => bb.Book)
                 .ThenInclude(b => b.BookCategories)
                 .ThenInclude(b => b.Category)

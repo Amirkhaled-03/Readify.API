@@ -94,6 +94,12 @@ namespace Readify.BLL.Validators.BorrowRequestValidators
                 return errors;
             }
 
+            if (request.UserId == _tokenService.GetUserIdFromToken())
+            {
+                errors.Add("Request cannot be accepted by user who made it!");
+                return errors;
+            }
+
             if (request.Status != BorrowRequestStatus.Pending)
             {
                 errors.Add("Cannot change status of approved/rejected requests");
