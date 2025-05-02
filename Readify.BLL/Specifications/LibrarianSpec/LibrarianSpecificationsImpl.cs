@@ -10,7 +10,7 @@ namespace Readify.BLL.Specifications.LibrarianSpec
             (x.UserType == UserType.Librarian) &&
             (string.IsNullOrEmpty(specification.SearchById) || x.Id.ToLower().Trim().Contains(specification.SearchById)) &&
             (!specification.Status.HasValue || x.UserStatus == specification.Status.Value) &&
-            (string.IsNullOrEmpty(specification.SearchByUserName) || x.UserName.ToLower().Trim().Contains(specification.SearchByUserName)) &&
+            (string.IsNullOrEmpty(specification.SearchByEmail) || x.UserName.ToLower().Trim().Contains(specification.SearchByEmail)) &&
             (string.IsNullOrEmpty(specification.SearchByFullname) || x.UserName.ToLower().Trim().Contains(specification.SearchByFullname)) &&
             (string.IsNullOrEmpty(specification.SearchByPhone) || x.PhoneNumber.ToLower().Trim().Contains(specification.SearchByPhone))
         )

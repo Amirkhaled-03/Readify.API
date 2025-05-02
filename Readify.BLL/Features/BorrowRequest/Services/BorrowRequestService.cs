@@ -21,6 +21,7 @@ namespace Readify.BLL.Features.BorrowRequest.Services
             _borrowedBookService = borrowedBookService;
             _bookService = bookService;
         }
+
         public async Task<List<string>> CreateBorrowRequestAsync(CreateBorrowRequestDto createBorrowRequestDto)
         {
             List<string> errors = new List<string>();
@@ -30,7 +31,6 @@ namespace Readify.BLL.Features.BorrowRequest.Services
 
             if (errors.Any())
                 return errors;
-
 
             var borrowRequest = new DAL.Entities.BorrowRequest
             {
@@ -119,6 +119,7 @@ namespace Readify.BLL.Features.BorrowRequest.Services
             };
 
         }
+
         public async Task<BorrowRequestDto> GetBorrowRequestByIdAsync(int id)
         {
             var borrowRequest = await _unitOfWork.BorrowRequestRepository.GetRequestById(id);
@@ -195,7 +196,6 @@ namespace Readify.BLL.Features.BorrowRequest.Services
                 errors.Add("An error occurred while updating the status.");
                 return errors;
             }
-
 
             if (request.Status == BorrowRequestStatus.Approved)
             {

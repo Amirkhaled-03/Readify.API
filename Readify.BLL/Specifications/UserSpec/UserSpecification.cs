@@ -22,11 +22,11 @@ namespace Readify.BLL.Specifications.UserSpec
             set => _searchByUserId = string.IsNullOrEmpty(value) ? null : value.Trim().ToLower();
         }
 
-        private string? _searchByUserName;
-        public string? SearchByUserName
+        private string? _searchByEmail;
+        public string? SearchByEmail
         {
-            get => _searchByUserName;
-            set => _searchByUserName = string.IsNullOrEmpty(value) ? null : value.Trim().ToLower();
+            get => _searchByEmail;
+            set => _searchByEmail = string.IsNullOrEmpty(value) ? null : value.Trim().ToLower();
         }
 
         private string? _searchByPhoneNumber;

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Readify.BLL.Features.BorrowedBooks.DTOs;
+﻿using Readify.BLL.Features.BorrowedBooks.DTOs;
 using Readify.BLL.Specifications.BorrowedBookSpec;
-using Readify.DAL.Entities;
 
 namespace Readify.BLL.Features.BorrowedBooks.Services
 {
