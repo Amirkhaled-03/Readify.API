@@ -1,6 +1,8 @@
 ﻿using Readify.BLL.Features.Librarian.Services;
+using Readify.BLL.Features.ReturnRequest.Services;
 using Readify.BLL.Features.User.Services;
 using Readify.BLL.ServiceContracts.AccountContracts;
+using Readify.BLL.Validators.ReturnRequestValidator;
 
 namespace Readify.BLL
 {
@@ -19,12 +21,16 @@ namespace Readify.BLL
             services.AddScoped<IBorrowRequestService, BorrowRequestService>();
             services.AddScoped<IBorrowedBookService, BorrowedBookService>();
             services.AddScoped<IUserManagementService, UserManagementService>();
+            services.AddScoped<IReturnRequestService, ReturnRequestService>();
+
 
             // validators
             services.AddScoped<IAccountValidator, AccountValidator>();
             services.AddScoped<IBookValidator, BookValidator>();
             services.AddScoped<IBorrowRequestValidator, BorrowRequestValidator>();
             services.AddScoped<IBorrowedBookValidator, BorrowedBookValidator>();
+            services.AddScoped<IReturnRequestValidator, ReturnRequestValidator>();
+
 
             return services;
         }

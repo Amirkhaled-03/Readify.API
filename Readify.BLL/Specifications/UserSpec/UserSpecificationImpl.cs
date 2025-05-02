@@ -18,6 +18,8 @@ namespace Readify.BLL.Specifications.UserSpec
             ApplyPagination(specification.PageSize * (specification.PageIndex - 1), specification.PageSize);
 
             ApplyNoTracking();
+
+            AddInclude(u => u.BorrowedBooks);
         }
     }
 }

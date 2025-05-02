@@ -46,6 +46,7 @@ namespace Readify.BLL.Features.User.Services
                 PhoneNumber = l.PhoneNumber,
                 Username = l.UserName,
                 UserStatus = l.UserStatus,
+                BorrowedBooksCount = l.BorrowedBooks.Count(),
             });
 
             var pagination = new Pagination
@@ -68,7 +69,7 @@ namespace Readify.BLL.Features.User.Services
 
         public async Task<UserDto?> GetUserByIdAsync(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.Users.Include(l => l.BorrowedBooks).FirstOrDefaultAsync(u => u.Id == id);
             if (user == null)
                 return null;
 
@@ -80,6 +81,7 @@ namespace Readify.BLL.Features.User.Services
                 PhoneNumber = user.PhoneNumber,
                 Username = user.UserName,
                 UserStatus = user.UserStatus,
+                BorrowedBooksCount = user.BorrowedBooks.Count()
             };
 
             return userDto;

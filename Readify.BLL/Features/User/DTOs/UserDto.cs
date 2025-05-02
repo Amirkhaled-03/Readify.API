@@ -7,6 +7,7 @@
         public required string Username { get; set; }
         public required string PhoneNumber { get; set; }
         public required UserStatus UserStatus { get; set; } = UserStatus.Pending;
+        public int BorrowedBooksCount { get; set; }
         public required DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

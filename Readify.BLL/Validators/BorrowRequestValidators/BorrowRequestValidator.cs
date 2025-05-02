@@ -109,6 +109,9 @@ namespace Readify.BLL.Validators.BorrowRequestValidators
             if (request.Status == status)
                 errors.Add("Status is already set");
 
+            if (status == BorrowRequestStatus.Approved && request.StartDate < DateTime.UtcNow)
+                errors.Add("Cannot approve request, start date has already passed!");
+
             if (status == BorrowRequestStatus.Approved && request.Book.AvailableCount <= 0)
                 errors.Add("No available copies of this book");
 

@@ -4,6 +4,7 @@ using Readify.DAL.Repositories.BookRepo;
 using Readify.DAL.Repositories.BorrowedBookRepo;
 using Readify.DAL.Repositories.BorrowRequestRepo;
 using Readify.DAL.Repositories.CategoriesRepo;
+using Readify.DAL.Repositories.ReturnRequestRepo;
 
 namespace Readify.DAL.UOW
 {
@@ -15,6 +16,8 @@ namespace Readify.DAL.UOW
         public IBorrowRequestRepository BorrowRequestRepository { get; }
         public ICategoriesRepository CategoriesRepository { get; }
         public IBookCategoriesRepository BookCategoriesRepository { get; }
+        public IReturnRequestRepository ReturnRequestRepository { get; }
+
 
         public UnitOfWork(
             ApplicationDBContext dBContext,
@@ -22,7 +25,8 @@ namespace Readify.DAL.UOW
             IBorrowedBookRepository borrowedBookRepository,
             IBorrowRequestRepository borrowRequestRepository,
             ICategoriesRepository categoriesRepository,
-            IBookCategoriesRepository bookCategoriesRepository
+            IBookCategoriesRepository bookCategoriesRepository,
+            IReturnRequestRepository returnRequestRepository
             )
         {
             _dBContext = dBContext;
@@ -31,6 +35,7 @@ namespace Readify.DAL.UOW
             BorrowRequestRepository = borrowRequestRepository;
             CategoriesRepository = categoriesRepository;
             BookCategoriesRepository = bookCategoriesRepository;
+            ReturnRequestRepository = returnRequestRepository;
         }
 
         public async Task<int> SaveAsync()

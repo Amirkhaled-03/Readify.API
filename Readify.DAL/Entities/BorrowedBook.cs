@@ -19,6 +19,7 @@ namespace Readify.DAL.Entities
         // Navigation
         public ApplicationUser User { get; set; }
         public Book Book { get; set; }
+        public ICollection<ReturnRequest> ReturnRequests { get; set; }
     }
 
 }
