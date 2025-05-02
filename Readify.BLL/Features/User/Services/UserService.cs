@@ -46,7 +46,7 @@ namespace Readify.BLL.Features.User.Services
                 PhoneNumber = l.PhoneNumber,
                 Username = l.UserName,
                 UserStatus = l.UserStatus,
-                BorrowedBooksCount = l.BorrowedBooks.Count(),
+                BorrowedBooksCount = l.BorrowedBooks.Count(bb => bb.Status != BorrowedBookStatus.Returned),
             });
 
             var pagination = new Pagination
@@ -81,7 +81,7 @@ namespace Readify.BLL.Features.User.Services
                 PhoneNumber = user.PhoneNumber,
                 Username = user.UserName,
                 UserStatus = user.UserStatus,
-                BorrowedBooksCount = user.BorrowedBooks.Count()
+                BorrowedBooksCount = user.BorrowedBooks.Count(bb => bb.Status != BorrowedBookStatus.Returned)
             };
 
             return userDto;
