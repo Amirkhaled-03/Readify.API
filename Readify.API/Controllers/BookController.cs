@@ -19,7 +19,6 @@ namespace Readify.API.Controllers
         }
 
         #region Get All Books
-
         [HttpGet]
         [SwaggerResponse(200, "success", typeof(ApiResponse<ManageBooksPageDto>))]
         [SwaggerResponseExample(200, typeof(ManageBooksPageExample))]

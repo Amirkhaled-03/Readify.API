@@ -7,5 +7,6 @@ namespace Readify.BLL.Features.JWTToken
         string CreateToken(ApplicationUser appUser);
         string GetUserIdFromToken();
         Task<ApplicationUser> GetUserFromTokenAsync();
+        string GetUserRoleFromToken();
     }
 }

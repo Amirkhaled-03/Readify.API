@@ -21,7 +21,6 @@ namespace Readify.BLL.Features.Account.Services
             _tokenService = tokenService;
         }
 
-
         public async Task<LoginResultDto> LogIn(LogInDto logInDto)
         {
             var loginResult = new LoginResultDto();
@@ -32,6 +31,7 @@ namespace Readify.BLL.Features.Account.Services
             if (user == null)
             {
                 loginResult.Errors.Add("Invalid email or password.");
+                loginResult.LoginCode = 2; // bad request 400
                 return loginResult;
             }
 
@@ -40,6 +40,15 @@ namespace Readify.BLL.Features.Account.Services
             if (!isCorrectPassword)
             {
                 loginResult.Errors.Add("Invalid email or password.");
+                loginResult.LoginCode = 2; // bad request 400
+                return loginResult;
+            }
+
+            // the account is pending, not approved yet
+            if (!await IsAccountApproved(user.Id))
+            {
+                loginResult.Errors.Add("Your account is not approved yet, contact us for more details.");
+                loginResult.LoginCode = 1; // forbidden 403
                 return loginResult;
             }
 
@@ -48,14 +57,22 @@ namespace Readify.BLL.Features.Account.Services
             if (!signInResult.Succeeded)
             {
                 loginResult.Errors.Add("An error occurred during login. Please try again later.");
+                loginResult.LoginCode = 2; // bad request 400
                 return loginResult;
             }
 
             // Generate token and return success
             loginResult.Token = _tokenService.CreateToken(user);
+            loginResult.LoginCode = 3; // success 200
 
             return loginResult;
         }
 
+        private async Task<bool> IsAccountApproved(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            return user!.UserStatus == UserStatus.Approved;
+        }
     }
 }

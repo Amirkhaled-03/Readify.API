@@ -23,4 +23,13 @@ namespace Readify.API.ResponseExample.Account
             );
         }
     }
+    public class LoginForbiddenResponseExample : IExamplesProvider<ApiResponse<IReadOnlyList<string>>>
+    {
+        public ApiResponse<IReadOnlyList<string>> GetExamples()
+        {
+            return new ApiResponse<IReadOnlyList<string>>(403, "forbidden", errors:
+               new List<string>() { "Your account is not approved yet, contact us for more details." }
+            );
+        }
+    }
 }

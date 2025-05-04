@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Readify.API.Filters;
 using Readify.API.HandleResponses;
 using Readify.API.ResponseExample.Account;
-using Readify.BLL.Features.Account.DTOs;
+using Readify.BLL.Features.Account.DTOs.AccountApproval;
 using Readify.BLL.Features.Account.DTOs.Login;
 using Readify.BLL.Features.Account.DTOs.Registration;
 using Readify.BLL.Features.Account.ServicesContracts;
-using Readify.BLL.Features.User.Services;
 using Readify.BLL.ServiceContracts.AccountContracts;
+using Readify.BLL.Specifications.AccountSpec;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -31,8 +32,11 @@ namespace Readify.API.Controllers
         [HttpPost("Login")]
         [SwaggerResponse(200, "Success", typeof(ApiResponse<LoginResultDto>))]
         [SwaggerResponse(400, "validation Error", typeof(ApiResponse<LoginResultDto>))]
+        [SwaggerResponse(403, "forbidden", typeof(ApiResponse<LoginResultDto>))]
         [SwaggerResponseExample(200, typeof(LoginSuccessResponseExample))]
         [SwaggerResponseExample(400, typeof(LoginErrorResponseExample))]
+        [SwaggerResponseExample(403, typeof(LoginForbiddenResponseExample))]
+
         [SwaggerOperation(
         Summary = "Login the user",
         Description = "This endpoint allows users to Login")]
@@ -40,14 +44,17 @@ namespace Readify.API.Controllers
         {
             var res = await _authenticationService.LogIn(logInDto);
 
-            if (res.Errors.Any())
+            if (res.LoginCode == 1)
+                return StatusCode(403, new ApiResponse<IReadOnlyList<string>>(400, "forbidden", errors: res.Errors));
+
+            if (res.LoginCode == 2)
                 return StatusCode(400, new ApiResponse<IReadOnlyList<string>>(400, "bad request", errors: res.Errors));
 
-            return Ok(new ApiResponse<LoginResultDto>(200, "success", data: res));
+            else
+                return Ok(new ApiResponse<LoginResultDto>(200, "success", data: res));
         }
 
         #endregion
-
 
         #region Create Admin Account 
 
@@ -71,7 +78,6 @@ namespace Readify.API.Controllers
 
         #endregion
 
-
         #region Create Librarian Account 
 
         [HttpPost("RegisterLibrarian")]
@@ -93,7 +99,6 @@ namespace Readify.API.Controllers
         }
 
         #endregion
-
 
         #region Create Librarian Account 
 
@@ -117,6 +122,24 @@ namespace Readify.API.Controllers
 
         #endregion
 
+        #region Get Accounts Pending Approval
+
+        [RoleBasedAuthorization(UserType.Admin)]
+        //[RoleBasedAuthorization(UserType.Admin, UserType.Librarian)]
+        [HttpGet("pending-accounts")]
+        [SwaggerResponse(200, "Success", typeof(ApiResponse<ManageAcceptsAccountsPageDto>))]
+        [SwaggerResponseExample(200, typeof(GetPendingAccountsExample))]
+        [SwaggerOperation(
+            Summary = "Get accounts pending approval [userStatus 2 for accept, 3 for Rejected]",
+            Description = "Returns a paginated list of users who are pending approval. Filterable by email, name, status, or type. [userStatus 2 for accept, 3 for Rejected]"
+        )]
+        public async Task<IActionResult> GetPendingAccounts([FromQuery] AcceptAccountsSpec spec)
+        {
+            var result = await _userManagementService.GetAccountsForApprovalAsync(spec);
+            return Ok(new ApiResponse<ManageAcceptsAccountsPageDto>(200, "success", result));
+        }
+
+        #endregion
 
         #region Update Account Status
 

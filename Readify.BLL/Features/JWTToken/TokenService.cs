@@ -71,6 +71,27 @@ namespace Readify.BLL.Features.JWTToken
             return userId;
         }
 
+        public string GetUserRoleFromToken()
+        {
+            var authHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].FirstOrDefault();
+
+            if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+            {
+                return null; // No token provided
+            }
+
+            // Extract token
+            var token = authHeader.Substring("Bearer ".Length).Trim();
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            // Retrieve the user role from the token
+            var userRole = jwtToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
+
+            return userRole;
+        }
+
         public async Task<ApplicationUser> GetUserFromTokenAsync()
         {
             var authHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].FirstOrDefault();
