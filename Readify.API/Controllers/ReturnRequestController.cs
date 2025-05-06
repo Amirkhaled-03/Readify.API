@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Readify.API.Filters;
 using Readify.API.HandleResponses;
 using Readify.API.ResponseExample.ReturnRequest;
 using Readify.BLL.Features.ReturnRequest.DTOs;
@@ -20,6 +21,7 @@ namespace Readify.API.Controllers
 
         #region Create Return Request
 
+        [RoleBasedAuthorization(UserType.User)]
         [HttpPost("CreateReturnRequest")]
         [SwaggerOperation(
             Summary = "Create a return request",
@@ -79,7 +81,6 @@ namespace Readify.API.Controllers
 
         #endregion
 
-
         #region Delete Return Request by ID
 
         [HttpDelete("DeleteReturnRequest/{id}")]
@@ -104,10 +105,11 @@ namespace Readify.API.Controllers
 
         #region Update Return Request Status
 
+        [RoleBasedAuthorization(UserType.Librarian)]
         [HttpPut("UpdateReturnRequestStatus")]
         [SwaggerOperation(
             Summary = "Update status of a return request",
-            Description = "Allows authorized users to update the status and return date of an existing return request.")]
+            Description = "Allows Librarian to update the status an existing return request.")]
         [SwaggerResponse(200, "Return request updated successfully", typeof(ApiResponse<string>))]
         [SwaggerResponse(400, "Validation or update error", typeof(ApiResponse<List<string>>))]
         [SwaggerResponseExample(200, typeof(UpdateReturnRequestSuccessExample))]
@@ -123,7 +125,6 @@ namespace Readify.API.Controllers
         }
 
         #endregion
-
 
     }
 }

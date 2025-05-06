@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Readify.API.Filters;
 using Readify.API.HandleResponses;
 using Readify.API.ResponseExample.User;
 using Readify.BLL.Features.Librarian.DTOs;
@@ -64,6 +65,7 @@ namespace Readify.API.Controllers
 
         #region Edit user 
 
+        [RoleBasedAuthorization(UserType.Admin, UserType.User)]
         [HttpPut("Edit")]
         [SwaggerResponse(200, "User Updated", typeof(ApiResponse<List<string>>))]
         [SwaggerResponse(400, "Failed to Update User", typeof(ApiResponse<List<string>>))]
@@ -87,6 +89,7 @@ namespace Readify.API.Controllers
 
         #region Delete User
 
+        [RoleBasedAuthorization(UserType.Admin)]
         [HttpDelete("Delete/{id}")]
         [SwaggerResponse(200, "User Deleted", typeof(ApiResponse<List<string>>))]
         [SwaggerResponse(400, "Failed to Delete User", typeof(ApiResponse<List<string>>))]

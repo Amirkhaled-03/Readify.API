@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Readify.API.Filters;
 using Readify.API.HandleResponses;
 using Readify.API.ResponseExample.Category;
 using Readify.BLL.Features.BookCategories.DTOs;
@@ -61,6 +62,7 @@ namespace Readify.API.Controllers
 
         #region Add 
 
+        [RoleBasedAuthorization(UserType.Admin, UserType.Librarian)]
         [HttpPost("AddCategory")]
         [SwaggerResponse(201, "Success", typeof(ApiResponse<string>))]
         [SwaggerResponse(400, "Validation errors", typeof(ApiResponse<List<string>>))]
@@ -85,6 +87,7 @@ namespace Readify.API.Controllers
 
         #region Update
 
+        [RoleBasedAuthorization(UserType.Admin, UserType.Librarian)]
         [HttpPut("UpdateCategory")]
         [SwaggerResponse(200, "Success", typeof(ApiResponse<string>))]
         [SwaggerResponse(400, "Validation errors", typeof(ApiResponse<List<string>>))]
@@ -109,6 +112,7 @@ namespace Readify.API.Controllers
 
         #region delete 
 
+        [RoleBasedAuthorization(UserType.Admin, UserType.Librarian)]
         [HttpDelete("{id}")]
         [SwaggerResponse(200, "Success", typeof(ApiResponse<string>))]
         [SwaggerResponse(400, "Validation errors", typeof(ApiResponse<List<string>>))]

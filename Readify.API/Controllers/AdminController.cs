@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Readify.API.Filters;
 using Readify.API.HandleResponses;
 using Readify.API.ResponseExample.AdminDashBoard;
 using Readify.BLL.Features.Admin.DTOs;
@@ -17,6 +18,7 @@ namespace Readify.API.Controllers
             _adminService = adminService;
         }
 
+        [RoleBasedAuthorization(UserType.Admin)]
         [HttpGet("Dashboard")]
         [SwaggerResponse(200, "Success", typeof(ApiResponse<AdminDashboard>))]
         [SwaggerResponseExample(200, typeof(AdminDashboardExample))]

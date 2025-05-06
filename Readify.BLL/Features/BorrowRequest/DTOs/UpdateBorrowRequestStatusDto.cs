@@ -12,6 +12,8 @@ namespace Readify.BLL.Features.BorrowRequest.DTOs
         [Required(ErrorMessage = "Request ID is required.")]
         public int Id { get; set; }
         [Required(ErrorMessage = "Status is required.")]
+        [EnumDataType(typeof(BorrowRequestStatus), ErrorMessage = "Invalid value for BorrowRequestStatus.")]
+
         public BorrowRequestStatus Status { get; set; }
     }
 }

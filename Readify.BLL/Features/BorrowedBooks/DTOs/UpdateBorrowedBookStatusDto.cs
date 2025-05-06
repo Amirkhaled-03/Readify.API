@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Readify.BLL.Features.BorrowedBooks.DTOs
 {
@@ -12,6 +7,7 @@ namespace Readify.BLL.Features.BorrowedBooks.DTOs
         [Required(ErrorMessage = "Request ID is required.")]
         public int Id { get; set; }
         [Required(ErrorMessage = "Status is required.")]
+        [EnumDataType(typeof(BorrowedBookStatus), ErrorMessage = "Invalid value for BorrowedBookStatus.")]
         public BorrowedBookStatus Status { get; set; }
 
     }

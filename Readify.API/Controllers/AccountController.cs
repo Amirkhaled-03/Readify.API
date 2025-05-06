@@ -58,6 +58,7 @@ namespace Readify.API.Controllers
 
         #region Create Admin Account 
 
+        [RoleBasedAuthorization(UserType.Admin)]
         [HttpPost("RegisterAdmin")]
         [SwaggerOperation(
          Summary = "Create Admin",
@@ -143,6 +144,7 @@ namespace Readify.API.Controllers
 
         #region Update Account Status
 
+        [RoleBasedAuthorization(UserType.Admin)]
         [HttpPut("UpdateAccountStatus")]
         [SwaggerOperation(
             Summary = "Update the status of a user account",

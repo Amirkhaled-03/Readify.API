@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Azure.Core;
-using Microsoft.EntityFrameworkCore;
-using Readify.DAL.Repositories.ReturnRequestRepo;
-using Readify.DAL.UOW;
+﻿using Readify.DAL.UOW;
 
 namespace Readify.BLL.Validators.ReturnRequestValidator
 {
@@ -117,9 +109,6 @@ namespace Readify.BLL.Validators.ReturnRequestValidator
 
             if (returnRequest.Status == status)
                 errors.Add("Status is already set");
-
-            if (status == ReturnRequestStatus.Approved && returnRequest.ReturnDate < DateTime.UtcNow)
-                errors.Add("Cannot approve request, start date has already passed!");
 
             return errors;
         }

@@ -7,6 +7,7 @@
         public string Author { get; set; }
         public string ISBN { get; set; }
         public string ImageUrl { get; set; }
+        public string Description { get; set; } = string.Empty;
         public int AvailableCount { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;

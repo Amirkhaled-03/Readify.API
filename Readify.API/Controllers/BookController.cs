@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Readify.API.Filters;
 using Readify.API.HandleResponses;
 using Readify.API.ResponseExample.Book;
 using Readify.BLL.Features.Book.DTOs;
@@ -62,6 +63,7 @@ namespace Readify.API.Controllers
 
         #region Add Book 
 
+        [RoleBasedAuthorization(UserType.Admin, UserType.Librarian)]
         [HttpPost("Add")]
         [SwaggerResponse(201, "Book Created", typeof(ApiResponse<List<string>>))]
         [SwaggerResponse(400, "Validation Failed", typeof(ApiResponse<List<string>>))]
@@ -86,6 +88,7 @@ namespace Readify.API.Controllers
 
         #region Update Book 
 
+        [RoleBasedAuthorization(UserType.Admin, UserType.Librarian)]
         [HttpPut("Update")]
         [SwaggerResponse(200, "Book Updated", typeof(ApiResponse<List<string>>))]
         [SwaggerResponse(400, "Failed to Update Book", typeof(ApiResponse<List<string>>))]
@@ -109,6 +112,7 @@ namespace Readify.API.Controllers
 
         #region Delete 
 
+        [RoleBasedAuthorization(UserType.Admin, UserType.Librarian)]
         [HttpDelete("Delete/{id}")]
         [SwaggerResponse(200, "Book Deleted", typeof(ApiResponse<List<string>>))]
         [SwaggerResponse(400, "Failed to Delete Book", typeof(ApiResponse<List<string>>))]
@@ -134,6 +138,7 @@ namespace Readify.API.Controllers
 
         #region Change book Image 
 
+        [RoleBasedAuthorization(UserType.Admin, UserType.Librarian)]
         [HttpPut("ChangeImage")]
         [SwaggerResponse(200, "Success", typeof(ApiResponse<List<string>>))]
         [SwaggerResponseExample(200, typeof(ChangeBookImageSuccessExample))]
@@ -157,6 +162,7 @@ namespace Readify.API.Controllers
 
         #region Update book catgories
 
+        [RoleBasedAuthorization(UserType.Admin, UserType.Librarian)]
         [HttpPut("UpdateBookCategories")]
         [SwaggerResponse(200, "Success", typeof(ApiResponse<List<string>>))]
         [SwaggerResponseExample(200, typeof(UpdateBookCategoriesSuccessExample))]

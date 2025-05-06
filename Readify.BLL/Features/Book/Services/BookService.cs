@@ -39,6 +39,7 @@ namespace Readify.BLL.Features.Book.Services
                 Author = b.Author,
                 ISBN = b.ISBN,
                 Title = b.Title,
+                Description = b.Description,
                 AvailableCount = b.AvailableCount,
                 CreatedAt = b.CreatedAt,
                 Image = b.ImageUrl == null ? null : await ImageHelper.ConvertImageToBase64Async(b.ImageUrl),
@@ -79,6 +80,7 @@ namespace Readify.BLL.Features.Book.Services
                 AvailableCount = book.AvailableCount,
                 CreatedBy = book.CreatedBy,
                 Id = book.Id,
+                Description = book.Description,
                 Title = book.Title,
                 Categories = book.BookCategories.Select(bc => bc.Category.Name).ToList(),
                 CreatedAt = book.CreatedAt
@@ -105,6 +107,7 @@ namespace Readify.BLL.Features.Book.Services
                 AvailableCount = bookDto.Count,
                 CreatedBy = createdBy.Fullname,
                 Title = bookDto.Title,
+                Description = bookDto.Description,
                 ISBN = bookDto.ISBN,
                 ImageUrl = imageUrl,
                 BookCategories = bookDto.CategoriesIds.Select(categoryId => new BookCategory
@@ -143,6 +146,7 @@ namespace Readify.BLL.Features.Book.Services
             book.Author = bookDto.Author;
             book.AvailableCount = bookDto.Count;
             book.ISBN = bookDto.ISBN;
+            book.Description = bookDto.Description;
 
             // If a new image is uploaded, handle image upload
             if (bookDto.NewImage != null && bookDto.NewImage.Length > 0)

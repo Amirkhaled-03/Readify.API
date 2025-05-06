@@ -1,5 +1,5 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Readify.API.Filters;
 using Readify.API.HandleResponses;
 using Readify.API.ResponseExample.BorrowedBook;
 using Readify.BLL.Features.BorrowedBooks.DTOs;
@@ -81,6 +81,7 @@ namespace Readify.API.Controllers
 
         #region Update Borrowed Book Status
 
+        [RoleBasedAuthorization(UserType.Librarian)]
         [HttpPut("UpdateBorrowedBookStatus")]
         [SwaggerOperation(
             Summary = "Update the status of a borrowed book",

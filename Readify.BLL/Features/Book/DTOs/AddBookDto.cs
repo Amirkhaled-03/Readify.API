@@ -15,6 +15,9 @@ namespace Readify.BLL.Features.Book.DTOs
         [StringLength(13, MinimumLength = 13, ErrorMessage = "ISBN must be exactly 13 characters long.")]
         public required string ISBN { get; set; }
 
+        [MaxLength(500, ErrorMessage = "Description cannot be longer than 500 characters.")]
+        public string Description { get; set; } = string.Empty;
+
         [Range(1, int.MaxValue, ErrorMessage = "Count must be at least 1.")]
         public required int Count { get; set; }
 

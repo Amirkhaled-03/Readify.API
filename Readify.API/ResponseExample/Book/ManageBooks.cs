@@ -12,26 +12,28 @@ namespace Readify.API.ResponseExample.Book
             return new ApiResponse<ManageBooksPageDto>(200, "success", data: new ManageBooksPageDto
             {
                 Books = new List<BookDto>
+            {
+                new BookDto
                 {
-                    new BookDto
-                    {
-                        Id = 1,
-                        Title = "Clean Code",
-                        Author = "Robert C. Martin",
-                        ISBN = "9780132350884",
-                        AvailableCount = 5,
-                        CreatedAt = DateTime.UtcNow.AddDays(-10)
-                    },
-                    new BookDto
-                    {
-                        Id = 2,
-                        Title = "The Pragmatic Programmer",
-                        Author = "Andrew Hunt",
-                        ISBN = "9780201616224",
-                        AvailableCount = 3,
-                        CreatedAt = DateTime.UtcNow.AddDays(-20)
-                    }
+                    Id = 1,
+                    Title = "Clean Code",
+                    Author = "Robert C. Martin",
+                    ISBN = "9780132350884",
+                    Description = "A handbook of agile software craftsmanship.",
+                    AvailableCount = 5,
+                    CreatedAt = DateTime.UtcNow.AddDays(-10)
                 },
+                new BookDto
+                {
+                    Id = 2,
+                    Title = "The Pragmatic Programmer",
+                    Author = "Andrew Hunt",
+                    ISBN = "9780201616224",
+                    Description = "Classic tips and best practices for software developers.",
+                    AvailableCount = 3,
+                    CreatedAt = DateTime.UtcNow.AddDays(-20)
+                }
+            },
                 Metadata = new Metadata
                 {
                     Pagination = new Pagination
@@ -56,6 +58,7 @@ namespace Readify.API.ResponseExample.Book
                 Title = "Clean Code",
                 Author = "Robert C. Martin",
                 ISBN = "9780132350884",
+                Description = "A handbook of agile software craftsmanship.",
                 AvailableCount = 5,
                 CreatedBy = "Admin User",
                 CreatedAt = DateTime.UtcNow.AddDays(-30),
