@@ -83,8 +83,8 @@ namespace Readify.BLL.Validators.Account
                 return errors;
             }
 
-            if (user.UserStatus == UserStatus.Rejected)
-                errors.Add("Cannot change rejected status");
+            //if (user.UserStatus == UserStatus.Rejected)
+            //    errors.Add("Cannot change rejected status");
 
             return errors;
         }
