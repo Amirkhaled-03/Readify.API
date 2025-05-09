@@ -38,9 +38,8 @@ namespace Readify.BLL.Validators.ReturnRequestValidator
                 throw new Exception("ReturnRequestRepository is null");
 
             var existingReturnRequest = await _unitOfWork.ReturnRequestRepository.GetFirstOrDefaultAsync(rr =>
-            rr.BorrowedBookId == borrowedBookId);
-            if (existingReturnRequest != null &&
-            existingReturnRequest.Status != ReturnRequestStatus.Rejected)
+            rr.BorrowedBookId == borrowedBookId && rr.Status != ReturnRequestStatus.Rejected);
+            if (existingReturnRequest != null)
             {
                 errors.Add("A return request for this borrowed book already exists.");
             }

@@ -37,6 +37,8 @@ namespace Readify.API.ResponseExample.ReturnRequest
                 {
                     Id = 1,
                     BorrowedBookId = 1001,
+                    BorrowerName = "John Smith",
+                    BorrowedBookTitle = "The Dictionary",
                     ApprovedBy = null,
                     CreatedAt = DateTime.UtcNow.AddDays(-2),
                     ReturnDate = DateTime.UtcNow.AddDays(5),
@@ -46,7 +48,9 @@ namespace Readify.API.ResponseExample.ReturnRequest
                 {
                     Id = 2,
                     BorrowedBookId = 1002,
-                    ApprovedBy = "admin123",
+                    ApprovedBy = "admin123",                                    
+                    BorrowerName = "John Smith",
+                    BorrowedBookTitle = "The Alchimist",
                     CreatedAt = DateTime.UtcNow.AddDays(-5),
                     ReturnDate = DateTime.UtcNow.AddDays(2),
                     Status = ReturnRequestStatus.Approved

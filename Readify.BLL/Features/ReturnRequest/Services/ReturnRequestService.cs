@@ -97,6 +97,8 @@ namespace Readify.BLL.Features.ReturnRequest.Services
             {
                 Id = rr.Id,
                 BorrowedBookId = rr.BorrowedBookId,
+                BorrowedBookTitle = rr.BorrowedBook.Book.Title,
+                BorrowerName = rr.BorrowedBook.User.Fullname,
                 ApprovedBy = rr.ApprovedBy,
                 CreatedAt = rr.CreatedAt,
                 ReturnDate = rr.ReturnDate,
