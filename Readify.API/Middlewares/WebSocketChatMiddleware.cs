@@ -20,7 +20,7 @@ public class WebSocketChatMiddleware
 
         if (context.Request.Path.StartsWithSegments("/ws/chat") && context.WebSockets.IsWebSocketRequest)
         {
-            var userId = tokenService.GetUserIdFromToken(); // Extract from token or query
+            var userId = context.Request.Query["userId"]; // Extract from token or query
             var webSocket = await context.WebSockets.AcceptWebSocketAsync();
 
             _userSockets[userId] = webSocket;

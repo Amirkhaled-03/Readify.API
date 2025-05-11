@@ -23,7 +23,8 @@ namespace Readify.API.Middlewares
             if (path.Equals($"{accountController}/Login", StringComparison.OrdinalIgnoreCase) ||
                 path.Equals($"{accountController}/RegisterAdmin", StringComparison.OrdinalIgnoreCase) ||
                 path.Equals($"{accountController}/RegisterLibrarian", StringComparison.OrdinalIgnoreCase) ||
-                path.Equals($"{accountController}/RegisterUser", StringComparison.OrdinalIgnoreCase)
+                path.Equals($"{accountController}/RegisterUser", StringComparison.OrdinalIgnoreCase) ||
+                path.Equals($"/ws/chat", StringComparison.OrdinalIgnoreCase)
                 )
             {
                 await _next(context);
