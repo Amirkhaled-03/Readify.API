@@ -5,6 +5,7 @@ using Readify.API.ResponseExample.BorrowRequest;
 using Readify.BLL.Features.BorrowRequest.DTOs;
 using Readify.BLL.Features.BorrowRequest.Services;
 using Readify.BLL.Specifications.BorrowRequestSpec;
+using Readify.BLL.Specifications.UserBorrowRequestSpec;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -51,14 +52,14 @@ namespace Readify.API.Controllers
         [SwaggerResponse(404, "No borrow requests found for user", typeof(ApiResponse<string>))]
         [SwaggerResponseExample(200, typeof(GetUserBorrowRequestsSuccessExample))]
         [SwaggerResponseExample(404, typeof(GetUserBorrowRequestsErrorExample))]
-        public async Task<IActionResult> GetUserBorrowRequests()
+        public async Task<IActionResult> GetUserBorrowRequests([FromQuery] UserBorrowRequestSpecification specs)
         {
-            var response = await _borrowRequestService.GetUserBorrowRequestsAsync();
+            var response = await _borrowRequestService.GetUserBorrowRequestsAsync(specs);
 
-            if (response == null || !response.Any())
+            if (response == null || !response.BorrowRequests.Any())
                 return NotFound(new ApiResponse<string>(404, "No borrow requests found for user"));
 
-            return Ok(new ApiResponse<List<BorrowRequestDto>>(200, "success", response));
+            return Ok(new ApiResponse<ListAllRequestsDto>(200, "success", response));
         }
 
         #endregion

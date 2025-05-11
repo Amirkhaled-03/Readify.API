@@ -1,6 +1,7 @@
 ﻿using Readify.BLL.Features.BorrowedBooks.DTOs;
 using Readify.BLL.Helpers;
 using Readify.BLL.Specifications.BorrowedBookSpec;
+using Readify.BLL.Specifications.UserBorrowedBooksSpec;
 using Readify.DAL.Entities;
 using Readify.DAL.UOW;
 
@@ -33,7 +34,7 @@ namespace Readify.BLL.Features.BorrowedBooks.Services
             var specifications = new BorrowedBookSpecificationImpl(specs);
 
             var borrowedBooks = await _unitOfWork.BorrowedBookRepository.GetWithSpecificationsAsync(specifications)
-               ?? Enumerable.Empty<DAL.Entities.BorrowedBook>();
+               ?? Enumerable.Empty<BorrowedBook>();
 
             var borrowedBookDto = borrowedBooks.Select(bb => new BorrowedBookDto
             {
@@ -121,34 +122,57 @@ namespace Readify.BLL.Features.BorrowedBooks.Services
 
         }
 
-        public async Task<List<BorrowedBookDto>> GetUserBorrowBooksAsync()
+        public async Task<ManageBorrowedBooksDto> GetUserBorrowBooksAsync(UserBorrowedBooksSpecification specs)
         {
             await UpdateOverdueBooksAsync();
 
             var userId = _tokenService.GetUserIdFromToken();
-            var userBorrowedBooks = await _unitOfWork.BorrowedBookRepository.GetUserBorrowedBooksAsync(userId);
+
+            var totalCountSpec = new UserBorrowedBooksSpecificationImpl(userId, specs);
+            totalCountSpec.IgnorePagination();
+
+            int matchedFilterationCount = await _unitOfWork.BorrowedBookRepository.CountWithSpecAsync(totalCountSpec);
+            int totalCount = await _unitOfWork.BorrowedBookRepository.CountAsync();
+
+            var specifications = new UserBorrowedBooksSpecificationImpl(userId, specs);
+
+            var userBorrowedBooks = await _unitOfWork.BorrowedBookRepository.GetWithSpecificationsAsync(specifications)
+               ?? Enumerable.Empty<BorrowedBook>();
 
             if (userBorrowedBooks == null)
                 return null;
 
-            return userBorrowedBooks.Select(br => new BorrowedBookDto
+            var borrowedBookDto = userBorrowedBooks.Select(bb => new BorrowedBookDto
             {
-                Id = br.Id,
-                BorrowerId = br.UserId,
-                BookName = br.Book.Title,
-                BookId = br.Id,
-                Author = br.Book.Author,
-                BorrowedAt = br.BorrowedAt,
-                BorrowerName = br.User.Fullname,
-                BorrowerPhoneNo = br.User.PhoneNumber,
-                ConfirmedById = br.ConfirmedBy,
-                ConfirmedByUser = br.ConfirmedBy,
-                DueDate = br.DueDate,
-                ReturnedAt = br.ReturnedAt,
-                Status = br.Status
+                Id = bb.Id,
+                BookId = bb.BookId,
+                BorrowedAt = bb.BorrowedAt,
+                ConfirmedById = bb.ConfirmedBy,
+                DueDate = bb.DueDate,
+                ReturnedAt = bb.ReturnedAt,
+                BorrowerId = bb.UserId,
+                BookName = bb.Book.Title,
+                Author = bb.Book.Author,
+                BorrowerName = bb.User.Fullname,
+                BorrowerPhoneNo = bb.User.PhoneNumber,
+                ConfirmedByUser = bb.ConfirmedBy,
+                Status = bb.Status,
             }).ToList();
-        }
 
+            var pagination = new Pagination
+            {
+                PageIndex = specs.PageIndex,
+                PageSize = specs.PageSize,
+                TotalRecords = matchedFilterationCount,
+                TotalPages = (int)Math.Ceiling((double)matchedFilterationCount / specs.PageSize)
+            };
+
+            return new ManageBorrowedBooksDto
+            {
+                BorrowedBooks = borrowedBookDto,
+                Metadata = new Metadata { Pagination = pagination }
+            };
+        }
         public async Task<List<string>> UpdateBorrowedBookStatusAsync(UpdateBorrowedBookStatusDto bookDto)
         {
             List<string> errors = new List<string>();

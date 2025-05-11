@@ -73,28 +73,42 @@ namespace Readify.API.ResponseExample.BorrowedBook
         }
     }
 
-    public class GetUserBorrowedBooksSuccessExample : IExamplesProvider<ApiResponse<List<BorrowedBookDto>>>
+    public class GetUserBorrowedBooksSuccessExample : IExamplesProvider<ApiResponse<ManageBorrowedBooksDto>>
     {
-        public ApiResponse<List<BorrowedBookDto>> GetExamples()
+        public ApiResponse<ManageBorrowedBooksDto> GetExamples()
         {
-            return new ApiResponse<List<BorrowedBookDto>>(200, "Successfully retrieved borrowed books", new List<BorrowedBookDto>
-        {
-            new BorrowedBookDto
+            return new ApiResponse<ManageBorrowedBooksDto>(200, "Borrowed books retrieved successfully", new ManageBorrowedBooksDto
             {
-                Id = 1,
-                BookId = 101,
-                BookName = "Refactoring",
-                BorrowedAt = DateTime.UtcNow.AddDays(-3),
-                DueDate = DateTime.UtcNow.AddDays(11),
-                ReturnedAt = null,
-                Status = BorrowedBookStatus.Active,
-                BorrowerId = "userXYZ",
-                BorrowerName = "Sophia Lee",
-                BorrowerPhoneNo = "555-7890",
-                ConfirmedById = "admin123",
-                ConfirmedByUser = "Admin Max"
-            }
-        });
+                BorrowedBooks = new List<BorrowedBookDto>
+            {
+                new BorrowedBookDto
+                {
+                    Id = 1,
+                    BookId = 101,
+                    BookName = "The Pragmatic Programmer",
+                    Author = "Andrew Hunt",
+                    BorrowedAt = DateTime.UtcNow.AddDays(-15),
+                    DueDate = DateTime.UtcNow.AddDays(15),
+                    ReturnedAt = null,
+                    BorrowerId = "user-456",
+                    BorrowerName = "John Doe",
+                    BorrowerPhoneNo = "123-456-7890",
+                    ConfirmedById = "admin-001",
+                    ConfirmedByUser = "Librarian Smith",
+                    Status = BorrowedBookStatus.Active
+                }
+            },
+                Metadata = new Metadata
+                {
+                    Pagination = new Pagination
+                    {
+                        PageIndex = 1,
+                        PageSize = 10,
+                        TotalRecords = 1,
+                        TotalPages = 1
+                    }
+                }
+            });
         }
     }
 

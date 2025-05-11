@@ -1,6 +1,9 @@
 ﻿using Readify.BLL.Features.BorrowRequest.DTOs;
 using Readify.BLL.Helpers;
 using Readify.BLL.Specifications.BorrowRequestSpec;
+using Readify.BLL.Specifications.UserBorrowedBooksSpec;
+using Readify.BLL.Specifications.UserBorrowRequestSpec;
+using Readify.DAL.Entities;
 using Readify.DAL.UOW;
 
 namespace Readify.BLL.Features.BorrowRequest.Services
@@ -142,15 +145,25 @@ namespace Readify.BLL.Features.BorrowRequest.Services
             };
         }
 
-        public async Task<List<BorrowRequestDto>> GetUserBorrowRequestsAsync()
+        public async Task<ListAllRequestsDto> GetUserBorrowRequestsAsync(UserBorrowRequestSpecification specs)
         {
             var userId = _tokenService.GetUserIdFromToken();
-            var userRequests = await _unitOfWork.BorrowRequestRepository.GetUserRequestsIncludesAsync(userId);
 
-            if (userRequests == null)
+            var totalCountSpec = new UserBorrowRequestSpecificationImpl(userId, specs);
+            totalCountSpec.IgnorePagination();
+
+            int matchedFilterationCount = await _unitOfWork.BorrowRequestRepository.CountWithSpecAsync(totalCountSpec);
+            int totalCount = await _unitOfWork.BorrowRequestRepository.CountAsync();
+
+            var specifications = new UserBorrowRequestSpecificationImpl(userId, specs);
+
+            var userBorrowRequests = await _unitOfWork.BorrowRequestRepository.GetWithSpecificationsAsync(specifications)
+               ?? Enumerable.Empty<DAL.Entities.BorrowRequest>();
+
+            if (userBorrowRequests == null)
                 return null;
 
-            return userRequests.Select(br => new BorrowRequestDto
+            var borrowRequestDto = userBorrowRequests.Select(br => new BorrowRequestDto
             {
                 Id = br.Id,
                 BookTitle = br.Book.Title,
@@ -163,6 +176,20 @@ namespace Readify.BLL.Features.BorrowRequest.Services
                 RequestedAt = br.RequestedAt,
                 Status = br.Status,
             }).ToList();
+
+            var pagination = new Pagination
+            {
+                PageIndex = specs.PageIndex,
+                PageSize = specs.PageSize,
+                TotalRecords = matchedFilterationCount,
+                TotalPages = (int)Math.Ceiling((double)matchedFilterationCount / specs.PageSize)
+            };
+
+            return new ListAllRequestsDto
+            {
+                BorrowRequests = borrowRequestDto,
+                Metadata = new Metadata { Pagination = pagination }
+            };
         }
 
         public async Task<List<string>> UpdateBorrowRequestStatusAsync(UpdateBorrowRequestStatusDto requestDto)

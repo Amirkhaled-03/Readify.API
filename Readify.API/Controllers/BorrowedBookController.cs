@@ -5,6 +5,7 @@ using Readify.API.ResponseExample.BorrowedBook;
 using Readify.BLL.Features.BorrowedBooks.DTOs;
 using Readify.BLL.Features.BorrowedBooks.Services;
 using Readify.BLL.Specifications.BorrowedBookSpec;
+using Readify.BLL.Specifications.UserBorrowedBooksSpec;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -67,14 +68,14 @@ namespace Readify.API.Controllers
         [SwaggerResponse(404, "No borrowed books found for user", typeof(ApiResponse<string>))]
         [SwaggerResponseExample(200, typeof(GetUserBorrowedBooksSuccessExample))]
         [SwaggerResponseExample(404, typeof(GetUserBorrowedBooksNotFoundExample))]
-        public async Task<IActionResult> GetMyBorrowedBooks()
+        public async Task<IActionResult> GetMyBorrowedBooks([FromQuery] UserBorrowedBooksSpecification specs)
         {
-            var books = await _borrowedBookService.GetUserBorrowBooksAsync();
+            var books = await _borrowedBookService.GetUserBorrowBooksAsync(specs);
 
-            if (books == null || !books.Any())
+            if (books == null || !books.BorrowedBooks.Any())
                 return NotFound(new ApiResponse<string>(404, "No borrowed books found for the user"));
 
-            return Ok(new ApiResponse<List<BorrowedBookDto>>(200, "Successfully retrieved borrowed books", data: books));
+            return Ok(new ApiResponse<ManageBorrowedBooksDto>(200, "Successfully retrieved borrowed books", books));
         }
 
         #endregion

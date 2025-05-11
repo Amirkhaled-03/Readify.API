@@ -81,39 +81,39 @@ namespace Readify.API.ResponseExample.BorrowRequest
         }
     }
 
-    public class GetUserBorrowRequestsSuccessExample : IExamplesProvider<ApiResponse<List<BorrowRequestDto>>>
+    public class GetUserBorrowRequestsSuccessExample : IExamplesProvider<ApiResponse<ListAllRequestsDto>>
     {
-        public ApiResponse<List<BorrowRequestDto>> GetExamples()
+        public ApiResponse<ListAllRequestsDto> GetExamples()
         {
-            return new ApiResponse<List<BorrowRequestDto>>(200, "success", new List<BorrowRequestDto>
-        {
-            new BorrowRequestDto
+            return new ApiResponse<ListAllRequestsDto>(200, "Borrow requests retrieved successfully", new ListAllRequestsDto
             {
-                Id = 1,
-                BookTitle = "1984",
-                AvailableCopies = 5,
-                RequestedBy = "jane_doe",
-                PhoneNumber = "+9876543210",
-                ApprovedBy = "admin",
-                StartDate = DateTime.UtcNow.AddDays(2),
-                EndDate = DateTime.UtcNow.AddDays(9),
-                RequestedAt = DateTime.UtcNow,
-                Status = BorrowRequestStatus.Pending
+                BorrowRequests = new List<BorrowRequestDto>
+            {
+                new BorrowRequestDto
+                {
+                    Id = 1,
+                    BookTitle = "Clean Code",
+                    AvailableCopies = 2,
+                    RequestedBy = "student01",
+                    PhoneNumber = "555-1234",
+                    ApprovedBy = "Librarian Mary",
+                    StartDate = DateTime.UtcNow.AddDays(2),
+                    EndDate = DateTime.UtcNow.AddDays(12),
+                    RequestedAt = DateTime.UtcNow,
+                    Status = BorrowRequestStatus.Pending
+                }
             },
-            new BorrowRequestDto
-            {
-                Id = 2,
-                BookTitle = "Brave New World",
-                AvailableCopies = 3,
-                RequestedBy = "jane_doe",
-                PhoneNumber = "+9876543210",
-                ApprovedBy = null,
-                StartDate = DateTime.UtcNow.AddDays(3),
-                EndDate = DateTime.UtcNow.AddDays(10),
-                RequestedAt = DateTime.UtcNow,
-                Status = BorrowRequestStatus.Pending
-            }
-        });
+                Metadata = new Metadata
+                {
+                    Pagination = new Pagination
+                    {
+                        PageIndex = 1,
+                        PageSize = 10,
+                        TotalRecords = 1,
+                        TotalPages = 1
+                    }
+                }
+            });
         }
     }
 

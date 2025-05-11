@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Readify.BLL.Features.BorrowRequest.DTOs;
+﻿using Readify.BLL.Features.BorrowRequest.DTOs;
 using Readify.BLL.Specifications.BorrowRequestSpec;
+using Readify.BLL.Specifications.UserBorrowRequestSpec;
 
 namespace Readify.BLL.Features.BorrowRequest.Services
 {
@@ -14,7 +10,7 @@ namespace Readify.BLL.Features.BorrowRequest.Services
         Task<List<string>> DeleteRequestByIdAsync(int id);
         Task<ListAllRequestsDto> GetAllBorrowRequestsAsync(BorrowRequestSpecification specs);
         Task<BorrowRequestDto> GetBorrowRequestByIdAsync(int id);
-        Task<List<BorrowRequestDto>> GetUserBorrowRequestsAsync();
+        Task<ListAllRequestsDto> GetUserBorrowRequestsAsync(UserBorrowRequestSpecification specs);
         Task<List<string>> UpdateBorrowRequestStatusAsync(UpdateBorrowRequestStatusDto requestDto);
 
     }
