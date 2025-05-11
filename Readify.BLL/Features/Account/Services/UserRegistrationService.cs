@@ -84,15 +84,13 @@ namespace Readify.BLL.Features.Account.Services
             if (errors.Any())
                 return errors;
 
-            var token = _tokenService.GetUserIdFromToken();
-
             var user = new ApplicationUser
             {
                 PhoneNumber = registerDto.PhoneNumber,
                 Fullname = registerDto.Fullname,
                 UserName = registerDto.Email,
                 UserType = UserType.User,
-                UserStatus = token != null ? UserStatus.Approved : UserStatus.Pending,
+                UserStatus = UserStatus.Approved,
             };
 
             var res = await _userManager.CreateAsync(user, registerDto.Password);
