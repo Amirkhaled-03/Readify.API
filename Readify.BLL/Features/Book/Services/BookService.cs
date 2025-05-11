@@ -47,6 +47,7 @@ namespace Readify.BLL.Features.Book.Services
                 Rating = b.Rating,
                 AvailableCount = b.AvailableCount,
                 CreatedAt = b.CreatedAt,
+                Categories = b.BookCategories.Select(bc => bc.Category.Name).ToList(),
                 Image = b.ImageUrl == null ? null : await ImageHelper.ConvertImageToBase64Async(b.ImageUrl),
             }));
 

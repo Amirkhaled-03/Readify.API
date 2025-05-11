@@ -57,5 +57,9 @@ namespace Readify.DAL.SpecificationPattern
             IsTracking = false;
             return this;
         }
+
+        // ADDEDD
+        public List<string> IncludeStrings { get; } = new List<string>();
+        protected void AddInclude(string includeString) => IncludeStrings.Add(includeString);
     }
 }

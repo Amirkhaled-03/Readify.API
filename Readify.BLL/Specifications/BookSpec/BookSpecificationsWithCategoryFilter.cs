@@ -19,6 +19,7 @@ namespace Readify.BLL.Specifications.BookSpec
             ApplyPagination(specification.PageSize * (specification.PageIndex - 1), specification.PageSize);
 
             AddInclude(b => b.BookCategories);
+            AddInclude("BookCategories.Category");
 
             ApplyNoTracking();
 

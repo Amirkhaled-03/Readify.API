@@ -13,5 +13,9 @@ namespace Readify.DAL.SpecificationPattern
         int Skip { get; }
         bool IsPaginated { get; }
         bool IsTracking { get; }
+
+        // ADDEDD
+        List<string> IncludeStrings { get; }
+        /////////////////////////////////////////////////
     }
 }

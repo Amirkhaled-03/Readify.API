@@ -17,5 +17,7 @@
 
         // as base64
         public string? Image { get; set; }
+        public List<string> Categories { get; set; } = new List<string>();
+
     }
 }

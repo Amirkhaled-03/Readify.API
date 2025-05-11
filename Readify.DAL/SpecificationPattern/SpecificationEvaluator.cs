@@ -34,6 +34,13 @@ namespace Readify.DAL.SpecificationPattern
                 query = query.AsNoTracking();
             }
 
+            // ADDEDD
+            foreach (var includeString in specification.IncludeStrings)
+            {
+                query = query.Include(includeString);
+            }
+            /////////////////////////////////////////////////////////////////
+
             return query;
         }
     }
