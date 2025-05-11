@@ -42,7 +42,7 @@ namespace Readify.BLL.Features.Account.Services
                 Fullname = l.Fullname,
                 Email = l.UserName,
                 UserStatus = l.UserStatus.ToString(),
-                UserType = l.UserType.ToString(),
+                //   UserType = l.UserType.ToString(),
             });
 
             var pagination = new Pagination

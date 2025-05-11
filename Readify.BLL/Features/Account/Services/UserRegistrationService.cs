@@ -7,14 +7,17 @@ namespace Readify.BLL.Features.Account.Services
     public class UserRegistrationService : IUserRegistrationService
     {
         private readonly IAccountValidator _accountValidator;
+        private readonly ITokenService _tokenService;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public UserRegistrationService(IAccountValidator accountValidator,
-                                       UserManager<ApplicationUser> userManager
+                                       UserManager<ApplicationUser> userManager,
+                                       ITokenService tokenService
                                        )
         {
             _accountValidator = accountValidator;
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         public async Task<List<string>> RegisterAdminAsync(RegisterApplicationUser registerDto)
@@ -53,13 +56,15 @@ namespace Readify.BLL.Features.Account.Services
             if (errors.Any())
                 return errors;
 
+            var token = _tokenService.GetUserIdFromToken();
+
             var user = new ApplicationUser
             {
                 PhoneNumber = registerDto.PhoneNumber,
                 Fullname = registerDto.Fullname,
                 UserName = registerDto.Email,
                 UserType = UserType.Librarian,
-                UserStatus = UserStatus.Pending,
+                UserStatus = token != null ? UserStatus.Approved : UserStatus.Pending,
             };
 
             var res = await _userManager.CreateAsync(user, registerDto.Password);
@@ -79,13 +84,15 @@ namespace Readify.BLL.Features.Account.Services
             if (errors.Any())
                 return errors;
 
+            var token = _tokenService.GetUserIdFromToken();
+
             var user = new ApplicationUser
             {
                 PhoneNumber = registerDto.PhoneNumber,
                 Fullname = registerDto.Fullname,
                 UserName = registerDto.Email,
                 UserType = UserType.User,
-                UserStatus = UserStatus.Pending,
+                UserStatus = token != null ? UserStatus.Approved : UserStatus.Pending,
             };
 
             var res = await _userManager.CreateAsync(user, registerDto.Password);

@@ -81,7 +81,7 @@ namespace Readify.API.Extensions
             {
                 options.AddPolicy("AllowedApps", policy =>
                 {
-                    policy.WithOrigins("http://localhost:5173")
+                    policy.WithOrigins("http://localhost:5173", "capacitor://localhost")
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();

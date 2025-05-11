@@ -6,6 +6,6 @@
         public required string Fullname { get; set; }
         public required string Email { get; set; }
         public required string UserStatus { get; set; }
-        public required string UserType { get; set; }
+        //  public required string UserType { get; set; }
     }
 }
