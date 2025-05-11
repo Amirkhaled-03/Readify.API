@@ -40,6 +40,11 @@ namespace Readify.BLL.Features.Book.Services
                 ISBN = b.ISBN,
                 Title = b.Title,
                 Description = b.Description,
+                Language = b.Language,
+                PageCount = b.PageCount,
+                Price = b.Price,
+                PublishYear = b.PublishYear,
+                Rating = b.Rating,
                 AvailableCount = b.AvailableCount,
                 CreatedAt = b.CreatedAt,
                 Image = b.ImageUrl == null ? null : await ImageHelper.ConvertImageToBase64Async(b.ImageUrl),
@@ -81,6 +86,11 @@ namespace Readify.BLL.Features.Book.Services
                 CreatedBy = book.CreatedBy,
                 Id = book.Id,
                 Description = book.Description,
+                Rating = book.Rating,
+                PublishYear = book.PublishYear,
+                Price = book.Price,
+                PageCount = book.PageCount,
+                Language = book.Language,
                 Title = book.Title,
                 Categories = book.BookCategories.Select(bc => bc.Category.Name).ToList(),
                 CreatedAt = book.CreatedAt
@@ -108,6 +118,11 @@ namespace Readify.BLL.Features.Book.Services
                 CreatedBy = createdBy.Fullname,
                 Title = bookDto.Title,
                 Description = bookDto.Description,
+                Language = bookDto.Language,
+                PageCount= bookDto.PageCount,
+                Price = bookDto.Price,
+                PublishYear = bookDto.PublishYear,
+                Rating = bookDto.Rating,
                 ISBN = bookDto.ISBN,
                 ImageUrl = imageUrl,
                 BookCategories = bookDto.CategoriesIds.Select(categoryId => new BookCategory
@@ -147,6 +162,11 @@ namespace Readify.BLL.Features.Book.Services
             book.AvailableCount = bookDto.Count;
             book.ISBN = bookDto.ISBN;
             book.Description = bookDto.Description;
+            book.Language = bookDto.Language;
+            book.Rating = bookDto.Rating;
+            book.PublishYear = bookDto.PublishYear;
+            book.Price = bookDto.Price;
+            book.PageCount = bookDto.PageCount;
 
             // If a new image is uploaded, handle image upload
             if (bookDto.NewImage != null && bookDto.NewImage.Length > 0)
