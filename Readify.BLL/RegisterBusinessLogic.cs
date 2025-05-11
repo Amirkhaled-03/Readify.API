@@ -1,4 +1,5 @@
-﻿using Readify.BLL.Features.Librarian.Services;
+﻿using Readify.BLL.Features.Chat.Services;
+using Readify.BLL.Features.Librarian.Services;
 using Readify.BLL.Features.ReturnRequest.Services;
 using Readify.BLL.Features.User.Services;
 using Readify.BLL.ServiceContracts.AccountContracts;
@@ -22,6 +23,7 @@ namespace Readify.BLL
             services.AddScoped<IBorrowedBookService, BorrowedBookService>();
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IReturnRequestService, ReturnRequestService>();
+            services.AddScoped<IChatService, ChatService>();
 
 
             // validators

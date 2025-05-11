@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.WebSockets;
 using Readify.API.Extensions;
 using Readify.API.Helpers;
 using Readify.API.Middlewares;
@@ -18,6 +19,12 @@ namespace Readify.API
                            .AddCustomCors()
                            .AddSwagger();
 
+            builder.Services.AddWebSockets(options =>
+            {
+                // Configure WebSocket options if needed
+                options.KeepAliveInterval = TimeSpan.FromMinutes(2);
+            });
+
             var app = builder.Build();
 
             // Use CORS policy
@@ -34,8 +41,11 @@ namespace Readify.API
 
             app.UseHttpsRedirection();
 
+            app.UseWebSockets();
+
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseMiddleware<JwtTokenValidationMiddleware>();
+            app.UseMiddleware<WebSocketChatMiddleware>();
 
             app.UseAuthentication();
 
