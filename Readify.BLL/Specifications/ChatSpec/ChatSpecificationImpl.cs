@@ -19,7 +19,7 @@ namespace Readify.BLL.Specifications.ChatSpec
         {
             ApplyPagination(specification.PageSize * (specification.PageIndex - 1), specification.PageSize);
 
-            AddInclude(c => c.Messages);
+            AddInclude(c => c.User);
 
             ApplyNoTracking();
         }

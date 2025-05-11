@@ -9,7 +9,7 @@ namespace Readify.BLL.Features.Chat.DTOs
 {
     public class ConversationsListDto
     {
-        public List<ConversationDto> Conversations { get; set; } = new List<ConversationDto>();
+        public List<ChatDto> Conversations { get; set; } = new List<ChatDto>();
         public Metadata Metadata { get; set; } = new Metadata();
     }
 }

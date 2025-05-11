@@ -11,32 +11,19 @@ namespace Readify.API.ResponseExample.Chat
         {
             return new ApiResponse<ConversationsListDto>(200, "Conversations retrieved successfully", new ConversationsListDto
             {
-                Conversations = new List<ConversationDto>
+                Conversations = new List<ChatDto>
             {
-                new ConversationDto
+                new ChatDto
                 {
-                    Id = 1,
-                    UserId = "101",
-                    MessageCount = 2,
-                    Messages = new List<MessageDto>
-                    {
-                        new MessageDto
-                        {
-                            SenderType = UserType.User,
-                            UserId = "101",
-                            LibrarianId = "102",
-                            Content = "Hello!",
-                            SentTime = DateTime.UtcNow.AddMinutes(-10)
-                        },
-                        new MessageDto
-                        {
-                            SenderType = UserType.Librarian,
-                            UserId = "101",
-                            LibrarianId = "102",
-                            Content = "Hi there!",
-                            SentTime = DateTime.UtcNow.AddMinutes(-8)
-                        }
-                    }
+                    ConversationId = 1,
+                    UserId = "user123",
+                    UserName = "John Doe"
+                },
+                new ChatDto
+                {
+                    ConversationId = 2,
+                    UserId = "user456",
+                    UserName = "Jane Smith"
                 }
             },
                 Metadata = new Metadata
@@ -45,7 +32,7 @@ namespace Readify.API.ResponseExample.Chat
                     {
                         PageIndex = 1,
                         PageSize = 10,
-                        TotalRecords = 1,
+                        TotalRecords = 2,
                         TotalPages = 1
                     }
                 }

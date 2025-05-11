@@ -79,20 +79,11 @@ namespace Readify.BLL.Features.Chat.Services
             var conversations = await _unitOfWork.ConversationRepository.GetWithSpecificationsAsync(specifications)
                ?? Enumerable.Empty<Conversation>();
 
-            var conversationDto = conversations.Select(c => new ConversationDto
+            var conversationDto = conversations.Select(c => new ChatDto
             {
-                Id = c.Id,
+                ConversationId = c.Id,
                 UserId = c.UserId,
-                MessageCount = c.Messages.Count,
-                Messages = c.Messages?.Select(m => new MessageDto
-                {
-                    Id = m.Id,
-                    SenderType = m.SenderType,
-                    UserId = m.UserId,
-                    LibrarianId = m.LibrarianId,
-                    Content = m.Content,
-                    SentTime = m.SentTime
-                }).ToList() ?? new List<MessageDto>()
+                UserName = c.User.Fullname
             });
 
             var pagination = new Pagination
@@ -111,16 +102,6 @@ namespace Readify.BLL.Features.Chat.Services
                     Pagination = pagination,
                 }
             };
-        }
-
-        public Task<List<MessageDto>> GetMessagesAsync(int conversationId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ConversationDto> GetOrCreateConversationAsync(string user1Id, string user2Id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<ConversationDto> GetConversationWithUserAsync(string userId)
