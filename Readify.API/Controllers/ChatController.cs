@@ -39,5 +39,27 @@ namespace Readify.API.Controllers
 
         #endregion
 
+        #region Get Conversation with User
+
+        [HttpGet("GetConversationWithUser/{userId}")]
+        [SwaggerOperation(
+            Summary = "Get conversation with a specific user",
+            Description = "Retrieves a conversation including all messages between the current user and the specified user.")]
+        [SwaggerResponse(200, "Conversation retrieved successfully", typeof(ApiResponse<ConversationDto>))]
+        [SwaggerResponse(404, "Conversation not found")]
+        [SwaggerResponseExample(200, typeof(ConversationDtoExample))]
+        public async Task<IActionResult> GetConversationWithUser(string userId)
+        {
+            var conversation = await _chatService.GetConversationWithUserAsync(userId);
+
+            if (conversation == null)
+                return NotFound(new ApiResponse<ConversationDto>(404, "Conversation not found"));
+
+            return Ok(new ApiResponse<ConversationDto>(200, "Conversation retrieved successfully", conversation));
+        }
+
+        #endregion
+
+
     }
 }

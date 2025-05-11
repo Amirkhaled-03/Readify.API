@@ -52,4 +52,36 @@ namespace Readify.API.ResponseExample.Chat
             });
         }
     }
+    public class ConversationDtoExample : IExamplesProvider<ApiResponse<ConversationDto>>
+    {
+        public ApiResponse<ConversationDto> GetExamples()
+        {
+            return new ApiResponse<ConversationDto>(200, "Conversation retrieved successfully", new ConversationDto
+            {
+                Id = 5,
+                UserId = "user-123",
+                MessageCount = 2,
+                Messages = new List<MessageDto>
+            {
+                new MessageDto
+                {
+                    SenderType = UserType.User,
+                    UserId = "user-123",
+                    LibrarianId = null,
+                    Content = "Hi, I need help with my book.",
+                    SentTime = DateTime.UtcNow.AddMinutes(-30)
+                },
+                new MessageDto
+                {
+                    SenderType = UserType.Librarian,
+                    UserId = null,
+                    LibrarianId = "librarian-456",
+                    Content = "Sure! What seems to be the issue?",
+                    SentTime = DateTime.UtcNow.AddMinutes(-28)
+                }
+            }
+            });
+        }
+    }
+
 }

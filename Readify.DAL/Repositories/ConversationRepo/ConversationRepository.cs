@@ -15,6 +15,7 @@ namespace Readify.DAL.Repositories.ChatRepo
         {
             return await _dbSet.Where(c => c.UserId == userId)
                 .AsNoTracking()
+                .Include(c => c.Messages)
                 .FirstOrDefaultAsync();
         }
 

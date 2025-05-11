@@ -122,5 +122,31 @@ namespace Readify.BLL.Features.Chat.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task<ConversationDto> GetConversationWithUserAsync(string userId)
+        {
+            var conversation = await _unitOfWork.ConversationRepository.GetByUserAsync(userId);
+
+            if (conversation == null)
+                return null;
+
+            var conversationDto = new ConversationDto
+            {
+                Id = conversation.Id,
+                UserId = conversation.UserId,
+                MessageCount = conversation.Messages.Count,
+                Messages = conversation.Messages.Select(m => new MessageDto
+                {
+                    Id = m.Id,
+                    SenderType = m.SenderType,
+                    UserId = m.UserId,
+                    LibrarianId = m.LibrarianId,
+                    Content = m.Content,
+                    SentTime = m.SentTime,
+                }).ToList()
+            };
+
+            return conversationDto;
+        }
     }
 }
