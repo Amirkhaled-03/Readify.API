@@ -39,7 +39,7 @@ namespace Readify.API.ResponseExample.Account
                         Fullname = "Sarah Ahmed",
                         Email = "sarah@domain.com",
                         UserStatus = UserStatus.Pending.ToString(),
-                        UserType = UserType.Librarian.ToString()
+                      ////  UserType = UserType.Librarian.ToString()
                     },
                     new AcceptAccountsDto
                     {
@@ -47,7 +47,7 @@ namespace Readify.API.ResponseExample.Account
                         Fullname = "Ali Hossam",
                         Email = "ali@domain.com",
                         UserStatus = UserStatus.Pending.ToString(),
-                        UserType = UserType.User.ToString(),
+                      //  UserType = UserType.User.ToString(),
                     }
                 },
                 Metadata = new Metadata
