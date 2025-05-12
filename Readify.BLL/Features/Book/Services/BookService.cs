@@ -369,5 +369,41 @@ namespace Readify.BLL.Features.Book.Services
 
             return errors;
         }
+
+        public async Task<List<BookDto>> GetBookByCategoryAsync(int categoryId)
+        {
+            var categoryExists = await _unitOfWork.CategoriesRepository.GetFirstOrDefaultAsync(c => c.Id == categoryId);
+            if (categoryExists == null)
+            {
+                return null;
+            }
+
+            var booksByCategory = await _unitOfWork.BookRepository.GetBookByCategory(categoryId);
+
+            if (booksByCategory == null || !booksByCategory.Any())
+                return new List<BookDto>();
+
+            var bookDtos = await Task.WhenAll(
+                booksByCategory.Select(async b => new BookDto
+                {
+                    Id = b.Id,
+                    Author = b.Author,
+                    ISBN = b.ISBN,
+                    Title = b.Title,
+                    Description = b.Description,
+                    Language = b.Language,
+                    PageCount = b.PageCount,
+                    Price = b.Price,
+                    PublishYear = b.PublishYear,
+                    Rating = b.Rating,
+                    AvailableCount = b.AvailableCount,
+                    CreatedAt = b.CreatedAt,
+                    Categories = b.BookCategories.Select(bc => bc.Category.Name).ToList(),
+                    Image = b.ImageUrl == null ? null : await ImageHelper.ConvertImageToBase64Async(b.ImageUrl)
+                })
+            );
+
+            return bookDtos.ToList();
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace Readify.BLL.Features.Book.Services
         Task<List<string>> UpdateBookCategories(AddCategoriesToBookDto toBookDto);
         Task<List<string>> DecrementAvailableCopies(int bookId);
         Task<List<string>> IncrementAvailableCopies(int bookId);
+        Task<List<BookDto>> GetBookByCategoryAsync(int categoryId);
 
     }
 }

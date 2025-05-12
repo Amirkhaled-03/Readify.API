@@ -194,4 +194,32 @@ namespace Readify.API.ResponseExample.Book
         });
         }
     }
+
+    public class GetBooksByCategorySuccessExample : IExamplesProvider<ApiResponse<List<BookDto>>>
+    {
+        public ApiResponse<List<BookDto>> GetExamples()
+        {
+            return new ApiResponse<List<BookDto>>(200, "Success", new List<BookDto>
+        {
+            new BookDto
+            {
+                Id = 10,
+                Title = "Domain-Driven Design",
+                Author = "Eric Evans",
+                ISBN = "9780321125217",
+                AvailableCount = 2,
+                Description = "Tackling complexity in the heart of software.",
+                Categories = new List<string> { "Software Engineering" }
+            }
+        });
+        }
+    }
+
+    public class GetBooksByCategoryNotFoundExample : IExamplesProvider<ApiResponse<string>>
+    {
+        public ApiResponse<string> GetExamples()
+        {
+            return new ApiResponse<string>(404, "No books found in this category.");
+        }
+    }
 }

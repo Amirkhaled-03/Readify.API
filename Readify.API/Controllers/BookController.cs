@@ -182,5 +182,28 @@ namespace Readify.API.Controllers
         }
 
         #endregion
+
+        #region Get Books by Category
+
+        [HttpGet("category/{categoryId}")]
+        [SwaggerOperation(
+            Summary = "Get books by category",
+            Description = "Retrieves all books that belong to a specific category by its ID.")]
+        [SwaggerResponse(200, "Success", typeof(ApiResponse<List<BookDto>>))]
+        [SwaggerResponse(404, "Category not found!", typeof(ApiResponse<string>))]
+        [SwaggerResponseExample(200, typeof(GetBooksByCategorySuccessExample))]
+        [SwaggerResponseExample(404, typeof(GetBooksByCategoryNotFoundExample))]
+        public async Task<IActionResult> GetBooksByCategory(int categoryId)
+        {
+            var books = await _bookService.GetBookByCategoryAsync(categoryId);
+
+            if (books == null)
+                return NotFound(new ApiResponse<string>(404, "Category not found!"));
+
+            return Ok(new ApiResponse<List<BookDto>>(200, "Success", data: books));
+        }
+
+        #endregion
+
     }
 }
