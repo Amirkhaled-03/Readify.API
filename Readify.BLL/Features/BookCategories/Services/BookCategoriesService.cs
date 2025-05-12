@@ -37,6 +37,7 @@ namespace Readify.BLL.Features.BookCategories.Services
             {
                 Id = c.Id,
                 Name = c.Name,
+                BookCount = c.BookCategories?.Count ?? 0,
                 CreatedAt = c.CreatedAt
             });
 
