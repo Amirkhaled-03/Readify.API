@@ -7,8 +7,17 @@ using System.Text;
 
 public class WebSocketChatMiddleware
 {
+    private class WebSocketConnection
+    {
+        public string UserId { get; set; }
+        public UserType UserType { get; set; }
+        public WebSocket Socket { get; set; }
+    }
+
+    private static readonly ConcurrentDictionary<string, WebSocketConnection> _userSockets = new();
+
     private readonly RequestDelegate _next;
-    private static readonly ConcurrentDictionary<string, WebSocket> _userSockets = new();
+    //private static readonly ConcurrentDictionary<string, WebSocket> _userSockets = new();
     public WebSocketChatMiddleware(RequestDelegate next)
     {
         _next = next;
@@ -20,16 +29,25 @@ public class WebSocketChatMiddleware
 
         if (context.Request.Path.StartsWithSegments("/ws/chat") && context.WebSockets.IsWebSocketRequest)
         {
-            var userId = context.Request.Query["userId"]; // Extract from token or query
+            var userId = context.Request.Query["userId"];
             var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+            var userType = Enum.Parse<UserType>(context.Request.Query["userType"]);
 
-            _userSockets[userId] = webSocket;
+            _userSockets[userId] = new WebSocketConnection
+            {
+                UserId = userId,
+                UserType = userType,
+                Socket = webSocket
+            };
+
+
+            //_userSockets[userId] = webSocket;
 
             await ReceiveMessagesAsync(userId, webSocket, context);
         }
         else
         {
-            await _next(context); // If not WebSocket, pass request to the next middleware
+            await _next(context);
         }
     }
 
@@ -55,21 +73,34 @@ public class WebSocketChatMiddleware
                 var chatMessage = JsonSerializer.Deserialize<IncomingMessageDto>(messageJson);
 
                 await chatService.AddMessageAsync(chatMessage);
-                var recipientId = chatMessage.SenderType == UserType.User ? chatMessage.LibrarianId : chatMessage.UserId;
+                var responseJson = JsonSerializer.Serialize(chatMessage);
+                var bytes = Encoding.UTF8.GetBytes(responseJson);
 
-                // Forward message to recipient if connected
-                if (_userSockets.TryGetValue(recipientId, out var recipientSocket))
+                if (chatMessage.SenderType == UserType.User)
                 {
-                    var responseJson = JsonSerializer.Serialize(chatMessage);
-                    var bytes = Encoding.UTF8.GetBytes(responseJson);
-
-                    await recipientSocket.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
+                    // Broadcast to all connected librarians
+                    foreach (var connection in _userSockets.Values)
+                    {
+                        if (connection.UserType == UserType.Librarian && connection.Socket.State == WebSocketState.Open)
+                        {
+                            await connection.Socket.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
+                        }
+                    }
+                }
+                else
+                {
+                    // Librarian sends to specific user
+                    var recipientId = chatMessage.UserId;
+                    if (_userSockets.TryGetValue(recipientId, out var recipientConnection) &&
+                        recipientConnection.Socket.State == WebSocketState.Open)
+                    {
+                        await recipientConnection.Socket.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
+                    }
                 }
             }
         }
         catch (Exception ex)
         {
-            // Handle exceptions
             Console.WriteLine($"Error handling WebSocket message: {ex.Message}");
         }
         finally

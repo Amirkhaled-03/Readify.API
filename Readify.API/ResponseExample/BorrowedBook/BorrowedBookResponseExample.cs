@@ -1,4 +1,5 @@
 ﻿using Readify.API.HandleResponses;
+using Readify.BLL.Features.Book.DTOs;
 using Readify.BLL.Features.BorrowedBooks.DTOs;
 using Readify.BLL.Helpers;
 using Swashbuckle.AspNetCore.Filters;
@@ -137,6 +138,43 @@ namespace Readify.API.ResponseExample.BorrowedBook
             "Request not found!",
             "Status change not permitted for current state."
         });
+        }
+    }
+
+    public class GetRecommendedBooksSuccessExample : IExamplesProvider<ApiResponse<List<BookDto>>>
+    {
+        public ApiResponse<List<BookDto>> GetExamples()
+        {
+            return new ApiResponse<List<BookDto>>(200, "Success", new List<BookDto>
+        {
+            new BookDto
+            {
+                Id = 1,
+                Title = "Clean Code",
+                Author = "Robert C. Martin",
+                ISBN = "9780132350884",
+                AvailableCount = 3,
+                Description = "A handbook of agile software craftsmanship."
+                // Add other fields if needed
+            },
+            new BookDto
+            {
+                Id = 2,
+                Title = "The Pragmatic Programmer",
+                Author = "Andy Hunt",
+                ISBN = "9780201616224",
+                AvailableCount = 5,
+                Description = "Journey to mastery in software development."
+            }
+        });
+        }
+    }
+
+    public class GetRecommendedBooksNotFoundExample : IExamplesProvider<ApiResponse<string>>
+    {
+        public ApiResponse<string> GetExamples()
+        {
+            return new ApiResponse<string>(404, "No recommended books found.");
         }
     }
 

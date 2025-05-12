@@ -1,4 +1,5 @@
-﻿using Readify.BLL.Features.BorrowedBooks.DTOs;
+﻿using Readify.BLL.Features.Book.DTOs;
+using Readify.BLL.Features.BorrowedBooks.DTOs;
 using Readify.BLL.Helpers;
 using Readify.BLL.Specifications.BorrowedBookSpec;
 using Readify.BLL.Specifications.UserBorrowedBooksSpec;
@@ -233,5 +234,58 @@ namespace Readify.BLL.Features.BorrowedBooks.Services
             await _unitOfWork.SaveAsync();
         }
 
+        private async Task<int?> GetMostBorrowedBookCategoryAsync()
+        {
+            var userId = _tokenService.GetUserIdFromToken();
+            var borrowedBooks = await _unitOfWork.BorrowedBookRepository.GetUserBorrowedBooksAsync(userId);
+
+            if (!borrowedBooks.Any())
+                return null;
+
+            var mostBorrowedCategoryId = borrowedBooks
+                .SelectMany(b => b.Book.BookCategories)
+                .GroupBy(bc => bc.CategoryId)
+                .OrderByDescending(g => g.Count())
+                .Select(g => (int?)g.Key)
+                .FirstOrDefault();
+
+            return mostBorrowedCategoryId;
+        }
+
+        public async Task<List<BookDto>> GetRecommendedBooksAsync()
+        {
+            var categoryId = await GetMostBorrowedBookCategoryAsync();
+
+            if (categoryId == null)
+                return new List<BookDto>();
+
+            var booksInCategory = await _unitOfWork.BookRepository.GetBookByCategory(categoryId);
+
+            var random = new Random();
+            var recommendedBooks = await Task.WhenAll(
+                booksInCategory
+                    .OrderBy(_ => random.Next())
+                    .Take(4)
+                    .Select(async b => new BookDto
+                    {
+                        Id = b.Id,
+                        Author = b.Author,
+                        ISBN = b.ISBN,
+                        Title = b.Title,
+                        Description = b.Description,
+                        Language = b.Language,
+                        PageCount = b.PageCount,
+                        Price = b.Price,
+                        PublishYear = b.PublishYear,
+                        Rating = b.Rating,
+                        AvailableCount = b.AvailableCount,
+                        CreatedAt = b.CreatedAt,
+                        Categories = b.BookCategories.Select(bc => bc.Category.Name).ToList(),
+                        Image = b.ImageUrl == null ? null : await ImageHelper.ConvertImageToBase64Async(b.ImageUrl)
+                    })
+            );
+
+            return recommendedBooks.ToList();
+        }
     }
 }

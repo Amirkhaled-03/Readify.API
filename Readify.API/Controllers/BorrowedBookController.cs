@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Readify.API.Filters;
 using Readify.API.HandleResponses;
 using Readify.API.ResponseExample.BorrowedBook;
+using Readify.BLL.Features.Book.DTOs;
 using Readify.BLL.Features.BorrowedBooks.DTOs;
 using Readify.BLL.Features.BorrowedBooks.Services;
 using Readify.BLL.Specifications.BorrowedBookSpec;
@@ -102,5 +104,28 @@ namespace Readify.API.Controllers
         }
 
         #endregion
+
+        #region Get Recommended Books
+
+        [HttpGet("recommended")]
+        [SwaggerOperation(
+            Summary = "Get recommended books",
+            Description = "Retrieves 4 randomly selected recommended books based on the user's most borrowed category.")]
+        [SwaggerResponse(200, "Successfully retrieved recommended books", typeof(ApiResponse<List<BookDto>>))]
+        [SwaggerResponse(404, "No recommended books found", typeof(ApiResponse<string>))]
+        [SwaggerResponseExample(200, typeof(GetRecommendedBooksSuccessExample))]
+        [SwaggerResponseExample(404, typeof(GetRecommendedBooksNotFoundExample))]
+        public async Task<IActionResult> GetRecommendedBooksAsync()
+        {
+            var recommendedBooks = await _borrowedBookService.GetRecommendedBooksAsync();
+
+            if (recommendedBooks == null || !recommendedBooks.Any())
+                return NotFound(new ApiResponse<string>(404, "No recommended books found."));
+
+            return Ok(new ApiResponse<List<BookDto>>(200, "Success", data: recommendedBooks));
+        }
+
+        #endregion
+
     }
 }

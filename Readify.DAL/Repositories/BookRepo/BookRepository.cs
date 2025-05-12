@@ -11,6 +11,15 @@ namespace Readify.DAL.Repositories.BookRepo
         {
         }
 
+        public async Task<IEnumerable<Book>?> GetBookByCategory(int? categoryId)
+        {
+            return await _dbSet
+                .Include(b => b.BookCategories)
+                .ThenInclude(bc => bc.Category)
+                .Where(b => b.BookCategories.Any(bc => bc.CategoryId == categoryId))
+                .ToListAsync();
+        }
+
         public async Task<Book?> GetDetailedBookById(int id)
         {
             return await _dbSet.Where(b => b.Id == id)

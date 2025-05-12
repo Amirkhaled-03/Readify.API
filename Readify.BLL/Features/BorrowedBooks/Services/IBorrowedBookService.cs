@@ -1,4 +1,5 @@
-﻿using Readify.BLL.Features.BorrowedBooks.DTOs;
+﻿using Readify.BLL.Features.Book.DTOs;
+using Readify.BLL.Features.BorrowedBooks.DTOs;
 using Readify.BLL.Specifications.BorrowedBookSpec;
 using Readify.BLL.Specifications.UserBorrowedBooksSpec;
 
@@ -11,5 +12,6 @@ namespace Readify.BLL.Features.BorrowedBooks.Services
         Task<BorrowedBookDto> GetBorrowedBookByIdAsync(int id);
         Task<ManageBorrowedBooksDto> GetUserBorrowBooksAsync(UserBorrowedBooksSpecification specs);
         Task<List<string>> UpdateBorrowedBookStatusAsync(UpdateBorrowedBookStatusDto bookDto);
+        Task<List<BookDto>> GetRecommendedBooksAsync();
     }
 }
