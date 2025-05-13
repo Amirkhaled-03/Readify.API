@@ -7,5 +7,6 @@ namespace Readify.DAL.Repositories.BorrowedBookRepo
     {
         Task<BorrowedBook?> GetBorrowedBookByIdAsync(int id);
         Task<IEnumerable<BorrowedBook>> GetUserBorrowedBooksAsync(string userId);
+        Task<BorrowedBook> GetUserLastBorrowedBookAsync(string userId);
     }
 }

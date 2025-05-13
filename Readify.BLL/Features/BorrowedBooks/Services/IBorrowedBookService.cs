@@ -12,6 +12,6 @@ namespace Readify.BLL.Features.BorrowedBooks.Services
         Task<BorrowedBookDto> GetBorrowedBookByIdAsync(int id);
         Task<ManageBorrowedBooksDto> GetUserBorrowBooksAsync(UserBorrowedBooksSpecification specs);
         Task<List<string>> UpdateBorrowedBookStatusAsync(UpdateBorrowedBookStatusDto bookDto);
-        Task<List<BookDto>> GetRecommendedBooksAsync();
+        Task<RecommendedBooksDto> GetRecommendedBooksAsync();
     }
 }
