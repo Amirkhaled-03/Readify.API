@@ -14,7 +14,7 @@ namespace Readify.DAL.Entities
 
         public Conversation Conversation { get; set; }
         public ApplicationUser User {  get; set; }
-        public ApplicationUser Librarian { get; set; }
+        //public ApplicationUser Librarian { get; set; }
 
     }
 }

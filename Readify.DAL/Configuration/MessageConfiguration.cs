@@ -15,11 +15,11 @@ namespace Readify.DAL.Configuration
                 .HasForeignKey(m => m.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder
-                .HasOne(m => m.Librarian)
-                .WithMany()
-                .HasForeignKey(m => m.LibrarianId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder
+            //    .HasOne(m => m.Librarian)
+            //    .WithMany()
+            //    .HasForeignKey(m => m.LibrarianId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

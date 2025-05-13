@@ -234,23 +234,23 @@ namespace Readify.BLL.Features.BorrowedBooks.Services
             await _unitOfWork.SaveAsync();
         }
 
-        private async Task<int?> GetMostBorrowedBookCategoryAsync()
-        {
-            var userId = _tokenService.GetUserIdFromToken();
-            var borrowedBooks = await _unitOfWork.BorrowedBookRepository.GetUserBorrowedBooksAsync(userId);
+        //private async Task<int?> GetMostBorrowedBookCategoryAsync()
+        //{
+        //    var userId = _tokenService.GetUserIdFromToken();
+        //    var borrowedBooks = await _unitOfWork.BorrowedBookRepository.GetUserBorrowedBooksAsync(userId);
 
-            if (!borrowedBooks.Any())
-                return null;
+        //    if (!borrowedBooks.Any())
+        //        return null;
 
-            var mostBorrowedCategoryId = borrowedBooks
-                .SelectMany(b => b.Book.BookCategories)
-                .GroupBy(bc => bc.CategoryId)
-                .OrderByDescending(g => g.Count())
-                .Select(g => (int?)g.Key)
-                .FirstOrDefault();
+        //    var mostBorrowedCategoryId = borrowedBooks
+        //        .SelectMany(b => b.Book.BookCategories)
+        //        .GroupBy(bc => bc.CategoryId)
+        //        .OrderByDescending(g => g.Count())
+        //        .Select(g => (int?)g.Key)
+        //        .FirstOrDefault();
 
-            return mostBorrowedCategoryId;
-        }
+        //    return mostBorrowedCategoryId;
+        //}
 
         public async Task<RecommendedBooksDto> GetRecommendedBooksAsync()
         {
