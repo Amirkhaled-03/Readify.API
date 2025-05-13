@@ -141,40 +141,35 @@ namespace Readify.API.ResponseExample.BorrowedBook
         }
     }
 
-    public class GetRecommendedBooksSuccessExample : IExamplesProvider<ApiResponse<List<BookDto>>>
+    public class GetRecommendedBooksSuccessExample : IExamplesProvider<ApiResponse<RecommendedBooksDto>>
     {
-        public ApiResponse<List<BookDto>> GetExamples()
+        public ApiResponse<RecommendedBooksDto> GetExamples()
         {
-            return new ApiResponse<List<BookDto>>(200, "Success", new List<BookDto>
-        {
-            new BookDto
+            return new ApiResponse<RecommendedBooksDto>(200, "Success", new RecommendedBooksDto
             {
-                Id = 1,
-                Title = "Clean Code",
-                Author = "Robert C. Martin",
-                ISBN = "9780132350884",
-                AvailableCount = 3,
-                Description = "A handbook of agile software craftsmanship."
-                // Add other fields if needed
-            },
-            new BookDto
+                LastBorrowedBookName = "Atomic Habits",
+                IsBorrowing = 1,
+                Books = new List<BookDto>
             {
-                Id = 2,
-                Title = "The Pragmatic Programmer",
-                Author = "Andy Hunt",
-                ISBN = "9780201616224",
-                AvailableCount = 5,
-                Description = "Journey to mastery in software development."
+                new BookDto
+                {
+                    Id = 2,
+                    Title = "Deep Work",
+                    Author = "Cal Newport",
+                    ISBN = "9781455586691",
+                    Description = "Rules for focused success in a distracted world.",
+                    Language = "English",
+                    PageCount = 304,
+                    Price = 18.99M,
+                    PublishYear = 2016,
+                    Rating = 4.4,
+                    AvailableCount = 3,
+                    CreatedAt = DateTime.UtcNow.AddMonths(-6),
+                    Categories = new List<string> { "Self-help", "Productivity" },
+                    Image = null
+                }
             }
-        });
-        }
-    }
-
-    public class GetRecommendedBooksNotFoundExample : IExamplesProvider<ApiResponse<string>>
-    {
-        public ApiResponse<string> GetExamples()
-        {
-            return new ApiResponse<string>(404, "No recommended books found.");
+            });
         }
     }
 

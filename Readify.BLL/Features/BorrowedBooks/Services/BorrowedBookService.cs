@@ -252,14 +252,22 @@ namespace Readify.BLL.Features.BorrowedBooks.Services
             return mostBorrowedCategoryId;
         }
 
-        public async Task<List<BookDto>> GetRecommendedBooksAsync()
+        public async Task<RecommendedBooksDto> GetRecommendedBooksAsync()
         {
-            var categoryId = await GetMostBorrowedBookCategoryAsync();
+            var userId = _tokenService.GetUserIdFromToken();
 
-            if (categoryId == null)
-                return new List<BookDto>();
+            var lastBorrowedBook = await _unitOfWork.BorrowedBookRepository.GetUserLastBorrowedBookAsync(userId);
+
+            if (lastBorrowedBook == null || lastBorrowedBook.Book == null || !lastBorrowedBook.Book.BookCategories.Any())
+                return new RecommendedBooksDto();
+
+            var categoryId = lastBorrowedBook.Book.BookCategories.First().CategoryId;
 
             var booksInCategory = await _unitOfWork.BookRepository.GetBookByCategory(categoryId);
+
+            booksInCategory = booksInCategory
+                .Where(b => b.Id != lastBorrowedBook.BookId)
+                .ToList();
 
             var random = new Random();
             var recommendedBooks = await Task.WhenAll(
@@ -285,7 +293,14 @@ namespace Readify.BLL.Features.BorrowedBooks.Services
                     })
             );
 
-            return recommendedBooks.ToList();
+            var recommendedDto = new RecommendedBooksDto
+            {
+                LastBorrowedBookName = lastBorrowedBook == null ? "" : lastBorrowedBook.Book.Title,
+                Books = recommendedBooks.ToList(),
+                IsBorrowing = lastBorrowedBook == null ? 0 : 1
+            };
+
+            return recommendedDto;
         }
     }
 }

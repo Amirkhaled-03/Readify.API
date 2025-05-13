@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Readify.API.Filters;
 using Readify.API.HandleResponses;
 using Readify.API.ResponseExample.BorrowedBook;
@@ -74,8 +73,8 @@ namespace Readify.API.Controllers
         {
             var books = await _borrowedBookService.GetUserBorrowBooksAsync(specs);
 
-            if (books == null || !books.BorrowedBooks.Any())
-                return NotFound(new ApiResponse<string>(404, "No borrowed books found for the user"));
+            //if (books == null || !books.BorrowedBooks.Any())
+            //    return NotFound(new ApiResponse<string>(404, "No borrowed books found for the user"));
 
             return Ok(new ApiResponse<ManageBorrowedBooksDto>(200, "Successfully retrieved borrowed books", books));
         }
@@ -109,20 +108,16 @@ namespace Readify.API.Controllers
 
         [HttpGet("recommended")]
         [SwaggerOperation(
-            Summary = "Get recommended books",
-            Description = "Retrieves 4 randomly selected recommended books based on the user's most borrowed category.")]
-        [SwaggerResponse(200, "Successfully retrieved recommended books", typeof(ApiResponse<List<BookDto>>))]
-        [SwaggerResponse(404, "No recommended books found", typeof(ApiResponse<string>))]
+            Summary = "Get recommended books for the user",
+            Description = "Returns a list of recommended books based on the user's last borrowed book category. If no recommendations are available, an empty list is returned with a success message."
+        )]
+        [SwaggerResponse(200, "Recommendations retrieved successfully", typeof(ApiResponse<RecommendedBooksDto>))]
         [SwaggerResponseExample(200, typeof(GetRecommendedBooksSuccessExample))]
-        [SwaggerResponseExample(404, typeof(GetRecommendedBooksNotFoundExample))]
-        public async Task<IActionResult> GetRecommendedBooksAsync()
+        public async Task<IActionResult> GetRecommendedBooks()
         {
-            var recommendedBooks = await _borrowedBookService.GetRecommendedBooksAsync();
+            var result = await _borrowedBookService.GetRecommendedBooksAsync();
 
-            if (recommendedBooks == null || !recommendedBooks.Any())
-                return NotFound(new ApiResponse<string>(404, "No recommended books found."));
-
-            return Ok(new ApiResponse<List<BookDto>>(200, "Success", data: recommendedBooks));
+            return Ok(new ApiResponse<RecommendedBooksDto>(200, "Success", result));
         }
 
         #endregion

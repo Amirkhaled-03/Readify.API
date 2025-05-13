@@ -32,5 +32,16 @@ namespace Readify.DAL.Repositories.BorrowedBookRepo
                 .ThenInclude(b => b.Category)
                 .ToListAsync();
         }
+
+        public async Task<BorrowedBook> GetUserLastBorrowedBookAsync(string userId)
+        {
+            return await _dbSet
+                    .Include(bb => bb.Book)
+                        .ThenInclude(b => b.BookCategories)
+                            .ThenInclude(bc => bc.Category)
+                    .Where(bb => bb.UserId == userId)
+                    .OrderByDescending(bb => bb.BorrowedAt)
+                    .FirstOrDefaultAsync();
+        }
     }
 }
