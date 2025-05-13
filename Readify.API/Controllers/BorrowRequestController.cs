@@ -33,8 +33,8 @@ namespace Readify.API.Controllers
         {
             var response = await _borrowRequestService.GetAllBorrowRequestsAsync(specs);
 
-            if (response == null || !response.BorrowRequests.Any())
-                return NotFound(new ApiResponse<string>(404, "No borrow requests found"));
+            //if (response == null || !response.BorrowRequests.Any())
+            //    return NotFound(new ApiResponse<string>(404, "No borrow requests found"));
 
             return Ok(new ApiResponse<ListAllRequestsDto>(200, "Borrow requests retrieved successfully", response));
         }
@@ -55,9 +55,6 @@ namespace Readify.API.Controllers
         public async Task<IActionResult> GetUserBorrowRequests([FromQuery] UserBorrowRequestSpecification specs)
         {
             var response = await _borrowRequestService.GetUserBorrowRequestsAsync(specs);
-
-            if (response == null || !response.BorrowRequests.Any())
-                return NotFound(new ApiResponse<string>(404, "No borrow requests found for user"));
 
             return Ok(new ApiResponse<ListAllRequestsDto>(200, "success", response));
         }

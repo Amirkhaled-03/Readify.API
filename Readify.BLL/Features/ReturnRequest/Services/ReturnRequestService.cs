@@ -170,8 +170,24 @@ namespace Readify.BLL.Features.ReturnRequest.Services
             {
                 var user = await _tokenService.GetUserFromTokenAsync();
                 request.ApprovedBy = user.Fullname;
-            }
 
+                var borrowedBook = request.BorrowedBook;
+
+                if (borrowedBook != null)
+                {
+                    borrowedBook.Status = BorrowedBookStatus.Returned;
+                    borrowedBook.ReturnedAt = DateTime.UtcNow;
+                    borrowedBook.ConfirmedBy = user.Fullname;
+
+                    _unitOfWork.BorrowedBookRepository.UpdateEntity(borrowedBook);
+
+                    errors.AddRange(await _bookService.IncrementAvailableCopies(borrowedBook.BookId));
+                }
+                else
+                {
+                    errors.Add("Associated borrowed book not found.");
+                }
+            }
             _unitOfWork.ReturnRequestRepository.UpdateEntity(request);
             int affectedRows = await _unitOfWork.SaveAsync();
 
