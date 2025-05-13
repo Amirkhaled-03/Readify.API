@@ -9,7 +9,7 @@ namespace Readify.BLL.Specifications.BookSpec
            base(b =>
           (!specification.SearchById.HasValue || b.Id == specification.SearchById.Value) &&
           (string.IsNullOrEmpty(specification.SearchByBookTitle) || b.Title.ToString() == specification.SearchByBookTitle) &&
-          (string.IsNullOrEmpty(specification.SearchByBookAuthor) || b.Author.ToString() == specification.SearchByBookTitle) &&
+          (string.IsNullOrEmpty(specification.SearchByBookAuthor) || b.Author.ToString() == specification.SearchByBookAuthor) &&
           (string.IsNullOrEmpty(specification.SearchByBookISBN) || b.ISBN.ToString() == specification.SearchByBookISBN) &&
           (!specification.SearchByBookCategory.HasValue || b.BookCategories.Any(c => c.CategoryId == specification.SearchByBookCategory.Value))
 

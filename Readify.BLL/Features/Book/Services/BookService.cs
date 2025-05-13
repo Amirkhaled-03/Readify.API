@@ -405,5 +405,35 @@ namespace Readify.BLL.Features.Book.Services
 
             return bookDtos.ToList();
         }
+
+        public async Task<List<BookDto>> GetBookByAuthorAsync(string authorName)
+        {
+            var booksByAuthor = await _unitOfWork.BookRepository.GetBookByAuthor(authorName);
+
+            if (booksByAuthor == null || !booksByAuthor.Any())
+                return new List<BookDto>();
+
+            var bookDtos = await Task.WhenAll(
+                booksByAuthor.Select(async b => new BookDto
+                {
+                    Id = b.Id,
+                    Author = b.Author,
+                    ISBN = b.ISBN,
+                    Title = b.Title,
+                    Description = b.Description,
+                    Language = b.Language,
+                    PageCount = b.PageCount,
+                    Price = b.Price,
+                    PublishYear = b.PublishYear,
+                    Rating = b.Rating,
+                    AvailableCount = b.AvailableCount,
+                    CreatedAt = b.CreatedAt,
+                    Categories = b.BookCategories.Select(bc => bc.Category.Name).ToList(),
+                    Image = b.ImageUrl == null ? null : await ImageHelper.ConvertImageToBase64Async(b.ImageUrl)
+                })
+            );
+
+            return bookDtos.ToList();
+        }
     }
 }

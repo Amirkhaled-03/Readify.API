@@ -205,5 +205,27 @@ namespace Readify.API.Controllers
 
         #endregion
 
+        #region Get Books By Author
+
+        [HttpGet("author/{authorName}")]
+        [SwaggerOperation(
+            Summary = "Get books by author",
+            Description = "Retrieves all books written by the specified author name."
+        )]
+        [SwaggerResponse(200, "Success", typeof(ApiResponse<List<BookDto>>))]
+        [SwaggerResponse(404, "No books found for the given author", typeof(ApiResponse<string>))]
+        [SwaggerResponseExample(200, typeof(GetBooksByAuthorSuccessExample))]
+        [SwaggerResponseExample(404, typeof(GetBooksByAuthorNotFoundExample))]
+        public async Task<IActionResult> GetBooksByAuthor(string authorName)
+        {
+            var books = await _bookService.GetBookByAuthorAsync(authorName);
+
+            if (books == null || !books.Any())
+                return NotFound(new ApiResponse<string>(404, "No books found for the given author."));
+
+            return Ok(new ApiResponse<List<BookDto>>(200, "Success", data: books));
+        }
+
+        #endregion
     }
 }

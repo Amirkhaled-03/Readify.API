@@ -222,4 +222,40 @@ namespace Readify.API.ResponseExample.Book
             return new ApiResponse<string>(404, "No books found in this category.");
         }
     }
+
+    public class GetBooksByAuthorSuccessExample : IExamplesProvider<ApiResponse<List<BookDto>>>
+    {
+        public ApiResponse<List<BookDto>> GetExamples()
+        {
+            return new ApiResponse<List<BookDto>>(200, "Success", new List<BookDto>
+        {
+            new BookDto
+            {
+                Id = 1,
+                Title = "The Clean Coder",
+                Author = "Robert C. Martin",
+                ISBN = "9780137081073",
+                Description = "A Code of Conduct for Professional Programmers",
+                Language = "English",
+                PageCount = 256,
+                Price = 39.99M,
+                PublishYear = 2011,
+                Rating = 4.5,
+                AvailableCount = 5,
+                CreatedAt = DateTime.UtcNow.AddMonths(-2),
+                Categories = new List<string> { "Software Engineering", "Best Practices" },
+                Image = null
+            }
+        });
+        }
+    }
+
+    public class GetBooksByAuthorNotFoundExample : IExamplesProvider<ApiResponse<string>>
+    {
+        public ApiResponse<string> GetExamples()
+        {
+            return new ApiResponse<string>(404, "No books found for the given author.");
+        }
+    }
+
 }

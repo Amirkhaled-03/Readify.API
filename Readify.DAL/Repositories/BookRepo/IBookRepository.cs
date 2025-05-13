@@ -7,5 +7,6 @@ namespace Readify.DAL.Repositories.BookRepo
     {
         Task<Book?> GetDetailedBookById(int id);
         Task<IEnumerable<Book>?> GetBookByCategory(int? categoryId);
+        Task<IEnumerable<Book>?> GetBookByAuthor(string authorName);
     }
 }
