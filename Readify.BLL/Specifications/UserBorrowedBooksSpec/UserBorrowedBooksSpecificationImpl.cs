@@ -5,7 +5,8 @@ namespace Readify.BLL.Specifications.UserBorrowedBooksSpec
 {
     public class UserBorrowedBooksSpecificationImpl : BaseSpecification<BorrowedBook>
     {
-        public UserBorrowedBooksSpecificationImpl(string userId, UserBorrowedBooksSpecification specification) : base(bb => bb.UserId == userId)
+        public UserBorrowedBooksSpecificationImpl(string userId, UserBorrowedBooksSpecification specification) : base(bb => (bb.UserId == userId) &&
+                        (!specification.SearchByStatus.HasValue || bb.Status == specification.SearchByStatus.Value))
         {
             ApplyPagination(specification.PageSize * (specification.PageIndex - 1), specification.PageSize);
 

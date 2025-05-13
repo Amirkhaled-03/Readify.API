@@ -14,5 +14,12 @@ namespace Readify.BLL.Specifications.UserBorrowedBooksSpec
             get => _pageSize;
             set => _pageSize = value > MAXPAGESIZE ? MAXPAGESIZE : value;
         }
+
+        private BorrowedBookStatus? _searchByStatus;
+        public BorrowedBookStatus? SearchByStatus
+        {
+            get => _searchByStatus;
+            set => _searchByStatus = value;
+        }
     }
 }

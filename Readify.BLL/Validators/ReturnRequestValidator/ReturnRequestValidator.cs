@@ -32,6 +32,7 @@ namespace Readify.BLL.Validators.ReturnRequestValidator
             if (borrowedBook.Status == BorrowedBookStatus.Returned)
             {
                 errors.Add("This book has already been returned.");
+                return errors;
             }
 
             if (_unitOfWork.ReturnRequestRepository == null)

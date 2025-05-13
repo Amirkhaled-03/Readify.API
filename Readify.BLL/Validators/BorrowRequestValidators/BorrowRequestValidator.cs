@@ -30,10 +30,21 @@ namespace Readify.BLL.Validators.BorrowRequestValidators
                 .GetFirstOrDefaultAsync(br =>
                     br.UserId == userId &&
                     br.BookId == bookId &&
-                    (br.Status == BorrowRequestStatus.Pending || br.Status == BorrowRequestStatus.Approved));
+                    br.Status == BorrowRequestStatus.Pending);
 
             if (existingRequest != null)
+            {
                 errors.Add("You already have a request for this book!");
+            }
+
+            // Always check if the user has an active borrowed book (not returned)
+            var existingBorrowedBooks = await _unitOfWork.BorrowedBookRepository
+                .FindAllAsync(bb => bb.UserId == userId && bb.BookId == bookId);
+
+            if (existingBorrowedBooks.Any(bb => bb.Status != BorrowedBookStatus.Returned))
+            {
+                errors.Add("You already borrowed this book and haven't returned it yet.");
+            }
 
             if (startDate < DateTime.UtcNow || endDate < DateTime.UtcNow)
                 errors.Add("Date already passed");
