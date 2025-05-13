@@ -12,13 +12,13 @@ namespace Readify.DAL.Configuration
                 .HasOne(br => br.User)
                 .WithMany(u => u.BorrowRequests)
                 .HasForeignKey(br => br.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasOne(br => br.Book)
                 .WithMany(b => b.BorrowRequests)
                 .HasForeignKey(br => br.BookId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             //builder
             //    .HasOne(br => br.ApprovedBy)

@@ -120,7 +120,7 @@ namespace Readify.BLL.Features.Book.Services
                 Title = bookDto.Title,
                 Description = bookDto.Description,
                 Language = bookDto.Language,
-                PageCount= bookDto.PageCount,
+                PageCount = bookDto.PageCount,
                 Price = bookDto.Price,
                 PublishYear = bookDto.PublishYear,
                 Rating = bookDto.Rating,
@@ -197,23 +197,25 @@ namespace Readify.BLL.Features.Book.Services
 
         public async Task<List<string>> DeleteById(int id)
         {
-            List<string> errors = new List<string>();
-            errors.AddRange(await _bookValidator.ValidateDeleteBook(id));
+            var errors = await _bookValidator.ValidateDeleteBook(id);
 
             if (errors.Any())
             {
-                return errors; // book in use
+                return errors; // Cannot delete, in use
             }
 
-            if (_unitOfWork.BookRepository.DeleteEntity(id))
+            var deleted = _unitOfWork.BookRepository.DeleteEntity(id);
+
+            if (!deleted)
             {
-                await _unitOfWork.SaveAsync();
-                return errors; // Deleted
+                errors.Add("This book does not exist and cannot be deleted.");
+                return errors;
             }
 
-            errors.Add("This book not exists, can not delete it");
-            return errors; // Not found
+            await _unitOfWork.SaveAsync();
+            return errors; // No errors, deleted successfully
         }
+
 
         public async Task<List<string>> ChangeBookImage(ChangeBookImage imageDto)
         {

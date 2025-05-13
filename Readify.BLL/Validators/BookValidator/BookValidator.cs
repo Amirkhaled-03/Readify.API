@@ -49,20 +49,19 @@ namespace Readify.BLL.Validators.BookValidator
         {
             List<string> errors = new List<string>();
 
-            // Check if the book is currently borrowed (i.e., not yet returned)
+            // Check if the book is currently borrowed and not returned
             var isBorrowed = await _unitOfWork.BorrowedBookRepository
                 .GetSpecificColumnFirstOrDefaultAsync(b => b.BookId == bookId && b.ReturnedAt == null);
 
             if (isBorrowed)
                 errors.Add("The book is currently borrowed and cannot be deleted.");
 
-            // Check if there are active borrow requests (pending or approved)
-            var hasActiveRequests = await _unitOfWork.BorrowRequestRepository
-                .GetSpecificColumnFirstOrDefaultAsync(r => r.BookId == bookId &&
-                    (r.Status == BorrowRequestStatus.Pending || r.Status == BorrowRequestStatus.Approved));
+            // Check if there are ANY borrow requests associated with the book
+            var hasBorrowRequests = await _unitOfWork.BorrowRequestRepository
+                .GetSpecificColumnFirstOrDefaultAsync(r => r.BookId == bookId);
 
-            if (hasActiveRequests)
-                errors.Add("There are active borrow requests for this book. Deletion is not allowed.");
+            if (hasBorrowRequests)
+                errors.Add("There are borrow requests associated with this book. Deletion is not allowed.");
 
             return errors;
         }
